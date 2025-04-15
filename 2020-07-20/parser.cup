@@ -20,7 +20,7 @@ parser code {:
 //// Symbols Delaration
 ////////////////////////////
 
-terminal ;
+terminal TOK1, TOK2;
 // terminal String test;
 // terminal Double test;
 // terminal Integer test;
@@ -31,6 +31,7 @@ non terminal prog ;
 // non terminal Integer ;
 // non terminal Double ;
 
+// precedence left ;
 
 /////////////////////////////
 //// Grammar
@@ -38,5 +39,46 @@ non terminal prog ;
 
 start with prog;
 
-prog ::= 
+prog ::= HEADER | COMMANDS
 ;
+
+HEADER ::= HEADER1 | HEADER2
+;
+//
+HEADER1 ::= OPT1 OPT2
+;
+OPT1 ::= TOK1 TOK1 TOK1 TOK1 TOK1 TOK1_REAPET
+;
+TOK1_REAPET ::= TOK1 TOK1 | TOK1 TOK1 TOK1_REAPET |
+;
+
+OPT2 ::= OPT2_3 | OPT2_7 OPT2_7 OPT2_7
+;
+OPT2_3 ::= TOK2 TOK2 TOK2
+;
+OPT2_7 ::= TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2  
+; 
+//
+HEADER2 ::= TOK2 tests  TOK2 tests  TOK2 tests
+;
+tests ::= test | tests TOK1 
+;
+test ::= TOK1 |
+;
+
+//
+COMMANDS ::= COMMAND | COMMANDS COMMAND
+;
+COMMAND ::= ASSIGNMENT | COMPARE |
+;
+
+//
+ASSINMENT ::= VAR EQ EXPRS SC
+;
+EXPR ::= EXPR_VAR | EXPR_VAR OP EXPR_VAR  |  
+; 
+EXPR_VAR ::= INUM | VAR
+;
+OP ::= PLUS | MINUS | STAR | DIV
+;
+gholi ::= OP EXPR_VAR | OP gholi

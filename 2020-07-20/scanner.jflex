@@ -18,25 +18,47 @@ import java_cup.runtime.*;
 %}
 
 nl          = \r | \n | \r\n
-comment     = "<*" ~ "*>"
 
-sep         = (\$\$\$)(\$\$)*
+comment     = "++" ~ "++"
 
-//inum      = [1-9][0-9]*
+sep         = "$$"
+
+inum      = [1-9][0-9]*
 
 //sinum       = ("-")?[0-9]+
 
 //fnum      = [0-9]+.[0-9]+
 
-//var       = [a-zA-Z_][a-zA-Z0-9_]*
+var       = [a-zA-Z_][a-zA-Z0-9_]*
 
 //qstring   = \" ~ \"
 
 //// TOKENS ////
 
-//token_1   = 
 
-//token_2   =
+even = (0|2|4|6|8|a|A|c|C|e|E)
+
+token_1   = ((a|b|c){7}(a|b|c){2}*"#") (
+    ("-"5(0|2|4|6|8|a|A|c|C))           |
+    ("-"[1-4]{even})                    |
+    ((-)?{even})                        |
+    (([1-9]|a|A)({even}))               |
+    (([1-9]|a|A)(0|2|4|6|8|a|A) {even}) |
+    ((a|A)(b|B)(0|2|4|6))
+)?
+
+token_2   =  (hour)":"(bin)
+
+hour = (
+    07 ":" 13 ":" ((2[4-9])|[3-5][0-9])      |
+    07 ":" 1[4-9] ":" [0-5][0-9]             |
+    07 ":" [2-5][0-9] ":" [0-5][0-9]         |
+    0[8-9] ":" [0-5][0-9] ":" [0-5][0-9]     |
+    1[0-6] ":" [0-5][0-9]  ":" [0-5][0-9]    |
+    17 ":" ...
+)
+
+
 
 //token_3   =
 
@@ -88,8 +110,8 @@ sep         = (\$\$\$)(\$\$)*
 // {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}
 
-// {token_1}          {return sym(sym.TOK1);}
-// {token_2}          {return sym(sym.TOK2);}
+{token_1}          {return sym(sym.TOK1);}
+{token_2}          {return sym(sym.TOK2);}
 // {token_3}          {return sym(sym.TOK3);}
 
 //{var}              {return sym(sym.VAR, yytext());}
