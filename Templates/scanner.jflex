@@ -18,21 +18,28 @@ import java_cup.runtime.*;
 %}
 
 nl          = \r | \n | \r\n
+
 comment     = "<*" ~ "*>"
 
 sep         = (\$\$\$)(\$\$)*
 
-//inum      = [1-9][0-9]*
+//inum      = [1-9][0-9]*      //integer
 
-//sinum       = ("-")?[0-9]+
+//sinum     = ("-")?[0-9]+      //singed integer
 
-//fnum      = [0-9]+.[0-9]+
+//fnum      = [0-9]+.[0-9]+     //float
 
-//var       = [a-zA-Z_][a-zA-Z0-9_]*
+//var       = [a-zA-Z_][a-zA-Z0-9_]*     //variable
 
 //qstring   = \" ~ \"
 
 //// TOKENS ////
+//tokens can be
+//  hours HH:MM:SS
+//  dates YY/MM/DD
+//  binary number
+//  hexadecimal number
+//
 
 //token_1   = 
 
@@ -46,47 +53,46 @@ sep         = (\$\$\$)(\$\$)*
 // "START"            {return sym(sym.START_WD, new String(yytext()));}
 
 
-// "?"             {return sym(sym.QUM);}
-// "!"             {return sym(sym.EXM);}
-// "@"             {return sym(sym.ATM);}
-// "#"             {return sym(sym.HAM);}
-// "$"             {return sym(sym.DOM);}
-// "%"             {return sym(sym.PAM);}
-// "^"             {return sym(sym.CIM);}
-// "&"             {return sym(sym.AND);}
-// "*"             {return sym(sym.STAR);}
-// "-"             {return sym(sym.DASH);}
-// "="             {return sym(sym.EQ);}
-// "+"             {return sym(sym.PLUS);}
-// "("             {return sym(sym.OP);}
-// ")"             {return sym(sym.CP);}
-// "["             {return sym(sym.OB);}
-// "]"             {return sym(sym.CB);}
-// "{"             {return sym(sym.OC);}
-// "}"             {return sym(sym.CC);}
-// ">"             {return sym(sym.GT);}
-// "<"             {return sym(sym.LT);}
-// "/"             {return sym(sym.SL);}
-// \\              {return sym(sym.BSL);}
-// "."             {return sym(sym.DOT);}
-// ":"             {return sym(sym.CO);}
-// ","             {return sym(sym.CM);}
-// ";"             {return sym(sym.SC);}
-// \'              {return sym(sym.QU);}
-// \"              {return sym(sym.DQU);}
-// \`              {return sym(sym.GRAVE);}
-// "~"             {return sym(sym.TIL);}
-// "|"             {return sym(sym.OR);}
-// "_"             {return sym(sym.US);}
-
+"?"             {return sym(sym.QUM);}           //Question Mark 
+"!"             {return sym(sym.EXM);}           //Exclamation Mark 
+"@"             {return sym(sym.ATM);}           //At Symbol 
+"#"             {return sym(sym.HAM);}           //Hash / Pound 
+"$"             {return sym(sym.DOM);}           //Dollar Mark 
+"%"             {return sym(sym.PAM);}           //Percent 
+"^"             {return sym(sym.CIM);}           //Caret (Circumflex) 
+"&"             {return sym(sym.AND);}           //Ampersand 
+"*"             {return sym(sym.STAR);}          //Asterisk 
+"-"             {return sym(sym.DASH);}          //Hyphen/Dash 
+"="             {return sym(sym.EQ);}            //Equal Sign 
+"+"             {return sym(sym.PLUS);}          //Plus 
+"("             {return sym(sym.OP);}            //Open Parenthesis 
+")"             {return sym(sym.CP);}            //Close Parenthesis 
+"["             {return sym(sym.OB);}            //Open Bracket 
+"]"             {return sym(sym.CB);}            //Close Bracket 
+"{"             {return sym(sym.OC);}            //Open Curly Brace 
+"}"             {return sym(sym.CC);}            //Close Curly Brace 
+">"             {return sym(sym.GT);}            //Greater Than 
+"<"             {return sym(sym.LT);}            //Less Than 
+"/"             {return sym(sym.SL);}            //Slash 
+\\              {return sym(sym.BSL);}           //Backslash 
+"."             {return sym(sym.DOT);}           //Period / Dot 
+":"             {return sym(sym.CO);}            //Colon 
+","             {return sym(sym.CM);}            //Comma 
+";"             {return sym(sym.SC);}            //Semicolon 
+\'              {return sym(sym.QU);}            //Single Quote 
+\"              {return sym(sym.DQU);}           //Double Quote 
+\`              {return sym(sym.GRAVE);}         //Grave Accent / Backtick
+"~"             {return sym(sym.TIL);}           //Tilde 
+"|"             {return sym(sym.OR);}            //Pipe 
+"_"             {return sym(sym.US);}            //Underscore 
 
 
 
 // {inum}             {return sym(sym.INUM, new Integer(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
 // {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
-// {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}
+// {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 
 // {token_1}          {return sym(sym.TOK1);}
 // {token_2}          {return sym(sym.TOK2);}
