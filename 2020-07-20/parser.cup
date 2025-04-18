@@ -30,9 +30,9 @@ terminal SEP, STAR, DASH, EQ, PLUS, OP, CP, OC, CC, SC, VAR, SL, INUM;
 non terminal prog ;
 non terminal HEADER, HEADER1, HEADER2;
 non terminal SEC1, SEC2, SEC2_3, SEC2_7, TOK1_REPEAT, TOK1_OCCURS, TOK1_OCCUR;
-non terminal COMMANDS, COMMAND, ASSIGNMENT, COMAPRE;
-non terminal EXPR, EXP, OPER, BLOCK;
-non terminal COMP_LIST;
+non terminal COMMANDS, COMMAND;
+non terminal ASSIGNMENT,EXPR, EXP, OPER, BLOCK;
+non terminal COMPARE, COMP_LIST, COMP, PRINT_LIST;
 // non terminal String ;
 // non terminal HashMap ;
 // non terminal Integer ;
@@ -91,7 +91,7 @@ BLOCK ::= INUM | VAR
 ;
 
 //
-COMAPRE ::= COMPARE_WD EXPR  WITH_WD COMP_LIST END_WD SC
+COMPARE ::= COMPARE_WD EXPR  WITH_WD COMP_LIST END_WD SC
 ;
 COMP_LIST ::= COMP COMP_LIST | COMP
 ; 
