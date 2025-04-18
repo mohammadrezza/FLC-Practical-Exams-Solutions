@@ -21,11 +21,18 @@ parser code {:
 ////////////////////////////
 
 terminal TOK1, TOK2;
+terminal String PRINT_WD, COMPARE_WD, WITH_WD, END_WD;
+terminal SEP, STAR, DASH, EQ, PLUS, OP, CP, OC, CC, SC, VAR, SL, INUM;
 // terminal String test;
 // terminal Double test;
 // terminal Integer test;
 
 non terminal prog ;
+non terminal HEADER, HEADER1, HEADER2;
+non terminal SEC1, SEC2, SEC2_3, SEC2_7, TOK1_REPEAT, TOK1_OCCURS, TOK1_OCCUR;
+non terminal COMMANDS, COMMAND, ASSIGNMENT, COMAPRE;
+non terminal EXPR, EXP, OPER, BLOCK;
+non terminal COMP_LIST;
 // non terminal String ;
 // non terminal HashMap ;
 // non terminal Integer ;
@@ -39,31 +46,30 @@ non terminal prog ;
 
 start with prog;
 
-prog ::= HEADER | COMMANDS
+prog ::= HEADER SEP COMMANDS
 ;
-
 HEADER ::= HEADER1 | HEADER2
 ;
-//
-HEADER1 ::= OPT1 OPT2
-;
-OPT1 ::= TOK1 TOK1 TOK1 TOK1 TOK1 TOK1_REAPET
-;
-TOK1_REAPET ::= TOK1 TOK1 | TOK1 TOK1 TOK1_REAPET |
-;
 
-OPT2 ::= OPT2_3 | OPT2_7 OPT2_7 OPT2_7
+//
+HEADER1 ::= SEC1 SEC2
 ;
-OPT2_3 ::= TOK2 TOK2 TOK2
+SEC1 ::= TOK1 TOK1 TOK1 TOK1 TOK1 TOK1_REPEAT
 ;
-OPT2_7 ::= TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2  
+TOK1_REPEAT ::= TOK1 TOK1 | TOK1 TOK1 TOK1_REPEAT |
+;
+SEC2 ::= SEC2_3 | SEC2_7 SEC2_7 SEC2_7
+;
+SEC2_3 ::= TOK2 TOK2 TOK2
+;
+SEC2_7 ::= TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2  
 ; 
 //
-HEADER2 ::= TOK2 tests  TOK2 tests  TOK2 tests
+HEADER2 ::= TOK2 TOK1_OCCURS  TOK2 TOK1_OCCURS  TOK2 TOK1_OCCURS
 ;
-tests ::= test | tests TOK1 
+TOK1_OCCURS ::= TOK1_OCCUR | TOK1_OCCURS TOK1 
 ;
-test ::= TOK1 |
+TOK1_OCCUR ::= TOK1 |
 ;
 
 //
@@ -73,12 +79,23 @@ COMMAND ::= ASSIGNMENT | COMPARE |
 ;
 
 //
-ASSINMENT ::= VAR EQ EXPRS SC
+ASSINMENT ::= VAR EQ EXPR SC
 ;
-EXPR ::= EXPR_VAR | EXPR_VAR OP EXPR_VAR  |  
+OPER ::= PLUS | DASH | STAR | SL
+;
+EXPR ::= EXPR OPER EXPR | OP EXPR CP | EXP
+;
+EXP ::=  BLOCK OPER BLOCK | BLOCK
+;
+BLOCK ::= INUM | VAR
+;
+
+//
+COMAPRE ::= COMPARE_WD EXPR  WITH_WD COMP_LIST END_WD SC
+;
+COMP_LIST ::= COMP COMP_LIST | COMP
 ; 
-EXPR_VAR ::= INUM | VAR
+COMP ::= EXPR OC PRINT_LIST CC
 ;
-OP ::= PLUS | MINUS | STAR | DIV
+PRINT_LIST ::= PRINT_WD EXPR SC
 ;
-gholi ::= OP EXPR_VAR | OP gholi
