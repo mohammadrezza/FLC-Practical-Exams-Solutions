@@ -74,10 +74,10 @@ token_2   =  {hour}":"{bin}
 
 // Strings part
 // "START"            {return sym(sym.START_WD, new String(yytext()));}
-print              {return symbol(sym.PRINT_WD);}
-compare            {return symbol(sym.COMPARE_WD);}
-with               {return symbol(sym.WITH_WD);}
-end                {return symbol(sym.END_WD);}
+"print"              {return sym(sym.PRINT_WD, new String(yytext()));}
+"compare"            {return sym(sym.COMPARE_WD, new String(yytext()));}
+"with"               {return sym(sym.WITH_WD, new String(yytext()));}
+"end"                {return sym(sym.END_WD, new String(yytext()));}
 
 
 // "?"             {return sym(sym.QUM);}
