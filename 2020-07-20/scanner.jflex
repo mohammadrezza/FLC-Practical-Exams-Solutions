@@ -19,7 +19,7 @@ import java_cup.runtime.*;
 
 nl          = \r | \n | \r\n
 
-comment     = "++" ~ "++"
+comment     = "(++" ~ "++)"
 
 sep         = "$$"
 
@@ -59,12 +59,12 @@ hour = (
     "17:37:" 4[0-3]
 )
 
-bin   = (101)                   |
+bin   = ((101)                  |
         (11[0-1])               |
         (1[0-1] [0-1] [0-1])    |
         (10[0-1] [0-1] [0-1])   |
         (1100[0-1])             |
-        (11010)      
+        (11010))      
 
 token_2   =  {hour}":"{bin}
        
@@ -115,7 +115,7 @@ token_2   =  {hour}":"{bin}
 
 
 
-{inum}             {return sym(sym.INUM, new Integer(yytext()));}
+{inum}             {return sym(sym.INUM, Integer.parseInt(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
 // {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
 // {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
