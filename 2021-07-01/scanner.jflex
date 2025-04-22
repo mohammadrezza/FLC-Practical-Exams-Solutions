@@ -33,6 +33,7 @@ fnum      = [0-9]+.[0-9]+     //float
 
 qstring   = \" ~ \"
 
+
 //// TOKENS ////
 //tokens can be
 //  hours HH:MM:SS
@@ -40,49 +41,42 @@ qstring   = \" ~ \"
 //  binary number
 //  hexadecimal number
 //
-
-token_1   = "X-"{hour}(
-("aa"|"ab"|"ba"|"bb"){5} ("aa"|"ab"|"ba"|"bb"){2}*
-)?
-
-hour = (
-    "03:51:4"[7-9] |
-    "03:51:5"[0-9] |
-    "03:5"[2-9]":"[0-5][0-9] |
-
-    "0"[4-9]":"[0-5][0-9]":"[0-5][0-9] |
-    "1"[0-9]":"[0-5][0-9]":"[0-5][0-9] |
-    "2"[0-2]":"[0-5][0-9]":"[0-5][0-9] |
-    
-    "23:"[0-3][0-9]":"[0-5][0-9] |
-    "23:4"[0-4]":"[0-5][0-9] |
-    "23:45:"[0-2][0-9] |
-    "23:45:3"[1-4] 
-    
+hour = (                                 //HH:MM:SS” between 03:51:47 and 23:45:34
+    "03:51:" ((4[7-9])| "5"[0-9])      |
+    "03:5" [2-9] ":" [0-5][0-9]             |
+    "0"[4-9] ":" [0-5][0-9] ":" [0-5][0-9]     |
+    "1"[0-9] ":" [0-5][0-9]  ":" [0-5][0-9]    |
+    "2"[0-2] ":" [0-5][0-9]  ":" [0-5][0-9]        |
+    "23:"[0-3] ":" [0-5][0-9]             |
+    "23:4"[0-5] ":" [0-5][0-9]         |
+    "23:45:" [0-2][0-9]                 |
+    "23:45:" 3[0-4]
 )
 
+tok1Rep=(("aa"|"ab"|"ba"|"bb"){5}("aa"|"ab"|"ba"|"bb"){2}*)?
+                                        // 101 and 11010
+bin   = "-"(
+        (101)                  |       //binary number between 101 to 1010001
+        (11[0-1])               |
+        (1[0-1] [0-1] [0-1])    |
+        (1[0-1][0-1] [0-1] [0-1])   |
+        (1[0-1][0-1] [0-1] [0-1] [0-1])   |
+        (100[0-1] [0-1] [0-1][0-1])   |
+        (101000[0-1])
 
-token_2   = "Y"({bin}{4} | {bin}{123} | {bin}{257})
-
-bin = "-"(
-    (101) |
-    (11[0-1]) |
-    (1[0-1][0-1][0-1]) |
-    (1[0-1][0-1][0-1][0-1]) |
-    (1[0-1][0-1][0-1][0-1][0-1]) |
-    (100[0-1][0-1][0-1][0-1]) |
-    (101000[0-1])
 )
+            
+
+token_1   = "X-"{hour}({tok1Rep})
+
+token_2   ="Y"({bin}{4}|{bin}{123}|{bin}{257})
 
 //token_3   =
 
 %%
 
 // Strings part
-// "START"             {return sym(sym.START_WD, new String(yytext()));}
-"euro/kg"              {return sym(sym.EURO_KG_WD, new String(yytext()));}
-"kg"                   {return sym(sym.KG_WD, new String(yytext()));}
-"euro"                 {return sym(sym.EURO_WD, new String(yytext()));}
+// "START"            {return sym(sym.START_WD, new String(yytext()));}
 
 
 // "?"             {return sym(sym.QUM);}           //Question Mark 
@@ -135,6 +129,10 @@ bin = "-"(
 {sep}            {return sym(sym.SEP);}
 
 {comment}          {;}
+"euro/kg"               {return sym(sym.EURO_KG_WD);}
+"kg"               {
+    System.out.println( yytext());return sym(sym.KG_WD);}
+"euro"              {return sym(sym.EURO_WD);}
 
 \r | \n | \r\n | " " | \t   {;}
 

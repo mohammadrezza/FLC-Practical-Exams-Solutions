@@ -7,14 +7,14 @@
 public class sym {
   /* terminals */
   public static final int TOK1 = 2;
-  public static final int EURO_WD = 12;
-  public static final int SC = 5;
+  public static final int EURO_WD = 13;
+  public static final int SC = 4;
   public static final int CO = 9;
-  public static final int QSTRING = 13;
+  public static final int QSTRING = 12;
   public static final int CM = 6;
   public static final int KG_WD = 11;
   public static final int EOF = 0;
-  public static final int SEP = 4;
+  public static final int SEP = 5;
   public static final int OC = 7;
   public static final int error = 1;
   public static final int EURO_KG_WD = 10;
@@ -27,16 +27,16 @@ public class sym {
   "error",
   "TOK1",
   "TOK2",
-  "SEP",
   "SC",
+  "SEP",
   "CM",
   "OC",
   "CC",
   "CO",
   "EURO_KG_WD",
   "KG_WD",
-  "EURO_WD",
   "QSTRING",
+  "EURO_WD",
   "FNUM",
   "INUM"
   };
@@ -44,14 +44,14 @@ public String[] TT;
 	public sym(){
 		TT = new String[100];
 		TT[2]=new String("TOK1");
-		TT[12]=new String("EURO_WD");
-		TT[5]=new String("SC");
+		TT[13]=new String("EURO_WD");
+		TT[4]=new String("SC");
 		TT[9]=new String("CO");
-		TT[13]=new String("QSTRING");
+		TT[12]=new String("QSTRING");
 		TT[6]=new String("CM");
 		TT[11]=new String("KG_WD");
 		TT[0]=new String("EOF");
-		TT[4]=new String("SEP");
+		TT[5]=new String("SEP");
 		TT[7]=new String("OC");
 		TT[1]=new String("error");
 		TT[10]=new String("EURO_KG_WD");
