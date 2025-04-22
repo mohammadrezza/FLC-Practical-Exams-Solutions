@@ -81,7 +81,7 @@ bin = "-"(
 // Strings part
 // "START"            {return sym(sym.START_WD, new String(yytext()));}
 "euro/kg"            {return sym(sym.EURO_KG_WD, new String(yytext()));}
-"kg"            {return sym(sym.KG_WD, new String(yytext()));}
+"kg"                 {return sym(sym.KG_WD, new String(yytext()));}
 
 
 // "?"             {return sym(sym.QUM);}           //Question Mark 

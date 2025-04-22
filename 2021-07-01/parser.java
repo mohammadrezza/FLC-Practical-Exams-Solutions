@@ -31,14 +31,14 @@ public class parser extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\030\000\002\002\004\000\002\002\010\000\002\012" +
-    "\002\000\002\003\004\000\002\003\006\000\002\003\007" +
-    "\000\002\003\010\000\002\003\013\000\002\006\005\000" +
-    "\002\006\002\000\002\004\012\000\002\004\007\000\002" +
-    "\005\010\000\002\007\004\000\002\007\005\000\002\010" +
-    "\007\000\002\013\005\000\002\013\007\000\002\011\011" +
-    "\000\002\011\002\000\002\015\006\000\002\015\010\000" +
-    "\002\014\005\000\002\014\007" });
+    "\000\031\000\002\002\004\000\002\002\007\000\002\003" +
+    "\003\000\002\003\003\000\002\006\010\000\002\007\006" +
+    "\000\002\007\007\000\002\010\003\000\002\010\005\000" +
+    "\002\010\006\000\002\011\010\000\002\012\013\000\002" +
+    "\012\010\000\002\013\004\000\002\013\004\000\002\013" +
+    "\002\000\002\004\005\000\002\014\005\000\002\014\002" +
+    "\000\002\015\007\000\002\016\003\000\002\016\005\000" +
+    "\002\017\005\000\002\021\003\000\002\020\003" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -46,49 +46,41 @@ public class parser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\121\000\006\005\005\006\004\001\002\000\004\007" +
-    "\112\001\002\000\004\007\103\001\002\000\004\002\102" +
-    "\001\002\000\006\005\065\006\064\001\002\000\004\004" +
-    "\011\001\002\000\004\010\012\001\002\000\004\014\052" +
-    "\001\002\000\006\004\uffff\010\012\001\002\000\004\010" +
-    "\012\001\002\000\006\004\ufff4\010\ufff4\001\002\000\004" +
-    "\010\012\001\002\000\004\004\020\001\002\000\006\002" +
-    "\uffee\020\uffee\001\002\000\006\002\000\020\022\001\002" +
-    "\000\004\016\023\001\002\000\004\014\024\001\002\000" +
-    "\004\013\025\001\002\000\004\014\027\001\002\000\006" +
-    "\007\043\012\042\001\002\000\004\010\030\001\002\000" +
-    "\004\014\032\001\002\000\006\011\035\012\036\001\002" +
-    "\000\004\021\033\001\002\000\004\017\034\001\002\000" +
-    "\006\011\uffeb\012\uffeb\001\002\000\006\007\uffed\012\uffed" +
-    "\001\002\000\004\014\037\001\002\000\004\021\040\001" +
-    "\002\000\004\017\041\001\002\000\006\011\uffea\012\uffea" +
-    "\001\002\000\004\014\044\001\002\000\006\002\uffef\020" +
-    "\uffef\001\002\000\004\010\045\001\002\000\004\014\032" +
-    "\001\002\000\006\011\047\012\036\001\002\000\006\007" +
-    "\uffec\012\uffec\001\002\000\006\004\ufff3\010\ufff3\001\002" +
-    "\000\006\011\055\012\056\001\002\000\004\020\053\001" +
-    "\002\000\004\015\054\001\002\000\006\011\ufff1\012\ufff1" +
-    "\001\002\000\004\014\062\001\002\000\004\014\057\001" +
-    "\002\000\004\020\060\001\002\000\004\015\061\001\002" +
-    "\000\006\011\ufff0\012\ufff0\001\002\000\004\007\063\001" +
-    "\002\000\006\004\ufff2\010\ufff2\001\002\000\004\007\075" +
-    "\001\002\000\004\007\072\001\002\000\006\004\ufffe\006" +
-    "\064\001\002\000\004\006\064\001\002\000\006\004\ufffd" +
-    "\006\064\001\002\000\004\004\ufffc\001\002\000\004\005" +
-    "\073\001\002\000\004\007\074\001\002\000\006\005\ufff6" +
-    "\006\ufff6\001\002\000\004\006\076\001\002\000\004\007" +
-    "\077\001\002\000\004\006\100\001\002\000\004\007\101" +
-    "\001\002\000\006\004\ufff5\006\ufff5\001\002\000\004\002" +
-    "\001\001\002\000\004\005\104\001\002\000\004\007\105" +
-    "\001\002\000\004\005\106\001\002\000\004\007\107\001" +
-    "\002\000\004\005\110\001\002\000\004\007\111\001\002" +
-    "\000\006\005\ufff7\006\ufff7\001\002\000\006\005\ufff8\006" +
-    "\ufff8\001\002\000\006\005\115\006\114\001\002\000\004" +
-    "\007\117\001\002\000\004\007\116\001\002\000\010\004" +
-    "\ufff9\005\ufff9\006\ufff9\001\002\000\010\004\ufff8\005\ufff8" +
-    "\006\ufff8\001\002\000\010\004\ufffb\005\115\006\121\001" +
-    "\002\000\004\007\122\001\002\000\006\004\ufff8\005\ufff8" +
-    "\001\002\000\006\004\ufffa\005\115\001\002" });
+    "\000\101\000\006\004\006\005\005\001\002\000\004\006" +
+    "\ufffe\001\002\000\004\007\071\001\002\000\004\007\042" +
+    "\001\002\000\004\006\uffff\001\002\000\004\006\013\001" +
+    "\002\000\004\002\012\001\002\000\004\002\001\001\002" +
+    "\000\004\011\014\001\002\000\004\015\031\001\002\000" +
+    "\004\006\024\001\002\000\004\011\014\001\002\000\006" +
+    "\006\uffef\011\014\001\002\000\004\006\ufff1\001\002\000" +
+    "\004\011\014\001\002\000\006\006\uffef\011\014\001\002" +
+    "\000\004\006\ufff0\001\002\000\002\001\002\000\004\002" +
+    "\000\001\002\000\004\012\036\001\002\000\004\016\034" +
+    "\001\002\000\006\010\032\012\uffed\001\002\000\004\016" +
+    "\uffea\001\002\000\004\015\031\001\002\000\004\012\uffec" +
+    "\001\002\000\004\013\035\001\002\000\006\010\uffeb\012" +
+    "\uffeb\001\002\000\004\015\040\001\002\000\004\007\041" +
+    "\001\002\000\004\007\uffe9\001\002\000\006\006\uffee\011" +
+    "\uffee\001\002\000\004\004\043\001\002\000\004\007\044" +
+    "\001\002\000\004\004\045\001\002\000\004\007\066\001" +
+    "\002\000\006\004\052\005\051\001\002\000\004\006\ufffd" +
+    "\001\002\000\006\005\051\006\ufffa\001\002\000\004\007" +
+    "\056\001\002\000\004\007\053\001\002\000\004\004\054" +
+    "\001\002\000\004\007\055\001\002\000\006\004\ufffb\005" +
+    "\ufffb\001\002\000\004\005\057\001\002\000\004\007\060" +
+    "\001\002\000\004\005\061\001\002\000\004\007\062\001" +
+    "\002\000\006\005\ufff7\006\ufff7\001\002\000\004\005\051" +
+    "\001\002\000\006\005\051\006\ufff9\001\002\000\004\006" +
+    "\ufff8\001\002\000\004\004\067\001\002\000\004\007\070" +
+    "\001\002\000\006\004\ufffc\005\ufffc\001\002\000\010\004" +
+    "\073\005\ufff2\007\ufff2\001\002\000\006\005\075\007\076" +
+    "\001\002\000\004\007\074\001\002\000\010\005\ufff3\006" +
+    "\ufff3\007\ufff3\001\002\000\004\007\077\001\002\000\010" +
+    "\005\ufff4\006\ufff4\007\ufff4\001\002\000\012\004\073\005" +
+    "\ufff2\006\ufff2\007\ufff2\001\002\000\010\005\101\006\ufff5" +
+    "\007\076\001\002\000\004\007\102\001\002\000\010\004" +
+    "\073\006\ufff2\007\ufff2\001\002\000\006\006\ufff6\007\076" +
+    "\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -96,35 +88,31 @@ public class parser extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\121\000\010\002\005\003\007\004\006\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\004" +
-    "\005\065\001\001\000\002\001\001\000\006\007\012\010" +
-    "\013\001\001\000\004\013\050\001\001\000\006\010\015" +
-    "\012\016\001\001\000\004\010\014\001\001\000\002\001" +
-    "\001\000\004\010\047\001\001\000\002\001\001\000\004" +
-    "\011\020\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\004\015\025\001\001" +
-    "\000\002\001\001\000\002\001\001\000\004\014\030\001" +
+    "\000\101\000\012\002\010\003\007\006\006\012\003\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
     "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\004\014" +
-    "\045\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\002\001\001\000\006\004\014\015\015\001\001\000\010" +
+    "\016\025\017\027\021\026\001\001\000\002\001\001\000" +
+    "\004\015\016\001\001\000\006\014\017\015\020\001\001" +
+    "\000\002\001\001\000\004\015\021\001\001\000\006\014" +
+    "\022\015\020\001\001\000\002\001\001\000\004\005\024" +
+    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\002\001\001\000\010\016\032" +
+    "\017\027\021\026\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\004\020\036\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\004\007\045\001\001\000\002" +
+    "\001\001\000\006\010\046\011\047\001\001\000\002\001" +
+    "\001\000\004\011\062\001\001\000\002\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
     "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\004\005\066\001\001\000\004\005\067\001" +
-    "\001\000\004\005\070\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\004\006" +
-    "\112\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\004\006\117\001\001\000" +
-    "\002\001\001\000\002\001\001\000\004\006\122\001\001" +
-    "\000\002\001\001" });
+    "\000\002\001\001\000\002\001\001\000\004\011\063\001" +
+    "\001\000\004\011\064\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\004\013" +
+    "\071\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\002\001\001\000\004\013" +
+    "\077\001\001\000\002\001\001\000\002\001\001\000\004" +
+    "\013\102\001\001\000\002\001\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -166,7 +154,7 @@ public class parser extends java_cup.runtime.lr_parser {
   public void user_init() throws java.lang.Exception
     {
 
-    table = new HashMap <String, HashMap <String, Float>>();
+    table = new HashMap <String, HashMap <String, Double>>();
 
  Tree = new DisegnaAlbero();   }public static DisegnaAlbero Tree;
 
@@ -177,7 +165,7 @@ public class parser extends java_cup.runtime.lr_parser {
  Symbol s=_scanner.next_token(); Tree.push(s.toString(), 0); return s;   }
 
 
-    public HashMap <String, HashMap <String, Float>> table;
+    public HashMap <String, HashMap <String, Double>> table;
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
@@ -223,335 +211,218 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 1: // prog ::= header SEP warehouse_sec nt0 SEP product_sec 
-            { parser.Tree.reduce(6,"prog",0);
+          case 1: // prog ::= HEADER SEP WAREHOUSE SEP PRODUCTS 
+            { parser.Tree.reduce(5,"prog",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prog",0, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("prog",0, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // nt0 ::= 
-            { parser.Tree.reduce(0,"nt0",0);
-              Object RESULT =null;
-		System.out.println("---");
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("nt0",8, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // header ::= token1 token2 
-            { parser.Tree.reduce(2,"header",1);
+          case 2: // HEADER ::= HEADER1 
+            { parser.Tree.reduce(1,"HEADER",1);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEADER",1, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // header ::= token1 token2 token2 token2 
-            { parser.Tree.reduce(4,"header",1);
+          case 3: // HEADER ::= HEADER2 
+            { parser.Tree.reduce(1,"HEADER",1);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEADER",1, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // header ::= token1 token2 token2 token2 token2 
-            { parser.Tree.reduce(5,"header",1);
+          case 4: // HEADER1 ::= TOK1 SC TOK1 SC HEAD1_TOK1_REP HEAD1_TOK2 
+            { parser.Tree.reduce(6,"HEADER1",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEADER1",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // header ::= TOK2 SC header1 TOK2 SC header1 
-            { parser.Tree.reduce(6,"header",1);
+          case 5: // HEAD1_TOK1_REP ::= TOK1 SC TOK1 SC 
+            { parser.Tree.reduce(4,"HEAD1_TOK1_REP",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD1_TOK1_REP",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 7: // header ::= TOK2 SC header1 TOK2 SC header1 TOK2 SC header1 
-            { parser.Tree.reduce(9,"header",1);
+          case 6: // HEAD1_TOK1_REP ::= HEAD1_TOK1_REP TOK1 SC TOK1 SC 
+            { parser.Tree.reduce(5,"HEAD1_TOK1_REP",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-8)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD1_TOK1_REP",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // header1 ::= header1 TOK1 SC 
-            { parser.Tree.reduce(3,"header1",0);
+          case 7: // HEAD1_TOK2 ::= HEAD1_TOK2_SET3 
+            { parser.Tree.reduce(1,"HEAD1_TOK2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header1",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD1_TOK2",6, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // header1 ::= 
-            { parser.Tree.reduce(0,"header1",0);
+          case 8: // HEAD1_TOK2 ::= HEAD1_TOK2_SET3 HEAD1_TOK2_SET3 HEAD1_TOK2_SET3 
+            { parser.Tree.reduce(3,"HEAD1_TOK2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header1",4, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD1_TOK2",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // token1 ::= TOK1 SC TOK1 SC TOK1 SC TOK1 SC 
-            { parser.Tree.reduce(8,"token1",0);
+          case 9: // HEAD1_TOK2 ::= HEAD1_TOK2_SET3 HEAD1_TOK2_SET3 HEAD1_TOK2_SET3 HEAD1_TOK2_SET3 
+            { parser.Tree.reduce(4,"HEAD1_TOK2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("token1",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD1_TOK2",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // token1 ::= token1 TOK1 SC TOK1 SC 
-            { parser.Tree.reduce(5,"token1",0);
+          case 10: // HEAD1_TOK2_SET3 ::= TOK2 SC TOK2 SC TOK2 SC 
+            { parser.Tree.reduce(6,"HEAD1_TOK2_SET3",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("token1",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD1_TOK2_SET3",7, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // token2 ::= TOK2 SC TOK2 SC TOK2 SC 
-            { parser.Tree.reduce(6,"token2",0);
+          case 11: // HEADER2 ::= TOK2 SC HEAD2_TOK1 TOK2 SC HEAD2_TOK1 TOK2 SC HEAD2_TOK1 
+            { parser.Tree.reduce(9,"HEADER2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("token2",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEADER2",8, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-8)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // warehouse_sec ::= material_type material_type 
-            { parser.Tree.reduce(2,"warehouse_sec",0);
+          case 12: // HEADER2 ::= TOK2 SC HEAD2_TOK1 TOK2 SC HEAD2_TOK1 
+            { parser.Tree.reduce(6,"HEADER2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("warehouse_sec",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEADER2",8, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 14: // warehouse_sec ::= warehouse_sec material_type material_type 
-            { parser.Tree.reduce(3,"warehouse_sec",0);
+          case 13: // HEAD2_TOK1 ::= HEAD2_TOK1 SC 
+            { parser.Tree.reduce(2,"HEAD2_TOK1",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("warehouse_sec",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD2_TOK1",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 15: // material_type ::= OC material_list CC QSTRING SC 
-            { parser.Tree.reduce(5,"material_type",0);
-              Object RESULT =null;
-		int matlistleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
-		int matlistright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		HashMap matlist = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
-		int mtnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int mtnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		String mtname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		  parser.table.put(mtname, matlist); 
-                                                                    Set<String> keys = matlist.keySet();
-                                                                    Float a = 0f;
-                                                                    Float b = 1000000f;
-                                                                    String less = "";
-                                                                    String more = "";
-                                                                    for(String key : keys){
-                                                                        if((Float)matlist.get(key) > a){
-                                                                            a = (Float)matlist.get(key);
-                                                                            more = key;
-                                                                        }
-                                                                        if((Float)matlist.get(key) < b){
-                                                                            b = (Float)matlist.get(key);
-                                                                            less = key;
-                                                                        }
-                                                                    }
-                                                                    System.out.println(mtname + ':' + " less: " + less + " more: " + more);
-                                                            
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("material_type",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 16: // material_list ::= QSTRING FNUM EK_WD 
-            { parser.Tree.reduce(3,"material_list",0);
-              HashMap RESULT =null;
-		int mnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
-		int mnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		String mname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-		int upriceleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int upriceright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Float uprice = (Float)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		
-                                                    HashMap<String, Float> tab = new HashMap<String, Float>();
-                                                    tab.put(mname, uprice);
-                                                    RESULT = tab;
-                                                
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("material_list",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 17: // material_list ::= material_list CM QSTRING FNUM EK_WD 
-            { parser.Tree.reduce(5,"material_list",0);
-              HashMap RESULT =null;
-		int bleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
-		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		HashMap b = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
-		int mnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
-		int mnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		String mname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-		int upriceleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int upriceright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Float uprice = (Float)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		
-                                                    b.put(mname,uprice);
-                                                    RESULT = b;
-                                                
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("material_list",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 18: // product_sec ::= product_sec FNUM EURO_WD QSTRING CO list_element SC 
-            { parser.Tree.reduce(7,"product_sec",0);
-              Object RESULT =null;
-		int taxleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
-		int taxright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
-		Float tax = (Float)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
-		int pnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
-		int pnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		String pname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
-		int mlistleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int mlistright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		HashMap mlist = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		 
-                                                                                System.out.println(pname);
-                                                                                Set<String> keys = mlist.keySet();
-                                                                                for(String key : keys){
-                                                                                    System.out.println(key + " " + mlist.get(key) + " euro");
-                                                                                }
-                                                                            
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("product_sec",7, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-6)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 19: // product_sec ::= 
-            { parser.Tree.reduce(0,"product_sec",0);
+          case 14: // HEAD2_TOK1 ::= TOK1 SC 
+            { parser.Tree.reduce(2,"HEAD2_TOK1",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("product_sec",7, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD2_TOK1",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 20: // list_element ::= QSTRING OC list_component CC 
-            { parser.Tree.reduce(4,"list_element",0);
-              HashMap RESULT =null;
-		int tnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
-		int tnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		String tname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
-		int listleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int listright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		HashMap list = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		
-                                                            HashMap<String, Float> newlist = new HashMap<String, Float>();
-                                                            HashMap<String, Float> elems = (HashMap)parser.table.get(tname);
-                                                            Set<String> keys = list.keySet();
-                                                            Float price = 0f;
-                                                            Integer quan = 0;
-                                                            Float fprice = 0f;
-                                                            Float tax = (Float)parser.stack(-7);
-                                                            for(String key : keys){
-                                                                price = elems.get(key);
-                                                                quan = (Integer)list.get(key);
-                                                                fprice = (price * quan) + tax;
-                                                                newlist.put(key, fprice);
-                                                            }
-                                                            RESULT = newlist;
-                                                        
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("list_element",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+          case 15: // HEAD2_TOK1 ::= 
+            { parser.Tree.reduce(0,"HEAD2_TOK1",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("HEAD2_TOK1",9, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 21: // list_element ::= list_element CM QSTRING OC list_component CC 
-            { parser.Tree.reduce(6,"list_element",0);
-              HashMap RESULT =null;
-		int mlistleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
-		int mlistright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
-		HashMap mlist = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
-		int tnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
-		int tnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
-		String tname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
-		int listleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int listright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		HashMap list = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		
-                                                            HashMap<String, Float> elems = (HashMap)parser.table.get(tname);
-                                                            Set<String> keys = list.keySet();
-                                                            Float price = 0f;
-                                                            Integer quan = 0;
-                                                            Float fprice = 0f;
-                                                            Float tax = (Float)parser.stack(-9);
-                                                            for(String key : keys){
-                                                                price = elems.get(key);
-                                                                quan = (Integer)list.get(key);
-                                                                fprice = (price * quan) + tax;
-                                                                mlist.put(key, fprice);
-                                                            }
-                                                            RESULT = mlist;
-                                                        
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("list_element",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+          case 16: // WAREHOUSE ::= MATERIAL_TYPE MATERIAL_TYPE MATERIAL_TYPES 
+            { parser.Tree.reduce(3,"WAREHOUSE",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("WAREHOUSE",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 22: // list_component ::= QSTRING INUM KG_WD 
-            { parser.Tree.reduce(3,"list_component",0);
-              HashMap RESULT =null;
-		int mnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
-		int mnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		String mname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-		int quantityleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int quantityright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Integer quantity = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		
-                                                        HashMap<String, Integer> tab = new HashMap<String, Integer>();
-                                                        tab.put(mname, quantity);
-                                                        RESULT = tab;
-                                                    
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("list_component",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+          case 17: // MATERIAL_TYPES ::= MATERIAL_TYPE MATERIAL_TYPE MATERIAL_TYPES 
+            { parser.Tree.reduce(3,"MATERIAL_TYPES",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MATERIAL_TYPES",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 23: // list_component ::= list_component CM QSTRING INUM KG_WD 
-            { parser.Tree.reduce(5,"list_component",0);
-              HashMap RESULT =null;
-		int tableft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
-		int tabright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
-		HashMap tab = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
-		int mnameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
-		int mnameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		String mname = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
-		int quantityleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
-		int quantityright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Integer quantity = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
-		
-                                                        tab.put(mname, quantity);
-                                                        RESULT = tab;
-                                                    
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("list_component",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+          case 18: // MATERIAL_TYPES ::= 
+            { parser.Tree.reduce(0,"MATERIAL_TYPES",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MATERIAL_TYPES",10, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 19: // MATERIAL_TYPE ::= OC MATERIAL_LIST CC MAT_TYPE_NAME SC 
+            { parser.Tree.reduce(5,"MATERIAL_TYPE",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MATERIAL_TYPE",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 20: // MATERIAL_LIST ::= MATERIAL 
+            { parser.Tree.reduce(1,"MATERIAL_LIST",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MATERIAL_LIST",12, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 21: // MATERIAL_LIST ::= MATERIAL CM MATERIAL_LIST 
+            { parser.Tree.reduce(3,"MATERIAL_LIST",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MATERIAL_LIST",12, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 22: // MATERIAL ::= MAT_NAME FNUM EURO_KG_WD 
+            { parser.Tree.reduce(3,"MATERIAL",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MATERIAL",13, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 23: // MAT_NAME ::= QSTRING 
+            { parser.Tree.reduce(1,"MAT_NAME",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MAT_NAME",15, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 24: // MAT_TYPE_NAME ::= QSTRING 
+            { parser.Tree.reduce(1,"MAT_TYPE_NAME",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("MAT_TYPE_NAME",14, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
