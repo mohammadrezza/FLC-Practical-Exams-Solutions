@@ -23,7 +23,7 @@ comment     = "(*" ~ "*)"
 
 sep         = "####"
 
-//inum      = [1-9][0-9]*      //integer
+inum      = [1-9][0-9]*      //integer
 
 //sinum     = ("-")?[0-9]+      //singed integer
 
@@ -79,9 +79,10 @@ bin = "-"(
 %%
 
 // Strings part
-// "START"            {return sym(sym.START_WD, new String(yytext()));}
-"euro/kg"            {return sym(sym.EURO_KG_WD, new String(yytext()));}
-"kg"                 {return sym(sym.KG_WD, new String(yytext()));}
+// "START"             {return sym(sym.START_WD, new String(yytext()));}
+"euro/kg"              {return sym(sym.EURO_KG_WD, new String(yytext()));}
+"kg"                   {return sym(sym.KG_WD, new String(yytext()));}
+"euro"                 {return sym(sym.EURO_WD, new String(yytext()));}
 
 
 // "?"             {return sym(sym.QUM);}           //Question Mark 
@@ -107,7 +108,7 @@ bin = "-"(
 // "/"             {return sym(sym.SL);}            //Slash 
 // \\              {return sym(sym.BSL);}           //Backslash 
 // "."             {return sym(sym.DOT);}           //Period / Dot 
-// ":"             {return sym(sym.CO);}            //Colon 
+":"             {return sym(sym.CO);}            //Colon 
 ","             {return sym(sym.CM);}            //Comma 
 ";"             {return sym(sym.SC);}            //Semicolon 
 // \'              {return sym(sym.QU);}            //Single Quote 
@@ -119,7 +120,7 @@ bin = "-"(
 
 
 
-// {inum}             {return sym(sym.INUM, new Integer(yytext()));}
+{inum}             {return sym(sym.INUM, new Integer(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
 {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}

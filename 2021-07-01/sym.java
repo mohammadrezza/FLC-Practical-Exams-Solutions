@@ -7,17 +7,20 @@
 public class sym {
   /* terminals */
   public static final int TOK1 = 2;
+  public static final int EURO_WD = 12;
   public static final int SC = 5;
-  public static final int QSTRING = 11;
+  public static final int CO = 9;
+  public static final int QSTRING = 13;
   public static final int CM = 6;
-  public static final int KG_WD = 10;
+  public static final int KG_WD = 11;
   public static final int EOF = 0;
   public static final int SEP = 4;
   public static final int OC = 7;
   public static final int error = 1;
-  public static final int EURO_KG_WD = 9;
-  public static final int FNUM = 12;
+  public static final int EURO_KG_WD = 10;
+  public static final int FNUM = 14;
   public static final int CC = 8;
+  public static final int INUM = 15;
   public static final int TOK2 = 3;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -29,26 +32,32 @@ public class sym {
   "CM",
   "OC",
   "CC",
+  "CO",
   "EURO_KG_WD",
   "KG_WD",
+  "EURO_WD",
   "QSTRING",
-  "FNUM"
+  "FNUM",
+  "INUM"
   };
 public String[] TT;
 	public sym(){
 		TT = new String[100];
 		TT[2]=new String("TOK1");
+		TT[12]=new String("EURO_WD");
 		TT[5]=new String("SC");
-		TT[11]=new String("QSTRING");
+		TT[9]=new String("CO");
+		TT[13]=new String("QSTRING");
 		TT[6]=new String("CM");
-		TT[10]=new String("KG_WD");
+		TT[11]=new String("KG_WD");
 		TT[0]=new String("EOF");
 		TT[4]=new String("SEP");
 		TT[7]=new String("OC");
 		TT[1]=new String("error");
-		TT[9]=new String("EURO_KG_WD");
-		TT[12]=new String("FNUM");
+		TT[10]=new String("EURO_KG_WD");
+		TT[14]=new String("FNUM");
 		TT[8]=new String("CC");
+		TT[15]=new String("INUM");
 		TT[3]=new String("TOK2");
 	}
 public String getTT(int i){return TT[i];}
