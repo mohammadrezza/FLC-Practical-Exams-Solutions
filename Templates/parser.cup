@@ -32,6 +32,7 @@ non terminal prog ;
 // non terminal Double ;
 
 // precedence left ;
+// precedence left PLUS, DASH;
 
 /////////////////////////////
 //// Grammar
@@ -39,5 +40,5 @@ non terminal prog ;
 
 start with prog;
 
-prog ::= 
+prog ::= HEADER SEP SECTION1 SEP SECTION2
 ;
