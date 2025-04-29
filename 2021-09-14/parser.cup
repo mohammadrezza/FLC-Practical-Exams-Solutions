@@ -4,11 +4,11 @@ import java.io.*;
 
 
 init with{:
-    table = new HashMap <String, Integer>();
+    table = new HashMap <String, HashMap <String, Double>>();
 :};
 
 parser code {:
-    public HashMap <String, Integer> table;
+    public HashMap <String, HashMap <String, Double>> table;
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
@@ -20,21 +20,21 @@ parser code {:
 //// Symbols Delaration
 ////////////////////////////
 
-terminal SEP, TOK1, TOK2, TOK3, SC, CM, EQ, OB, CB, GT;
-terminal String INIT_WD, HEIGHT_WD, SPEED_WD, SUM_WD, MUL_WD, COND_WD, UPDATE_WD, DONE_WD;
+terminal TOK1, TOK2, TOK3, SC, SEP, CM, EQ, OB, CB;
+terminal String INIT_WD, HEIGHT_WD, SPEED_WD, UPDATE_WD, DONE_WD, COND_WD;
 // terminal Double test;
-terminal Integer INUM;
+// terminal Integer test;
 
-non terminal prog, header, header1, simulation_section, commands, height_ass, speed_ass, command, cond, list_ass ;
+non terminal prog;
+non terminal HEADER, HEADER1, TOKEN1, TOKEN2;
+non terminal SIMULATION, HEIGHT_ASS, SPEED_ASS, EXP;
+non terminal COND, COMPARE, ASS_LIST;
 // non terminal String ;
- non terminal HashMap initt;
-non terminal Integer exp;
-non terminal Boolean comparison, nt0;
+// non terminal HashMap ;
+// non terminal Integer ;
 // non terminal Double ;
 
-precedence left SUM_WD;
-precedence left MUL_WD;
-
+// precedence left ;
 
 /////////////////////////////
 //// Grammar
@@ -42,91 +42,39 @@ precedence left MUL_WD;
 
 start with prog;
 
-prog ::= header SEP simulation_section
+prog ::= HEADER SEP SIMULATION
 ;
 
-header ::= header1 | header1 TOK3 SC header1 | header1 TOK3 SC header1 TOK3 SC header1
+// header
+HEADER ::= HEADER1 | 
+           HEADER1 TOK3 SC HEADER1 |
+           HEADER1 TOK3 SC HEADER1 TOK3 SC HEADER1
+;
+HEADER1 ::= HEADER1 TOKEN1 | HEADER1 TOKEN2 | TOKEN1 | TOKEN2
 ;
 
-header1 ::= header1 TOK1 SC | header1 TOK2 SC | 
+TOKEN1 ::=  TOK1 SC
+;
+TOKEN2 ::=  TOK2 SC
 ;
 
-simulation_section ::= initt SC commands
+// simulation
+SIMULATION ::= INIT_WD SC |
+               INIT_WD HEIGHT_ASS SC |
+               INIT_WD SPEED_ASS SC |
+               INIT_WD HEIGHT_ASS CM SPEED_ASS |
+               INIT_WD SPEED_ASS CM HEIGHT_ASS
 ;
 
-initt ::= INIT_WD HEIGHT_WD:height EQ exp:exph CM SPEED_WD:speed EQ exp:exps
-{: parser.table.put(height, exph); parser.table.put(speed, exps); 
-System.out.println("HEIGHT " + parser.table.get("HEIGHT"));
-System.out.println("SPEED " + parser.table.get("SPEED"));:}
-|INIT_WD HEIGHT_WD:height EQ exp:exph CM
-{: parser.table.put(height, exph); parser.table.put("SPEED", 0); :}
-|INIT_WD SPEED_WD:speed EQ exp:exps CM
-{: parser.table.put(speed, exps); parser.table.put("HEIGHT", 0); :}
-|INIT_WD SPEED_WD:speed EQ exp:exps  CM HEIGHT_WD:height EQ exp:exph
-{: parser.table.put(height, exph); parser.table.put(speed, exps); :}
-|INIT_WD  CM
-{: parser.table.put("HEIGHT", 0); parser.table.put("SPEED", 0); :}
+HEIGHT_ASS ::= HEIGHT_WD EQ EXP
+;
+SPEED_ASS ::= SPEED_WD EQ EXP
 ;
 
-exp ::= INUM:inum {: RESULT = (Integer)inum; :}
-| HEIGHT_WD {: RESULT = (Integer)parser.table.get("HEIGHT"); :}
-| SPEED_WD {: RESULT = (Integer)parser.table.get("SPEED"); :}
-| exp:ex1 MUL_WD exp:ex2 {: RESULT = (Integer)ex1 * (Integer)ex2; :}
-| exp:ex1 SUM_WD exp:ex2 {: RESULT = (Integer)ex1 + (Integer)ex2; :}
+EXP ::=
 ;
 
-commands ::= command command command | commands command
+COND ::= COND_WD OB COMPARE CB UPDATE_WD ASS_LIST DONE_WD
 ;
-
-command ::= HEIGHT_WD EQ exp:ex SC 
-{: parser.table.put("HEIGHT", ex);
-System.out.println("HEIGHT " + parser.table.get("HEIGHT"));
-:}
-| SPEED_WD EQ exp:ex SC 
-{: parser.table.put("SPEED", ex);
-System.out.println("SPEED " + parser.table.get("SPEED"));
-:}
-| cond SC
+ASS_LIST ::= SPEED_ASS COMPARE | HEIGHT_ASS COMPARE | SPEED_ASS | HEIGHT_ASS
 ;
-
-cond ::= COND_WD OB comparison CB UPDATE_WD list_ass DONE_WD
-| COND_WD OB nt0 CB UPDATE_WD list_ass DONE_WD
-;
-
-nt0 ::= {: RESULT = true; :}
-;
-
-list_ass ::= HEIGHT_WD EQ exp:ex SC
-{: Boolean com = (Boolean)parser.stack(-6);
-if(com){
-    parser.table.put("HEIGHT", ex);
-    System.out.println("HEIGHT " + parser.table.get("HEIGHT"));
-}
-:}
-| SPEED_WD EQ exp:ex SC
-{: Boolean com = (Boolean)parser.stack(-6);
-if(com){
-    parser.table.put("SPEED", ex);
-    System.out.println("SPEED " + parser.table.get("SPEED"));
-}
-:}
-| list_ass HEIGHT_WD EQ exp:ex SC
-{: Boolean com = (Boolean)parser.stack(-7);
-if(com){
-    parser.table.put("HEIGHT", ex);
-    System.out.println("HEIGHT " + parser.table.get("HEIGHT"));
-}
-:}
-| list_ass SPEED_WD EQ exp:ex SC
-{: Boolean com = (Boolean)parser.stack(-7);
-if(com){
-    parser.table.put("SPEED", ex);
-    System.out.println("SPEED " + parser.table.get("SPEED"));
-}
-:}
-;
-
-comparison ::= exp:ex1 GT exp:ex2 {: RESULT = ex1 > ex2; :}
-| exp:ex1 EQ exp:ex2 {: RESULT = ex1 == ex2; :}
-;
-
