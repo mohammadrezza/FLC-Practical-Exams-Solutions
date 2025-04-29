@@ -23,7 +23,7 @@ comment     = "+--" ~ "--+"
 
 sep         = "===="
 
-//inum      = [1-9][0-9]*      //integer
+inum      = [1-9][0-9]*      //integer
 
 //sinum     = ("-")?[0-9]+      //singed integer
 
@@ -110,6 +110,8 @@ token_3   = "K_"[a-z]{5}([a-z][a-z])*(("00"|"11"|"10"|"01"){3}("00"|"11"|"10"|"0
 "UPDATE"      {return sym(sym.UPDATE_WD, new String(yytext()));}
 "DONE"        {return sym(sym.DONE_WD, new String(yytext()));}
 "COND"       {return sym(sym.COND_WD, new String(yytext()));}
+"SUM"       {return sym(sym.SUM_WD, new String(yytext()));}
+"MUL"        {return sym(sym.MUL_WD, new String(yytext()));}
 
 // "?"             {return sym(sym.QUM);}           //Question Mark 
 // "!"             {return sym(sym.EXM);}           //Exclamation Mark 
@@ -129,7 +131,7 @@ token_3   = "K_"[a-z]{5}([a-z][a-z])*(("00"|"11"|"10"|"01"){3}("00"|"11"|"10"|"0
 "]"             {return sym(sym.CB);}            //Close Bracket 
 // "{"             {return sym(sym.OC);}            //Open Curly Brace 
 // "}"             {return sym(sym.CC);}            //Close Curly Brace 
-// ">"             {return sym(sym.GT);}            //Greater Than 
+">"             {return sym(sym.GT);}            //Greater Than 
 // "<"             {return sym(sym.LT);}            //Less Than 
 // "/"             {return sym(sym.SL);}            //Slash 
 // \\              {return sym(sym.BSL);}           //Backslash 
@@ -146,7 +148,7 @@ token_3   = "K_"[a-z]{5}([a-z][a-z])*(("00"|"11"|"10"|"01"){3}("00"|"11"|"10"|"0
 
 
 
-// {inum}             {return sym(sym.INUM, new Integer(yytext()));}
+{inum}             {return sym(sym.INUM, new Integer(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
 // {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}

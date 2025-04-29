@@ -20,15 +20,16 @@ parser code {:
 //// Symbols Delaration
 ////////////////////////////
 
-terminal TOK1, TOK2, TOK3, SC, SEP, CM, EQ, OB, CB;
-terminal String INIT_WD, HEIGHT_WD, SPEED_WD, UPDATE_WD, DONE_WD, COND_WD;
+terminal TOK1, TOK2, TOK3, SC, SEP, CM, EQ, OB, CB, GT;
+terminal String INIT_WD, HEIGHT_WD, SPEED_WD, UPDATE_WD, DONE_WD, COND_WD, SUM_WD, MUL_WD;
 // terminal Double test;
-// terminal Integer test;
+terminal Integer INUM;
 
 non terminal prog;
 non terminal HEADER, HEADER1, TOKEN1, TOKEN2;
-non terminal SIMULATION, HEIGHT_ASS, SPEED_ASS, EXP;
-non terminal COND, COMPARE, ASS_LIST;
+non terminal SIMULATION, INIT, COMMANDS, COMMAND, COMMAND_REP;
+non terminal HEIGHT_ASS, SPEED_ASS, EXP, OPR, OPT;
+non terminal COND, COMPARE, ASS_LIST, COM_OPT;
 // non terminal String ;
 // non terminal HashMap ;
 // non terminal Integer ;
@@ -59,22 +60,42 @@ TOKEN2 ::=  TOK2 SC
 ;
 
 // simulation
-SIMULATION ::= INIT_WD SC |
-               INIT_WD HEIGHT_ASS SC |
-               INIT_WD SPEED_ASS SC |
-               INIT_WD HEIGHT_ASS CM SPEED_ASS |
-               INIT_WD SPEED_ASS CM HEIGHT_ASS
+SIMULATION ::= INIT COMMANDS
 ;
 
-HEIGHT_ASS ::= HEIGHT_WD EQ EXP
+INIT ::= INIT_WD SC  |
+         INIT_WD HEIGHT_ASS |
+         INIT_WD SPEED_ASS |
+         INIT_WD HEIGHT_WD EQ EXP CM SPEED_WD EQ EXP SC |
+         INIT_WD SPEED_WD EQ EXP CM HEIGHT_WD EQ EXP SC  
 ;
-SPEED_ASS ::= SPEED_WD EQ EXP
+COMMANDS ::= COMMAND COMMAND COMMAND 
+;
+COMMAND ::= HEIGHT_ASS | SPEED_ASS | COND
 ;
 
-EXP ::=
+// height ass
+HEIGHT_ASS ::= HEIGHT_WD EQ EXP SC 
 ;
 
-COND ::= COND_WD OB COMPARE CB UPDATE_WD ASS_LIST DONE_WD
+//speed ass
+SPEED_ASS ::= SPEED_WD EQ EXP SC 
 ;
-ASS_LIST ::= SPEED_ASS COMPARE | HEIGHT_ASS COMPARE | SPEED_ASS | HEIGHT_ASS
+
+// exp
+EXP ::= EXP OPT OPR | OPR
+;
+OPT ::= SUM_WD | MUL_WD
+;
+OPR ::= INUM | SPEED_WD | HEIGHT_WD
+;
+
+// cond
+COND ::= COND_WD OB COMPARE CB UPDATE_WD ASS_LIST DONE_WD SC | COND_WD OB CB UPDATE_WD ASS_LIST DONE_WD SC
+;
+ASS_LIST ::= SPEED_ASS ASS_LIST | HEIGHT_ASS ASS_LIST | SPEED_ASS | HEIGHT_ASS
+;
+COMPARE ::= EXP COM_OPT EXP
+;
+COM_OPT ::= GT | EQ
 ;
