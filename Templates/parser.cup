@@ -20,12 +20,16 @@ parser code {:
 //// Symbols Delaration
 ////////////////////////////
 
-terminal ;
+terminal TOK1, TOK2, SEP;
 // terminal String test;
 // terminal Double test;
 // terminal Integer test;
 
 non terminal prog ;
+non terminal HEADER ;
+// non terminal ;
+// non terminal ;
+// non terminal ;
 // non terminal String ;
 // non terminal HashMap ;
 // non terminal Integer ;
@@ -39,5 +43,9 @@ non terminal prog ;
 
 start with prog;
 
-prog ::= 
+prog ::= HEADER SEP
 ;
+
+// header
+
+//
