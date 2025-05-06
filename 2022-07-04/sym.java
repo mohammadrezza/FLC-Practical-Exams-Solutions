@@ -6,51 +6,51 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int AND = 11;
-  public static final int CP = 10;
-  public static final int OR = 12;
-  public static final int IF_WD = 16;
-  public static final int OP = 9;
-  public static final int NOT = 13;
+  public static final int AND = 8;
+  public static final int CP = 12;
+  public static final int OR = 9;
+  public static final int IF_WD = 18;
+  public static final int OP = 11;
   public static final int DONE_WD = 21;
-  public static final int AND_WD = 19;
-  public static final int SCOLON = 4;
+  public static final int AND_WD = 16;
   public static final int DO_WD = 20;
-  public static final int TURE_WD = 14;
+  public static final int EXM = 10;
   public static final int EOF = 0;
-  public static final int TOK3 = 6;
+  public static final int TOK3 = 4;
   public static final int FALSE_WD = 15;
-  public static final int OR_WD = 18;
-  public static final int TOK2 = 5;
-  public static final int SEP = 2;
-  public static final int TOK1 = 3;
+  public static final int OR_WD = 17;
+  public static final int TOK2 = 3;
+  public static final int SEP = 5;
+  public static final int TOK1 = 2;
   public static final int error = 1;
-  public static final int EQ = 8;
-  public static final int FI_WD = 17;
+  public static final int EQ = 7;
+  public static final int FI_WD = 19;
   public static final int QSTRING = 23;
   public static final int PRINT_WD = 22;
-  public static final int VAR = 7;
+  public static final int SC = 6;
+  public static final int VAR = 13;
+  public static final int TRUE_WD = 14;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "SEP",
   "TOK1",
-  "SCOLON",
   "TOK2",
   "TOK3",
-  "VAR",
+  "SEP",
+  "SC",
   "EQ",
-  "OP",
-  "CP",
   "AND",
   "OR",
-  "NOT",
-  "TURE_WD",
+  "EXM",
+  "OP",
+  "CP",
+  "VAR",
+  "TRUE_WD",
   "FALSE_WD",
+  "AND_WD",
+  "OR_WD",
   "IF_WD",
   "FI_WD",
-  "OR_WD",
-  "AND_WD",
   "DO_WD",
   "DONE_WD",
   "PRINT_WD",
@@ -59,30 +59,30 @@ public class sym {
 public String[] TT;
 	public sym(){
 		TT = new String[100];
-		TT[11]=new String("AND");
-		TT[10]=new String("CP");
-		TT[12]=new String("OR");
-		TT[16]=new String("IF_WD");
-		TT[9]=new String("OP");
-		TT[13]=new String("NOT");
+		TT[8]=new String("AND");
+		TT[12]=new String("CP");
+		TT[9]=new String("OR");
+		TT[18]=new String("IF_WD");
+		TT[11]=new String("OP");
 		TT[21]=new String("DONE_WD");
-		TT[19]=new String("AND_WD");
-		TT[4]=new String("SCOLON");
+		TT[16]=new String("AND_WD");
 		TT[20]=new String("DO_WD");
-		TT[14]=new String("TURE_WD");
+		TT[10]=new String("EXM");
 		TT[0]=new String("EOF");
-		TT[6]=new String("TOK3");
+		TT[4]=new String("TOK3");
 		TT[15]=new String("FALSE_WD");
-		TT[18]=new String("OR_WD");
-		TT[5]=new String("TOK2");
-		TT[2]=new String("SEP");
-		TT[3]=new String("TOK1");
+		TT[17]=new String("OR_WD");
+		TT[3]=new String("TOK2");
+		TT[5]=new String("SEP");
+		TT[2]=new String("TOK1");
 		TT[1]=new String("error");
-		TT[8]=new String("EQ");
-		TT[17]=new String("FI_WD");
+		TT[7]=new String("EQ");
+		TT[19]=new String("FI_WD");
 		TT[23]=new String("QSTRING");
 		TT[22]=new String("PRINT_WD");
-		TT[7]=new String("VAR");
+		TT[6]=new String("SC");
+		TT[13]=new String("VAR");
+		TT[14]=new String("TRUE_WD");
 	}
 public String getTT(int i){return TT[i];}
 }
