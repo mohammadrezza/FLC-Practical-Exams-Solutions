@@ -21,6 +21,8 @@ parser code {:
 ////////////////////////////
 
 terminal TOK1, TOK2, SEP;
+// terminal TOK1, TOK2, TOK3, SEP;
+// terminal ;
 // terminal String test;
 // terminal Double test;
 // terminal Integer test;
@@ -48,4 +50,3 @@ prog ::= HEADER SEP
 
 // header
 
-//

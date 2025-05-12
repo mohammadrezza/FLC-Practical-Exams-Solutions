@@ -6,86 +6,89 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int PLUS_WD = 16;
+  public static final int PLUS_WD = 18;
   public static final int CP = 8;
-  public static final int KWH_WD = 13;
+  public static final int BATTERY_WD = 11;
+  public static final int KWH_WD = 20;
+  public static final int CM = 9;
   public static final int OP = 7;
-  public static final int MAX_WD = 15;
-  public static final int DONE_WD = 21;
-  public static final int FUE_WD = 12;
-  public static final int SCOLON = 5;
-  public static final int LIT_WD = 14;
-  public static final int DO_WD = 20;
-  public static final int KM_WD = 22;
-  public static final int USE_WD = 19;
-  public static final int COMMA = 9;
+  public static final int MAX_WD = 22;
+  public static final int DONE_WD = 15;
+  public static final int DO_WD = 14;
+  public static final int KM_WD = 23;
+  public static final int USE_WD = 13;
+  public static final int SINUM = 25;
+  public static final int LITERS_WD = 21;
   public static final int EOF = 0;
   public static final int START_WD = 10;
-  public static final int TOK2 = 4;
-  public static final int SEP = 2;
-  public static final int TOK1 = 3;
+  public static final int UNITS_KM_WD = 17;
+  public static final int TOK2 = 3;
+  public static final int SEP = 4;
+  public static final int TOK1 = 2;
   public static final int error = 1;
-  public static final int UKM_WD = 23;
-  public static final int BAT_WD = 11;
   public static final int DASH = 6;
+  public static final int SC = 5;
   public static final int FNUM = 24;
-  public static final int MOD_WD = 18;
-  public static final int STAR_WD = 17;
+  public static final int STAR_WD = 19;
+  public static final int MOD_WD = 16;
+  public static final int FUEL_WD = 12;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "SEP",
   "TOK1",
   "TOK2",
-  "SCOLON",
+  "SEP",
+  "SC",
   "DASH",
   "OP",
   "CP",
-  "COMMA",
+  "CM",
   "START_WD",
-  "BAT_WD",
-  "FUE_WD",
-  "KWH_WD",
-  "LIT_WD",
-  "MAX_WD",
-  "PLUS_WD",
-  "STAR_WD",
-  "MOD_WD",
+  "BATTERY_WD",
+  "FUEL_WD",
   "USE_WD",
   "DO_WD",
   "DONE_WD",
+  "MOD_WD",
+  "UNITS_KM_WD",
+  "PLUS_WD",
+  "STAR_WD",
+  "KWH_WD",
+  "LITERS_WD",
+  "MAX_WD",
   "KM_WD",
-  "UKM_WD",
-  "FNUM"
+  "FNUM",
+  "SINUM"
   };
 public String[] TT;
 	public sym(){
 		TT = new String[100];
-		TT[16]=new String("PLUS_WD");
+		TT[18]=new String("PLUS_WD");
 		TT[8]=new String("CP");
-		TT[13]=new String("KWH_WD");
+		TT[11]=new String("BATTERY_WD");
+		TT[20]=new String("KWH_WD");
+		TT[9]=new String("CM");
 		TT[7]=new String("OP");
-		TT[15]=new String("MAX_WD");
-		TT[21]=new String("DONE_WD");
-		TT[12]=new String("FUE_WD");
-		TT[5]=new String("SCOLON");
-		TT[14]=new String("LIT_WD");
-		TT[20]=new String("DO_WD");
-		TT[22]=new String("KM_WD");
-		TT[19]=new String("USE_WD");
-		TT[9]=new String("COMMA");
+		TT[22]=new String("MAX_WD");
+		TT[15]=new String("DONE_WD");
+		TT[14]=new String("DO_WD");
+		TT[23]=new String("KM_WD");
+		TT[13]=new String("USE_WD");
+		TT[25]=new String("SINUM");
+		TT[21]=new String("LITERS_WD");
 		TT[0]=new String("EOF");
 		TT[10]=new String("START_WD");
-		TT[4]=new String("TOK2");
-		TT[2]=new String("SEP");
-		TT[3]=new String("TOK1");
+		TT[17]=new String("UNITS_KM_WD");
+		TT[3]=new String("TOK2");
+		TT[4]=new String("SEP");
+		TT[2]=new String("TOK1");
 		TT[1]=new String("error");
-		TT[23]=new String("UKM_WD");
-		TT[11]=new String("BAT_WD");
 		TT[6]=new String("DASH");
+		TT[5]=new String("SC");
 		TT[24]=new String("FNUM");
-		TT[18]=new String("MOD_WD");
-		TT[17]=new String("STAR_WD");
+		TT[19]=new String("STAR_WD");
+		TT[16]=new String("MOD_WD");
+		TT[12]=new String("FUEL_WD");
 	}
 public String getTT(int i){return TT[i];}
 }

@@ -34,12 +34,14 @@ sep         = (\$\$\$)(\$\$)*
 //qstring   = \" ~ \"
 
 //// TOKENS ////
-//tokens can be
+//  tokens can be
 //  hours HH:MM:SS
-//  dates YY/MM/DD
+//  dates YYYY/MM/DD
+//  January, February, March, April, May, June, July, August, September, October, November, December
 //  binary number
 //  hexadecimal number
-//
+//  [0-9]|[a-fA-F]
+
 
 token_1   = 
 
@@ -87,18 +89,17 @@ token_2   =
 // "_"             {return sym(sym.US);}            //Underscore 
 
 
-
 // {inum}             {return sym(sym.INUM, new Integer(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
 // {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}
 // {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 
+
 {token_1}          {return sym(sym.TOK1);}
 {token_2}          {return sym(sym.TOK2);}
 // {token_3}          {return sym(sym.TOK3);}
 
-//{var}              {return sym(sym.VAR, yytext());}
 
 {sep}            {return sym(sym.SEP);}
 
