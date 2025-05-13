@@ -4,11 +4,11 @@ import java.io.*;
 
 
 init with{:
-    table = new HashMap <String, HashMap <String, Integer>>();
+    table = new HashMap <String, HashMap <String, Double>>();
 :};
 
 parser code {:
-    public HashMap <String, HashMap <String, Integer>> table;
+    public HashMap <String, HashMap <String, Double>> table;
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
@@ -20,21 +20,24 @@ parser code {:
 //// Symbols Delaration
 ////////////////////////////
 
-terminal SEP, TOK1, TOK2, TOK3, SCOLON, COMMA, OP, CP, EQ, DOT;
- terminal String HOUSE_WD, QSTRING, START_WD, END_WD, IF_WD, THEN_WD, FI_WD, AND_WD, OR_WD, NOT_WD, PRINT_WD ;
+// terminal TOK1, TOK2, SEP;
+terminal TOK1, TOK2, TOK3, SEP;
+terminal SC, CM, OP, CP, EQ, DOT;
+terminal String HOUSE_WD, START_WD, END_WD, PRINT_WD, IF_WD, FI_WD, NOT_WD, QSTRING, THEN_WD, AND_WD, OR_WD;
 // terminal Double test;
- terminal Integer INUM;
+terminal Integer INUM;
 
-non terminal prog, header, header1, house_section, house, pre_section, if ;
- // non terminal String ;
-non terminal HashMap room_list;
-non terminal Boolean operands, bool_exp, print_list;
+non terminal prog ;
+non terminal HEADER, HOUSES, PREF ;
+non terminal HEAD1;
+non terminal HOUSE, ROOM_LIST, ROOM, TYPE, ROOM_NAME, SIZE;
+non terminal EXP, OPER, OPR, PRINT_LIST, PRINT, COMMAND, COMMANDS, ROOM_REF;
+// non terminal String ;
+// non terminal HashMap ;
 // non terminal Integer ;
 // non terminal Double ;
 
-precedence left OR_WD, AND_WD;
-precedence left NOT_WD;
-
+// precedence left ;
 
 /////////////////////////////
 //// Grammar
@@ -42,83 +45,66 @@ precedence left NOT_WD;
 
 start with prog;
 
-prog ::= header SEP house_section SEP pre_section
+prog ::= HEADER SEP HOUSES SEP PREF
 ;
 
-header ::= header1 TOK1 SCOLON header1 TOK2 SCOLON header1 | header1 TOK2 SCOLON header1 TOK1 SCOLON header1
+// header
+
+HEADER ::= HEAD1 TOK1 SC HEAD1 | HEAD1 TOK2 SC HEAD1 | HEAD1 TOK1 SC HEAD1 TOK2 SC HEAD1 | HEAD1 TOK2 SC HEAD1 TOK1 SC HEAD1 
 ;
 
-header1 ::= header1 TOK3 SCOLON | 
+HEAD1 ::= HEAD1 TOK3 SC |
+;
+
+// houses
+
+HOUSES ::= HOUSES HOUSE HOUSE |
+;
+
+HOUSE ::= HOUSE_WD TYPE START_WD ROOM_LIST END_WD
+;
+
+TYPE ::= QSTRING
+;
+
+ROOM_LIST ::= ROOM_LIST CM ROOM | ROOM
+;
+
+ROOM ::= ROOM_NAME SIZE 
+;
+
+ROOM_NAME ::= QSTRING
+;
+
+SIZE ::= INUM
+;
+
+// pref
+
+PREF ::= COMMANDS |
+;
+
+COMMANDS ::= COMMANDS COMMAND | COMMAND
+;
+
+COMMAND ::= IF_WD EXP THEN_WD PRINT_LIST FI_WD
 ;
 
 
-////////////////
-// House Section
-////////////////
-
-house_section ::= house house | house_section house house
+EXP ::= OPR | OPR OPER EXP | OP EXP CP | NOT_WD EXP
 ;
 
-house ::= HOUSE_WD QSTRING:key START_WD room_list:value END_WD {:
-parser.table.put(key, value);
-:}
+OPER ::= AND_WD | OR_WD | NOT_WD
 ;
 
-room_list ::= QSTRING:name INUM:size {:
-                                HashMap<String, Integer> tab = new HashMap<String, Integer>();
-                                tab.put(name, size);
-                                RESULT = tab;
-                            :}
-| room_list:tab COMMA QSTRING:name INUM:size {:
-                                tab.put(name, size);
-                                RESULT = tab;
-                            :}
+OPR ::= ROOM_REF |  ROOM_REF EQ EQ SIZE
 ;
 
-
-////////////////
-// Preferences Section
-////////////////
-
-pre_section ::= pre_section if | 
+ROOM_REF ::= TYPE DOT ROOM_NAME
 ;
 
-if ::= IF_WD bool_exp:exp THEN_WD print_list FI_WD {:
-:}
+PRINT_LIST ::= PRINT_LIST PRINT |
 ;
 
-bool_exp ::= operands:ope {: RESULT = ope; :}
-| NOT_WD bool_exp:bool {: RESULT = !bool; :}
-| bool_exp:bool1 AND_WD bool_exp:bool2 {: RESULT = bool1 && bool2; :}
-| bool_exp:bool1 OR_WD bool_exp:bool2 {: RESULT = bool1 || bool2; :}
-| OP bool_exp:bool CP {: RESULT = bool; :}
-;
-
-operands ::= QSTRING:house DOT QSTRING:room EQ EQ INUM:gsize {:
-                                                                HashMap<String, Integer> m_house = parser.table.get(house);
-                                                                Integer m_size = m_house.get(room);
-                                                                if(m_size.equals(gsize)){
-                                                                    RESULT = true;
-                                                                }else {
-                                                                    RESULT = false;
-                                                                }
-                                                            :}
-;
-
-print_list ::= PRINT_WD QSTRING:qs SCOLON {:
-                                            if((Boolean)parser.stack(-4) == true){
-                                                System.out.println(qs);
-                                                RESULT = true;
-                                            }else{
-                                                RESULT = false;
-                                            }
-                                        :}
-| print_list PRINT_WD QSTRING:qs SCOLON {:
-                                        if((Boolean)parser.stack(-3) == true){
-                                            System.out.println(qs);
-                                            RESULT = true;
-                                        }else{
-                                            RESULT = false;
-                                        }
-                                    :}
+PRINT ::= PRINT_WD QSTRING SC
 ;
