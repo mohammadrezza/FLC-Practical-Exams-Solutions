@@ -34,14 +34,31 @@ sep         = (\$\$\$)(\$\$)*
 //qstring   = \" ~ \"
 
 //// TOKENS ////
-//  tokens can be
 //  hours HH:MM:SS
+//  "0"[0-9]":"[0-5][0-9]":"[0-5][0-9]
+//  "1"[0-9]":"[0-5][0-9]":"[0-5][0-9]
+//  "2"[0-3]":"[0-5][0-9]":"[0-5][0-9]
 //  dates YYYY/MM/DD
-//  January, February, March, April, May, June, July, August, September, October, November, December
-//  binary number
+//  {year} "/" ("01") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // January
+//  {year} "/" ("02") "/" ((0[1-9]) | [1-2][0-9] )           // February
+//  {year} "/" ("03") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // March
+//  {year} "/" ("04") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // April
+//  {year} "/" ("05") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // May
+//  {year} "/" ("06") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // June
+//  {year} "/" ("07") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // July
+//  {year} "/" ("08") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // August
+//  {year} "/" ("09") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // September
+//  {year} "/" ("10") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // October
+//  {year} "/" ("11") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // Novermber
+//  {year} "/" ("12") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // December
 //  hexadecimal number
-//  [0-9]|[a-fA-F]
-
+//  hex = [0-9a-fA-F]
+//  ({hex})    //0-F
+//  ({1-9a-fA-F})({hex})     //10-FF
+//  ({1-9a-fA-F})({hex})({hex})   //100-FFF
+//  binary number
+//  ip address
+//  numbers
 
 token_1   = 
 
@@ -52,7 +69,45 @@ token_2   =
 %%
 
 // Strings part
-// "START"            {return sym(sym.START_WD, new String(yytext()));}
+// "AND"            {return sym(sym.AND_WD, new String(yytext()));}
+// "COND"           {return sym(sym.COND_WD, new String(yytext()));}
+// "DO"             {return sym(sym.DO, new String(yytext()));}
+// "DONE"           {return sym(sym.DONE, new String(yytext()));}
+// "FALSE"          {return sym(sym.FALSE_WD, new String(yytext()));}
+// "FI"             {return sym(sym.FI_WD, new String(yytext()));}
+// "HEIGHT"         {return sym(sym.HEIGHT_WD, new String(yytext()));}
+// "IF"             {return sym(sym.IF_WD, new String(yytext()));}
+// "INIT"           {return sym(sym.INIT_WD, new String(yytext()));}
+// "KG"             {return sym(sym.KG_WD, new String(yytext()));}
+// "MAX"            {return sym(sym.MAX_WD, new String(yytext()));}
+// "MUL"            {return sym(sym.MUL_WD, new String(yytext()));}
+// "OR"             {return sym(sym.OR_WD, new String(yytext()));}
+// "PLUS"           {return sym(sym.PLUS_WD, new String(yytext()));}
+// "PRINT"          {return sym(sym.PRINT_WD, new String(yytext()));}
+// "SPEED"          {return sym(sym.SPEED_WD, new String(yytext()));}
+// "STAR"           {return sym(sym.STAR_WD, new String(yytext()));}
+// "START"          {return sym(sym.START_WD, new String(yytext()));}
+// "SUM"            {return sym(sym.SUM_WD, new String(yytext()));}
+// "TRUE"           {return sym(sym.TRUE_WD, new String(yytext()));}
+// "UPDATE"         {return sym(sym.UPDATE_WD, new String(yytext()));}
+
+// "and"              {return sym(sym.AND_WD, new String(yytext()));}
+// "compare"          {return sym(sym.COMPARE_WD, new String(yytext()));}
+// "end"              {return sym(sym.END_WD, new String(yytext()));}
+// "euro"             {return sym(sym.EURO_WD, new String(yytext()));}
+// "euro/kg"          {return sym(sym.EURO_KG_WD, new String(yytext()));}
+// "false"            {return sym(sym.FALSE_WD, new String(yytext()));}
+// "fi"               {return sym(sym.FI_WD, new String(yytext()));}
+// "house"            {return sym(sym.HOUSE_WD, new String(yytext()));}
+// "if"               {return sym(sym.IF_WD, new String(yytext()));}
+// "kg"               {return sym(sym.KG_WD, new String(yytext()));}
+// "not"              {return sym(sym.NOT_WD, new String(yytext()));}
+// "or"               {return sym(sym.OR_WD, new String(yytext()));}
+// "print"            {return sym(sym.PRINT_WD, new String(yytext()));}
+// "start"            {return sym(sym.START_WD, new String(yytext()));}
+// "then"             {return sym(sym.THEN_WD, new String(yytext()));}
+// "true"             {return sym(sym.TRUE_WD, new String(yytext()));}
+// "with"             {return sym(sym.WITH_WD, new String(yytext()));}
 
 
 // "?"             {return sym(sym.QUM);}           //Question Mark 

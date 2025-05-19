@@ -15,20 +15,65 @@ parser code {:
     }
 :};
 
+// expression
+// E ::= E PLUS E
+// | E MINUS E
+// | E STAR E
+// | E DIV E
+// | MINUS E    %prec uminus
+// | OP E CP
+// | INTEGER
+// ;
 
 /////////////////////////////
 //// Symbols Delaration
 ////////////////////////////
 
+// terminal QUM;
+// terminal EXM;
+// terminal ATM;
+// terminal HAM;
+// terminal DOM;
+// terminal PAM;
+// terminal CIM;
+// terminal AND;
+// terminal STAR;
+// terminal DASH;
+// terminal EQ;
+// terminal PLUS;
+// terminal OP;
+// terminal CP;
+// terminal OB;
+// terminal CB;
+// terminal OC;
+// terminal CC;
+// terminal GT;
+// terminal LT;
+// terminal SL;
+// terminal BSL;
+// terminal DOT;
+// terminal CO;
+// terminal CM;
+// terminal SC;
+// terminal QU;
+// terminal DQU;
+// terminal GRAVE;
+// terminal TIL;
+// terminal OR;
+// terminal US;
+
+// terminal String VAR;
+// terminal String QSTRING;
+// terminal Double FNUM;
+// terminal Integer INUM;
+// terminal Integer SINUM;
+
 terminal TOK1, TOK2, SEP;
 // terminal TOK1, TOK2, TOK3, SEP;
-// terminal ;
-// terminal String test;
-// terminal Double test;
-// terminal Integer test;
+
 
 non terminal prog ;
-non terminal HEADER ;
+non terminal header ;
 // non terminal ;
 // non terminal ;
 // non terminal ;
@@ -37,7 +82,9 @@ non terminal HEADER ;
 // non terminal Integer ;
 // non terminal Double ;
 
-// precedence left ;
+// precedence left PLUS, DASH;
+// precedence left STAR, SL;
+// precedence left CIM;
 
 /////////////////////////////
 //// Grammar
@@ -45,7 +92,7 @@ non terminal HEADER ;
 
 start with prog;
 
-prog ::= HEADER SEP
+prog ::= header SEP
 ;
 
 // header
