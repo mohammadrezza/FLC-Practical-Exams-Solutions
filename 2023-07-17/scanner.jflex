@@ -18,104 +18,168 @@ import java_cup.runtime.*;
 %}
 
 nl          = \r | \n | \r\n
-comment     = ("{{" ~ "}}") | "//" ~ {nl}
 
-sep         = ("***")
+comment     = "{{" ~ "}}" | "//" ~ {nl}
 
-inum      = [1-9][0-9]*
+sep         = "***"
 
-//sinum       = ("-")?[0-9]+
+inum      = [1-9][0-9]*      //integer
 
-fnum      = [0-9]+.[0-9]+
+//sinum     = ("-")?[0-9]+      //singed integer
 
-//var       = [a-zA-Z_][a-zA-Z0-9_]*
+fnum      = [0-9]+.[0-9]+     //float
+
+//var       = [a-zA-Z_][a-zA-Z0-9_]*     //variable
 
 qstring   = \" ~ \"
 
 //// TOKENS ////
+//  hours HH:MM:SS
+//  "0"[0-9]":"[0-5][0-9]":"[0-5][0-9]
+//  "1"[0-9]":"[0-5][0-9]":"[0-5][0-9]
+//  "2"[0-3]":"[0-5][0-9]":"[0-5][0-9]
+//  dates YYYY/MM/DD
+//  {year} "/" ("01") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // January
+//  {year} "/" ("02") "/" ((0[1-9]) | [1-2][0-9] )           // February
+//  {year} "/" ("03") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // March
+//  {year} "/" ("04") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // April
+//  {year} "/" ("05") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // May
+//  {year} "/" ("06") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // June
+//  {year} "/" ("07") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // July
+//  {year} "/" ("08") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // August
+//  {year} "/" ("09") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // September
+//  {year} "/" ("10") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // October
+//  {year} "/" ("11") "/" ((0[1-9]) | [1-2][0-9] | 30 )      // Novermber
+//  {year} "/" ("12") "/" ((0[1-9]) | [1-2][0-9] | 30 | 31)  // December
+//  hexadecimal number
+hex = [0-9a-fA-F]
+//  ({hex})    //0-F
+//  ({1-9a-fA-F})({hex})     //10-FF
+//  ({1-9a-fA-F})({hex})({hex})   //100-FFF
+//  binary number
+//  ip address
+//  numbers
 
-token_1   = {hex_number} "*" ({word}{5} ({word}{word})*) "-" ((("****") ("**")*) | "Y" ("X" ("XX")*) "Y")?
+hex_num   = "27"[a-fA-F] |
+             "2"[8-9a-fA-F]{hex} | 
+             [3-9a-fA-F]{hex}{hex} |
+             "1"[0-1]{hex}{hex}  |
+             ("12"[0-9]|"a"|"A"){hex} |
+             "12"("b"|"B")[0-3]
 
-hex_number = (27[A-Fa-f]
-    | 2[89][0-9A-Fa-f]
-    | [3-9A-Fa-f] [0-9A-Fa-f] [0-9A-Fa-f]
-    | 1[01][0-9A-Fa-f][0-9A-Fa-f]
-    | 12[0-9Aa] [0-9A-Fa-f]
-    | 12[bB][0-3]
-)
+alpha_c   = ([a-zA-Z]{5}([a-zA-Z][a-zA-Z])*)
 
-word = [a-zA-Z]
+term      = ("****"("**")* | "Y"("X"("XX")*)"Y")
 
-token_2   = ({ip} "." {ip} "." {ip} "." {ip}) "-" {date}
+token_1   =  {hex_num}"*"{alpha_c}"-"{term}?
 
-ip = ([0-9] | [1-9][0-9]| 1[0-9][0-9] | 2[0-4][0-9] | 25[0-5])
+ip_range  = ([0-9] | [1-9][0-9] | 1[0-9][0-9] | 2[0-4][0-9] | 25[0-5])
+ip_address = ({ip_range}\.{ip_range}\.{ip_range}\.{ip_range}) 
 
-date    = 2023 "/" 10 "/" (0[5-9] | [12][0-9] | 3[01])
-         |2023 "/" 11 "/" (0[1-9] | [12][0-9] | 30)
-         |2023 "/" 12 "/" (0[1-9] | [12][0-9] | 3[01])
-         |2024 "/" 01 "/" (0[1-9] | [1-2][0-9] | 3[01])
-         |2024 "/" 02 "/" (0[1-9] | 1[0-9] | 2[0-9])
-         |2024 "/" 03 "/" (0[1-3])
+date = 
+  ((0[5-9]) | [1-2][0-9] | 30 | 31) "/" ("10") "/2023" | // October
+  ((0[1-9]) | [1-2][0-9] | 30 )     "/" ("11") "/2023" | // Novermber
+  ((0[1-9]) | [1-2][0-9] | 30 | 31) "/" ("12") "/2023" | // December
+  ((0[1-9]) | [1-2][0-9] | 30 | 31) "/" ("01") "/2024" | // January
+  ((0[1-9]) | [1-2][0-9] )          "/" ("02") "/2024" | // February
+  ((0[1-3]))"/"("03")"/2024" // March
 
-token_3   = ({digit}{se}{digit}{se}{digit} | {digit}{se}{digit}{se}{digit}{se}{digit}{se}{digit})
+token_2   = {ip_address}"-"{date}
 
-digit = ([0-9]{4} | [0-9]{6})
+num = [1-9][0-9][0-9][0-9] | [1-9][0-9][0-9][0-9][0-9][0-9]
 
-se = ("-" | "+")
+token_3   = {num}("+"|"-"){num}("+"|"-"){num} |
+            {num}("+"|"-"){num}("+"|"-"){num}("+"|"-"){num}("+"|"-"){num}
 
 %%
 
 // Strings part
- "euro"            {return sym(sym.EURO_WD, new String(yytext()));}
+// "AND"            {return sym(sym.AND_WD, new String(yytext()));}
+// "COND"           {return sym(sym.COND_WD, new String(yytext()));}
+// "DO"             {return sym(sym.DO, new String(yytext()));}
+// "DONE"           {return sym(sym.DONE, new String(yytext()));}
+// "FALSE"          {return sym(sym.FALSE_WD, new String(yytext()));}
+// "FI"             {return sym(sym.FI_WD, new String(yytext()));}
+// "HEIGHT"         {return sym(sym.HEIGHT_WD, new String(yytext()));}
+// "IF"             {return sym(sym.IF_WD, new String(yytext()));}
+// "INIT"           {return sym(sym.INIT_WD, new String(yytext()));}
+// "KG"             {return sym(sym.KG_WD, new String(yytext()));}
+// "MAX"            {return sym(sym.MAX_WD, new String(yytext()));}
+// "MUL"            {return sym(sym.MUL_WD, new String(yytext()));}
+// "OR"             {return sym(sym.OR_WD, new String(yytext()));}
+// "PLUS"           {return sym(sym.PLUS_WD, new String(yytext()));}
+// "PRINT"          {return sym(sym.PRINT_WD, new String(yytext()));}
+// "SPEED"          {return sym(sym.SPEED_WD, new String(yytext()));}
+// "STAR"           {return sym(sym.STAR_WD, new String(yytext()));}
+// "START"          {return sym(sym.START_WD, new String(yytext()));}
+// "SUM"            {return sym(sym.SUM_WD, new String(yytext()));}
+// "TRUE"           {return sym(sym.TRUE_WD, new String(yytext()));}
+// "UPDATE"         {return sym(sym.UPDATE_WD, new String(yytext()));}
+
+// "and"              {return sym(sym.AND_WD, new String(yytext()));}
+// "compare"          {return sym(sym.COMPARE_WD, new String(yytext()));}
+// "end"              {return sym(sym.END_WD, new String(yytext()));}
+"euro"             {return sym(sym.EURO_WD, new String(yytext()));}
+// "euro/kg"          {return sym(sym.EURO_KG_WD, new String(yytext()));}
+// "false"            {return sym(sym.FALSE_WD, new String(yytext()));}
+// "fi"               {return sym(sym.FI_WD, new String(yytext()));}
+// "house"            {return sym(sym.HOUSE_WD, new String(yytext()));}
+// "if"               {return sym(sym.IF_WD, new String(yytext()));}
+// "kg"               {return sym(sym.KG_WD, new String(yytext()));}
+// "not"              {return sym(sym.NOT_WD, new String(yytext()));}
+// "or"               {return sym(sym.OR_WD, new String(yytext()));}
+// "print"            {return sym(sym.PRINT_WD, new String(yytext()));}
+// "start"            {return sym(sym.START_WD, new String(yytext()));}
+// "then"             {return sym(sym.THEN_WD, new String(yytext()));}
+// "true"             {return sym(sym.TRUE_WD, new String(yytext()));}
+// "with"             {return sym(sym.WITH_WD, new String(yytext()));}
 
 
-// "?"             {return sym(sym.QUM);}
-// "!"             {return sym(sym.EXM);}
-// "@"             {return sym(sym.ATM);}
-// "#"             {return sym(sym.HAM);}
-// "$"             {return sym(sym.DOM);}
- "%"             {return sym(sym.PAM);}
-// "^"             {return sym(sym.CIM);}
-// "&"             {return sym(sym.AND);}
-// "*"             {return sym(sym.STAR);}
- "-"             {return sym(sym.DASH);}
-// "="             {return sym(sym.EQ);}
-// "+"             {return sym(sym.PLUS);}
-// "("             {return sym(sym.OP);}
-// ")"             {return sym(sym.CP);}
-// "["             {return sym(sym.OB);}
-// "]"             {return sym(sym.CB);}
-// "{"             {return sym(sym.OC);}
-// "}"             {return sym(sym.CC);}
-// ">"             {return sym(sym.GT);}
-// "<"             {return sym(sym.LT);}
-// "/"             {return sym(sym.SL);}
-// \\              {return sym(sym.BSL);}
-// "."             {return sym(sym.DOT);}
-// ":"             {return sym(sym.CO);}
-","             {return sym(sym.CM);}
- ";"             {return sym(sym.SC);}
-// \'              {return sym(sym.QU);}
-// \"              {return sym(sym.DQU);}
-// \`              {return sym(sym.GRAVE);}
-// "~"             {return sym(sym.TIL);}
-// "|"             {return sym(sym.OR);}
-// "_"             {return sym(sym.US);}
-
-
+// "?"             {return sym(sym.QUM);}           //Question Mark 
+// "!"             {return sym(sym.EXM);}           //Exclamation Mark 
+// "@"             {return sym(sym.ATM);}           //At Symbol 
+// "#"             {return sym(sym.HAM);}           //Hash / Pound 
+// "$"             {return sym(sym.DOM);}           //Dollar Mark 
+"%"             {return sym(sym.PAM);}           //Percent 
+// "^"             {return sym(sym.CIM);}           //Caret (Circumflex) 
+// "&"             {return sym(sym.AND);}           //Ampersand 
+// "*"             {return sym(sym.STAR);}          //Asterisk 
+"-"             {return sym(sym.DASH);}          //Hyphen/Dash 
+// "="             {return sym(sym.EQ);}            //Equal Sign 
+// "+"             {return sym(sym.PLUS);}          //Plus 
+// "("             {return sym(sym.OP);}            //Open Parenthesis 
+// ")"             {return sym(sym.CP);}            //Close Parenthesis 
+// "["             {return sym(sym.OB);}            //Open Bracket 
+// "]"             {return sym(sym.CB);}            //Close Bracket 
+// "{"             {return sym(sym.OC);}            //Open Curly Brace 
+// "}"             {return sym(sym.CC);}            //Close Curly Brace 
+// ">"             {return sym(sym.GT);}            //Greater Than 
+// "<"             {return sym(sym.LT);}            //Less Than 
+// "/"             {return sym(sym.SL);}            //Slash 
+// \\              {return sym(sym.BSL);}           //Backslash 
+// "."             {return sym(sym.DOT);}           //Period / Dot 
+// ":"             {return sym(sym.CO);}            //Colon 
+","             {return sym(sym.CM);}            //Comma 
+";"             {return sym(sym.SC);}            //Semicolon 
+// \'              {return sym(sym.QU);}            //Single Quote 
+// \"              {return sym(sym.DQU);}           //Double Quote 
+// \`              {return sym(sym.GRAVE);}         //Grave Accent / Backtick
+// "~"             {return sym(sym.TIL);}           //Tilde 
+// "|"             {return sym(sym.OR);}            //Pipe 
+// "_"             {return sym(sym.US);}            //Underscore 
 
 
 {inum}             {return sym(sym.INUM, new Integer(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
- {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
- {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
+{fnum}             {return sym(sym.FNUM, new Float(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}
+{qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 
- {token_1}          {return sym(sym.TOK1);}
- {token_2}          {return sym(sym.TOK2);}
+
+{token_1}          {return sym(sym.TOK1);}
+{token_2}          {return sym(sym.TOK2);}
 {token_3}          {return sym(sym.TOK3);}
 
-//{var}              {return sym(sym.VAR, yytext());}
 
 {sep}            {return sym(sym.SEP);}
 
