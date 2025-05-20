@@ -75,13 +75,13 @@ terminal String EURO_WD;
 
 non terminal prog ;
 non terminal header, head1, head1_tok1, head1_tok2, head2, head2_tok;
-non terminal dresses, clothes, cloth, dress_name, prod, prod_id, prod_name, prod_cost, prod_list;
+non terminal dresses, clothes, cloth, prod, prod_id, prod_name;
 non terminal shopping, purchasing, purchase, purch_prod_list, purch_prod, quantity, percent;
 // non terminal ;
-// non terminal String ;
-// non terminal HashMap ;
+non terminal String dress_name;
+non terminal HashMap prod_list;
 // non terminal Integer ;
-// non terminal Double ;
+non terminal Double prod_cost;
 
 // precedence left PLUS, DASH;
 // precedence left STAR, SL;
@@ -120,29 +120,38 @@ head2_tok ::= head2_tok TOK1 SC | head2_tok TOK3 SC |
 ;
 
 // dresses
-
 dresses ::= cloth cloth cloth clothes
 ;
 
 clothes ::= cloth cloth clothes |
 ;
 
-cloth ::= dress_name DASH prod_list SC
+cloth ::= dress_name:dress_name DASH prod_list:prod_list SC
+{:
+    parser.table.put(dress_name, prod_list);
+:}
 ;
 
-dress_name ::= QSTRING
+dress_name ::= QSTRING:res
+{: RESULT = res; :}
 ;
 
 prod_list ::= prod_list CM prod | prod
 ;
 
-prod ::= prod_id prod_name prod_cost EURO_WD
+prod ::= prod_id prod_name:prod_name prod_cost:prod_cost EURO_WD
+{:
+    HashMap prod = new HashMap<String, Double>();
+    prod.put(prod_name, prod_cost);
+    RESULT = prod;
+:}
 ;
 
 prod_id ::= INUM
 ;
 
-prod_name ::= QSTRING
+prod_name ::= QSTRING:res
+{: RESULT = res; :}
 ;
 
 prod_cost ::= INUM | FNUM
@@ -155,17 +164,28 @@ shopping ::= purchasing
 purchasing ::= purchasing purchase | purchase
 ;
 
-purchase ::= dress_name percent PAM DASH purch_prod_list SC
+purchase ::= dress_name:dress_name percent PAM DASH purch_prod_list SC
+{:
+    System.out.println(dress_name);
+:}
 ;
 
 percent ::= INUM
 ;
 
-purch_prod_list ::= purch_prod_list CM purch_prod | purch_prod
+purch_prod_list ::= purch_prod_list CM purch_prod
+{:
+    
+:}
+| purch_prod
 ;
 
-purch_prod ::= prod_name quantity
+purch_prod ::= prod_name:prod_name quantity
+{: 
+    System.out.println(prod_name);
+:}
 ;
 
-quantity ::= INUM
+quantity ::= INUM:res
+{: RESULT = res; :}
 ;
