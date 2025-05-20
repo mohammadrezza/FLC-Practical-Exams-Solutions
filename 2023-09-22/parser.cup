@@ -1,0 +1,140 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Double>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Double>> table;
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+:};
+
+// expression
+// E ::= E PLUS E
+// | E MINUS E
+// | E STAR E
+// | E DIV E
+// | MINUS E    %prec uminus
+// | OP E CP
+// | INTEGER
+// ;
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+// terminal QUM;
+// terminal EXM;
+// terminal ATM;
+// terminal HAM;
+// terminal DOM;
+// terminal PAM;
+// terminal CIM;
+// terminal AND;
+// terminal EQ;
+terminal OP;
+terminal CP;
+// terminal OC;
+// terminal CC;
+// terminal GT;
+// terminal LT;
+// terminal BSL;
+// terminal DOT;
+// terminal CO;
+terminal CM;
+terminal SC;
+terminal STAR;
+terminal DASH;
+terminal PLUS;
+terminal OB;
+terminal CB;
+terminal SL;
+
+// terminal QU;
+// terminal DQU;
+// terminal GRAVE;
+// terminal TIL;
+// terminal OR;
+// terminal US;
+
+// terminal String VAR;
+// terminal String QSTRING;
+// terminal Double FNUM;
+terminal Integer INUM;
+// terminal Integer SINUM;
+
+// terminal TOK1, TOK2, SEP;
+terminal TOK1, TOK2, TOK3, SEP;
+terminal String INS_WD, CMP_WD, SUM_WD;
+
+
+non terminal prog ;
+non terminal header, head_tok3 ;
+non terminal commands, command, command_list, ins, cmp, sum, sum_list, exp;
+// non terminal ;
+// non terminal ;
+// non terminal String ;
+// non terminal HashMap ;
+// non terminal Integer ;
+// non terminal Double ;
+
+precedence left PLUS, DASH;
+precedence left STAR, SL;
+// precedence left CIM;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= header SEP commands
+;
+
+// header
+
+header ::= head_tok3 TOK1 SC head_tok3 TOK2 SC head_tok3 |
+           head_tok3 TOK2 SC head_tok3 TOK1 SC head_tok3 |
+           head_tok3 TOK1 SC head_tok3 TOK2 SC head_tok3 TOK2 SC head_tok3 |
+           head_tok3 TOK2 SC head_tok3 TOK1 SC head_tok3 TOK2 SC head_tok3 |
+           head_tok3 TOK2 SC head_tok3 TOK2 SC head_tok3 TOK1 SC head_tok3
+;
+
+head_tok3 ::= head_tok3 TOK3 SC |
+;
+
+// commands
+
+commands ::= command command command command command_list
+;
+
+command_list ::= command command command_list |
+;
+
+exp ::= exp PLUS exp |
+        exp DASH exp |
+        exp STAR exp |
+        exp SL exp |
+        DASH exp |
+        OP exp CP |
+        INUM
+;
+
+command ::= INS_WD ins SC | CMP_WD cmp SC  | SUM_WD sum SC 
+;
+
+ins ::= OB exp CB
+;
+           
+cmp ::= OB exp CB | OB exp CB CM OB exp CB  
+;
+
+sum ::= sum CM OB exp CB | OB exp CB
+; 
+
