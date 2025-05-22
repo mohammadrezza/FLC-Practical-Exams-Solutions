@@ -16,13 +16,13 @@ parser code {:
 :};
 
 // expression
-// E ::= E PLUS E
-// | E MINUS E
-// | E STAR E
-// | E DIV E
-// | MINUS E    %prec uminus
-// | OP E CP
-// | INTEGER
+// exp ::= exp PLUS exp
+// | exp DASH exp
+// | exp STAR exp
+// | exp SL exp
+// | DASH exp    %prec uminus
+// | OP exp CP
+// | INUM
 // ;
 
 /////////////////////////////
@@ -68,8 +68,9 @@ parser code {:
 // terminal Integer INUM;
 // terminal Integer SINUM;
 
-terminal TOK1, TOK2, SEP;
+// terminal TOK1, TOK2, SEP;
 // terminal TOK1, TOK2, TOK3, SEP;
+// terminal String ;
 
 
 non terminal prog ;
@@ -97,3 +98,5 @@ prog ::= header SEP
 
 // header
 
+header ::= 
+;
