@@ -1,0 +1,262 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Double>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Double>> table;
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+    public void printStatck(){
+        System.out.println("---Stack---");
+        for(int position=0; position<10; position++){
+            Object obj = (((Symbol)stack.elementAt(tos + -position)).value);
+            System.out.println("Element: " + obj + " At position: " + -position );
+        }
+    }
+:};
+
+// expression
+// exp ::= exp PLUS exp
+// | exp DASH exp
+// | exp STAR exp
+// | exp SL exp
+// | DASH exp    %prec uminus
+// | OP exp CP
+// | INUM
+// ;
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+// terminal QUM;
+// terminal EXM;
+// terminal ATM;
+// terminal HAM;
+// terminal DOM;
+// terminal PAM;
+// terminal CIM;
+// terminal AND;
+terminal STAR;
+terminal DASH;
+// terminal EQ;
+terminal PLUS;
+terminal OP;
+terminal CP;
+// terminal OB;
+// terminal CB;
+// terminal OC;
+// terminal CC;
+// terminal GT;
+// terminal LT;
+terminal SL;
+// terminal BSL;
+// terminal DOT;
+terminal CO;
+terminal CM;
+terminal SC;
+// terminal QU;
+// terminal DQU;
+// terminal GRAVE;
+// terminal TIL;
+// terminal OR;
+// terminal US;
+
+// terminal String VAR;
+terminal String QSTRING;
+terminal Double FNUM;
+terminal Integer INUM;
+// terminal Integer SINUM;
+
+terminal TOKEN1, TOKEN2, SEP;
+// terminal TOK1, TOK2, TOK3, SEP;
+terminal String POINTS_WD, MEDIUM_WD, HIGH_WD, LOW_WD;
+
+
+non terminal prog, TOK1, TOK2 ;
+non terminal header, athletes, evaluation ;
+non terminal head1, head1_tok2, head2, head2_tok2;
+non terminal athlete, athlete_list;
+non terminal eval_list, eval, points;
+// non terminal String ;
+non terminal HashMap attr, attr_list, val, val_list;
+// non terminal Integer ;
+non terminal Double score, exp;
+
+precedence left PLUS, DASH;
+precedence left STAR, SL;
+// precedence left CIM;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+
+start with prog;
+
+TOK1 ::= TOKEN1 SC
+;
+
+TOK2 ::= TOKEN2 SC
+;
+
+prog ::= header SEP athletes SEP evaluation
+;
+
+// header
+header ::= head1 | head2
+;
+
+head1 ::= TOK1 head1_tok2 TOK1 head1_tok2 TOK1 head1_tok2
+;
+
+head1_tok2 ::= head1_tok2 TOK2 |
+;
+
+head2 ::= TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 head2_tok2 TOK1 TOK1 TOK1 TOK1 |
+          TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 head2_tok2 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 TOK1 
+;
+
+head2_tok2 ::= head2_tok2 TOK2 TOK2 |
+;
+
+// athletes
+athletes ::= athlete athlete athlete athlete_list 
+;
+
+athlete_list ::= athlete_list athlete athlete |
+;
+
+athlete ::= QSTRING:name CO attr_list:attr_list SC
+{:
+    table.put(name, attr_list);
+:}
+;
+
+attr_list ::= attr:attr CM attr_list:attr_list
+{:
+   HashMap<String, Double> res = new HashMap<String, Double>();
+   res.putAll(attr_list);
+   res.putAll(attr);
+   RESULT = res;
+:}
+| attr:attr
+{:
+RESULT = attr;
+:} 
+;
+
+attr ::= QSTRING:attr_name exp:e
+{:
+   HashMap<String, Double> res = new HashMap<String, Double>();
+   res.put(attr_name,e);
+   RESULT = res;
+:} 
+;
+
+exp ::= exp:el PLUS exp:er
+{:
+RESULT = el + er;
+:}
+| exp:el DASH exp:er
+{:
+RESULT = el - er;
+:}
+| exp:el STAR exp:er
+{:
+RESULT = el * er;
+:}
+| exp:el SL exp:er
+{:
+RESULT = el / er;
+:}
+| DASH exp:e 
+{:
+RESULT = -e;
+:} 
+| OP exp:e CP
+{:
+RESULT = e;
+:}
+| FNUM:fnum
+{:
+RESULT = fnum;
+:}
+;
+
+//evaluation
+evaluation ::= eval eval_list | 
+;
+
+eval_list ::= eval |
+;
+
+eval ::= QSTRING:name FNUM:mult points CO val_list:val_list SC
+{:
+    System.out.println(name);
+    Double total = 0.0;
+    for (Object key : val_list.keySet()) {
+        Double value = (Double)val_list.get(key);
+        total += value;
+        System.out.println(key + " " + value);
+    }
+    System.out.println("TOTAL: " + total);
+:}
+;
+
+points ::= POINTS_WD | 
+;
+
+val_list ::= val_list:val_list CM val:val
+{:
+   HashMap<String, Double> res = new HashMap<String, Double>();
+   res.putAll(val_list);
+   res.putAll(val);
+   RESULT = res;
+:}
+| val:val
+{:
+RESULT = val;
+:}
+;
+
+val ::= FNUM:val QSTRING:attr_name score:score
+{:
+// parser.printStatck();
+String athlete = (String)parser.stack(-8);
+Double mult = (Double)parser.stack(-7);
+if (athlete == null){
+    athlete = (String)parser.stack(-6);
+    mult = (Double)parser.stack(-5);
+}
+
+HashMap <String, Double> attrs = table.get(athlete); 
+Double attr_val = (Double)attrs.get(attr_name);
+
+Double sub = mult * val * attr_val * score;
+HashMap <String, Double> res = new HashMap <String, Double>();
+res.put(attr_name, sub);
+RESULT = res;
+:}
+;
+
+score ::= LOW_WD
+{:
+RESULT = 0.0;
+:}
+| MEDIUM_WD
+{:
+RESULT = 1.0;
+:}
+| HIGH_WD
+{:
+RESULT = 2.0;
+:}
+;
