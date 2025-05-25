@@ -21,33 +21,17 @@ nl          = \r | \n | \r\n
 
 comment     = "(++" ~ "++)"
 
-sep         = "$$"
+sep         = (\$\$)
 
-inum      = [1-9][0-9]*
+inum      = [1-9][0-9]*      //integer
 
-//sinum       = ("-")?[0-9]+
+var       = [a-zA-Z_][a-zA-Z0-9_]*     //variable
 
-//fnum      = [0-9]+.[0-9]+
 
-var       = [a-zA-Z_][a-zA-Z0-9_]*
-
-//qstring   = \" ~ \"
+qstring   = \" ~ \"
 
 //// TOKENS ////
-
-
-even = (0|2|4|6|8|a|A|c|C|e|E)
-
-token_1   = ((a|b|c){7}(a|b|c){2}*"#") (
-    ("-"5(0|2|4|6|8|a|A|c|C))             |
-    ("-"[1-4]{even})                      |
-    (("-")?{even})                        |
-    (([1-9]|[a-fA-F])({even}))            |
-    (([1-9]|a|A)(0|2|4|6|8|a|A) {even})   |
-    ((a|A)(b|B)(0|2|4|6))
-)?
-
-hour = (
+hour = (                                 //HH:MM:SS” between 07:13:24 and 17:37:43
     "07:13:" ((2[4-9])|[3-5][0-9])      |
     "07:1" [4-9] ":" [0-5][0-9]             |
     "07:" [2-5][0-9] ":" [0-5][0-9]         |
@@ -59,73 +43,60 @@ hour = (
     "17:37:" 4[0-3]
 )
 
-bin   = ((101)                  |
+bin   = ((101)                  |       //binary number between 101 and 11010
         (11[0-1])               |
         (1[0-1] [0-1] [0-1])    |
         (10[0-1] [0-1] [0-1])   |
         (1100[0-1])             |
-        (11010))      
+        (11010)) 
 
-token_2   =  {hour}":"{bin}
-       
-//token_3   =
+hexev =("0"|"2"|"4"|"6"|"8"|"a"|"A"|"c"|"C"|"e"|"E")
+hex =    (                      //hexadecimal number is between −5C and aB6
+    ("-5"{hexev})|
+    ("-"[1-4]{hexev})   |
+    ("-"("2"|"4"|"6"|"8"|"a"|"A"|"c"|"C"|"e"|"E")) |
+    ({hexev})              |                                                     
+    ([1-9a-fA-F]{hexev}) |
+    ([0-9][0-9a-fA-F]{hexev}) |
+    ("a"([0-9]|"a"|"A"){hexev}) |
+    ((("aE")|("ae")|("AE")|("Ae"))[0|2])
+)  
+
+tok1w = ("a" | "b" | "c")
+word = {tok1w}{7}({tok1w}{tok1w})*
+
+token_1   = {word}"#"{hex}?[ \t]* ";"
+
+token_2   ={hour}":"{bin}[ \t]* ";"
+
 
 %%
 
 // Strings part
-// "START"            {return sym(sym.START_WD, new String(yytext()));}
-"print"              {return sym(sym.PRINT_WD, new String(yytext()));}
 "compare"            {return sym(sym.COMPARE_WD, new String(yytext()));}
-"with"               {return sym(sym.WITH_WD, new String(yytext()));}
-"end"                {return sym(sym.END_WD, new String(yytext()));}
+"with"            {return sym(sym.WITH_WD, new String(yytext()));}
+"end"            {return sym(sym.END_WD, new String(yytext()));}
+"print"            {return sym(sym.PRINT_WD, new String(yytext()));}
 
-
-// "?"             {return sym(sym.QUM);}
-// "!"             {return sym(sym.EXM);}
-// "@"             {return sym(sym.ATM);}
-// "#"             {return sym(sym.HAM);}
-// "$"             {return sym(sym.DOM);}
-// "%"             {return sym(sym.PAM);}
-// "^"             {return sym(sym.CIM);}
-// "&"             {return sym(sym.AND);}
-"*"             {return sym(sym.STAR);}
-"-"             {return sym(sym.DASH);}
-"="             {return sym(sym.EQ);}
-"+"             {return sym(sym.PLUS);}
-"("             {return sym(sym.OP);}
-")"             {return sym(sym.CP);}
-// "["             {return sym(sym.OB);}
-// "]"             {return sym(sym.CB);}
-"{"             {return sym(sym.OC);}
-"}"             {return sym(sym.CC);}
-// ">"             {return sym(sym.GT);}
-// "<"             {return sym(sym.LT);}
-"/"             {return sym(sym.SL);}
-// \\              {return sym(sym.BSL);}
-// "."             {return sym(sym.DOT);}
-// ":"             {return sym(sym.CO);}
-// ","             {return sym(sym.CM);}
-";"             {return sym(sym.SC);}
-// \'              {return sym(sym.QU);}
-// \"              {return sym(sym.DQU);}
-// \`              {return sym(sym.GRAVE);}
-// "~"             {return sym(sym.TIL);}
-// "|"             {return sym(sym.OR);}
-// "_"             {return sym(sym.US);}
+"*"             {return sym(sym.STAR);}          //Asterisk 
+"-"             {return sym(sym.DASH);}          //Hyphen/Dash 
+"="             {return sym(sym.EQ);}            //Equal Sign 
+"+"             {return sym(sym.PLUS);}          //Plus 
+"("             {return sym(sym.OP);}            //Open Parenthesis 
+")"             {return sym(sym.CP);}            //Close Parenthesis  
+"{"             {return sym(sym.OC);}            //Open Curly Brace 
+"}"             {return sym(sym.CC);}            //Close Curly Brace 
+"/"             {return sym(sym.SL);}            //Slash 
+";"             {return sym(sym.SC);}            //Semicolon 
 
 
 
-{inum}             {return sym(sym.INUM, Integer.parseInt(yytext()));}
-// {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
-// {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
-// {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
-{var}              {return sym(sym.VAR, new String(yytext()));}
+{inum}             {return sym(sym.INUM, new Integer(yytext()));}
 
 {token_1}          {return sym(sym.TOK1);}
 {token_2}          {return sym(sym.TOK2);}
-// {token_3}          {return sym(sym.TOK3);}
 
-//{var}              {return sym(sym.VAR, yytext());}
+{var}              {return sym(sym.VAR, yytext());}
 
 {sep}            {return sym(sym.SEP);}
 

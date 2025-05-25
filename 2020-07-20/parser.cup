@@ -4,107 +4,128 @@ import java.io.*;
 
 
 init with{:
-    table = new HashMap <String, HashMap <String, Double>>();
+    table = new HashMap <String, Integer>();
 :};
 
 parser code {:
-    public HashMap <String, HashMap <String, Double>> table;
+    public HashMap <String, Integer>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
+
 :};
 
 /////////////////////////////
 //// Symbols Delaration
 ////////////////////////////
 
-terminal TOK1, TOK2;
-terminal String PRINT_WD, COMPARE_WD, WITH_WD, END_WD;
-terminal SEP, STAR, DASH, EQ, PLUS, OP, CP, OC, CC, SC, SL;
+terminal SEP,TOK1, TOK2 , EQ, SC, COMPARE_WD, WITH_WD,END_WD, OC, CC, PRINT_WD, PLUS,DASH,STAR,SL, OP, CP;
 terminal String VAR;
-// terminal Double test;
 terminal Integer INUM;
 
-non terminal prog ;
-non terminal HEADER, HEADER1, HEADER2;
-non terminal SEC1, SEC2, SEC2_3, SEC2_7, TOK1_REPEAT, TOK1_OCCURS;
-non terminal COMMANDS, COMMAND;
-non terminal ASSIGNMENT,EXPR, EXP, OPER, BLOCK;
-non terminal COMPARE, COMP_LIST, COMP, PRINT_LIST;
-// non terminal String ;
-// non terminal HashMap ;
-// non terminal Integer ;
-// non terminal Double ;
+non terminal prog ,HEADER, HEADER1, HEADER2, COMMANDS;
+non terminal TOK1REP, TOK2REP, TOK1REP2;
+non terminal COMMAND, ASSIGNMENT,COMPARE,COMPLIST, PRINTLIST, PRINT ;
+non terminal Integer EXPR ;
 
 // precedence left ;
 precedence left PLUS, DASH;
 precedence left STAR, SL;
-precedence left OP, CP;
 
 /////////////////////////////
 //// Grammar
 ////////////////////////////
 
 start with prog;
-
-prog ::= HEADER | HEADER SEP COMMANDS
+ 
+prog ::= HEADER SEP COMMANDS
 ;
+
+
 HEADER ::= HEADER1 | HEADER2
 ;
 
-//
-HEADER1 ::= SEC1 SEC2
-;
-SEC1 ::= TOK1 TOK1 TOK1 TOK1_REPEAT
-;
-TOK1_REPEAT ::= TOK1 TOK1 | TOK1 TOK1 TOK1_REPEAT 
-;
-SEC2 ::= SEC2_3 | SEC2_7 SEC2_7 SEC2_7
-;
-SEC2_3 ::= TOK2 TOK2 TOK2
-;
-SEC2_7 ::= TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2  
-; 
-//
-HEADER2 ::= TOK2 SC TOK1_OCCURS  TOK2 SC TOK1_OCCURS  TOK2 SC TOK1_OCCURS |
-            
-            TOK2 SC                TOK2 SC  TOK1_OCCURS  TOK2 SC TOK1_OCCURS |
-            TOK2 SC TOK1_OCCURS    TOK2 SC               TOK2 SC TOK1_OCCURS |
-            TOK2 SC TOK1_OCCURS    TOK2 ٖٖSC  TOK1_OCCURS  TOK2 SC             |
-
-            TOK2 SC TOK1_OCCURS TOK2 SC TOK2 SC |
-            TOK2 SC TOK2 SC TOK1_OCCURS TOK2 SC|
-            TOK2 SC TOK2 SC TOK2 SC TOK1_OCCURS |
-        
-;
-TOK1_OCCURS ::= TOK1 SC | TOK1_OCCURS TOK1 SC
+HEADER1 ::= TOK1REP TOK2REP
 ;
 
-//
-COMMANDS ::= COMMAND | COMMANDS COMMAND
-;
-COMMAND ::= ASSIGNMENT | COMPARE 
+TOK1REP ::= TOK1REP TOK1 TOK1 | TOK1 TOK1 TOK1 TOK1 TOK1
 ;
 
-//
-ASSIGNMENT ::= VAR EQ EXPR SC
-;
-OPER ::= PLUS | DASH | STAR | SL
-;
-EXPR ::= EXPR OPER EXPR | OP EXPR CP | EXP
-;
-EXP ::=  BLOCK OPER BLOCK | BLOCK
-;
-BLOCK ::= INUM | VAR
+TOK2REP ::= TOK2 TOK2 TOK2 | TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 
 ;
 
-//
-COMPARE ::= COMPARE_WD EXPR  WITH_WD COMP_LIST END_WD SC
+HEADER2 ::= TOK2 TOK1REP2 TOK2 TOK1REP2 TOK2 TOK1REP2
 ;
-COMP_LIST ::= COMP COMP_LIST | COMP
-; 
-COMP ::= EXPR OC PRINT_LIST CC
+
+TOK1REP2 ::= TOK1REP2 TOK1 |
 ;
-PRINT_LIST ::= PRINT_WD EXPR SC | PRINT_WD EXPR SC PRINT_LIST 
+
+//COMMANDS
+
+
+COMMANDS ::= COMMANDS COMMAND | 
+;
+
+COMMAND ::= ASSIGNMENT | COMPARE
+;
+
+ASSIGNMENT ::= VAR:var EQ EXPR:value SC {:parser.table.put(var,value);:}
+;
+ 
+COMPARE ::= COMPARE_WD EXPR:exp1 WITH_WD COMPLIST:cmp END_WD SC
+;
+
+COMPLIST ::= COMPLIST EXPR:expr2 {:
+  Integer expr1 = (Integer) parser.stack(-3);
+  Integer expr2Val = expr2;
+  RESULT = expr1.equals(expr2Val);  // resault of the comparison
+:} OC PRINTLIST CC
+
+| EXPR:expr2 {:
+  Integer expr1 = (Integer) parser.stack(-2);
+  Integer expr2Val = expr2;
+  RESULT = expr1.equals(expr2Val);   // resault of the comparison
+:} OC PRINTLIST CC
+
+;
+PRINTLIST ::= PRINTLIST PRINT:x
+{:
+  Boolean condition = (Boolean) parser.stack(-3);  // resault of the comparison
+  if (Boolean.TRUE.equals(condition)) {
+    System.out.println(x);
+  }
+:}
+| PRINT:x
+{:
+  Boolean condition = (Boolean) parser.stack(-2);   // resault of the comparison
+  if (Boolean.TRUE.equals(condition)) {
+    System.out.println(x);
+  }
+:}
+;
+
+
+
+PRINT ::= PRINT_WD EXPR:x SC {:RESULT = x ;:}
+;
+
+EXPR ::=    EXPR:x PLUS EXPR:y {:RESULT=x + y;:}
+        |   EXPR:x DASH EXPR:y {:RESULT=x - y;:}
+        |   EXPR:x STAR EXPR:y {:RESULT=x * y;:}
+        |   EXPR:x SL EXPR:y {:RESULT=x / y;:}
+        |   OP EXPR:x CP {:RESULT=x;:}
+        |   INUM:x {:RESULT=x;:}
+        |   VAR:x {:RESULT = parser.table.get(x);:}
 ;
