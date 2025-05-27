@@ -13,6 +13,14 @@ parser code {:
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
+
+    public void printStatck(){
+        System.out.println("---Stack---");
+        for(int position=0; position<10; position++){
+            Object obj = (((Symbol)stack.elementAt(tos + -position)).value);
+            System.out.println("Element: " + obj + " At position: " + -position );
+        }
+    }
 :};
 
 // expression
@@ -54,7 +62,7 @@ parser code {:
 // terminal DOT;
 // terminal CO;
 // terminal CM;
-// terminal SC;
+terminal SC;
 // terminal QU;
 // terminal DQU;
 // terminal GRAVE;
@@ -68,13 +76,13 @@ parser code {:
 // terminal Integer INUM;
 // terminal Integer SINUM;
 
-// terminal TOK1, TOK2, SEP;
-// terminal TOK1, TOK2, TOK3, SEP;
+// terminal TOKEN1, TOKEN2, SEP;
+// terminal TOKEN1, TOKEN2, TOKEN3, SEP;
 // terminal String ;
 
 
-non terminal prog ;
-non terminal header ;
+non terminal prog;
+non terminal header, TOK1, TOK2;
 // non terminal ;
 // non terminal ;
 // non terminal ;
@@ -94,6 +102,12 @@ non terminal header ;
 start with prog;
 
 prog ::= header SEP
+;
+
+TOK1 ::= TOKEN1 SC
+;
+
+TOK2 ::= TOKEN2 SC
 ;
 
 // header

@@ -60,6 +60,7 @@ sep         = (\$\$\$)(\$\$)*
 // ip_range  = ([0-9] | [1-9][0-9] | 1[0-9][0-9] | 2[0-4][0-9] | 25[0-5])
 // ip_address = ({ip_range}\.{ip_range}\.{ip_range}\.{ip_range}) 
 // binary number
+// bin = [0-1] | 1[0-1] | 1[0-1][0-1] | 1[0-1][0-1][0-1]
 //  numbers
 
 token_1   = 
@@ -99,7 +100,7 @@ token_2   =
 // "."             {return sym(sym.DOT);}           //Period / Dot 
 // ":"             {return sym(sym.CO);}            //Colon 
 // ","             {return sym(sym.CM);}            //Comma 
-// ";"             {return sym(sym.SC);}            //Semicolon 
+";"             {return sym(sym.SC);}            //Semicolon 
 // \'              {return sym(sym.QU);}            //Single Quote 
 // \"              {return sym(sym.DQU);}           //Double Quote 
 // \`              {return sym(sym.GRAVE);}         //Grave Accent / Backtick
@@ -115,9 +116,9 @@ token_2   =
 // {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 
 
-{token_1}          {return sym(sym.TOK1);}
-{token_2}          {return sym(sym.TOK2);}
-// {token_3}          {return sym(sym.TOK3);}
+{token_1}          {return sym(sym.TOKEN1);}
+{token_2}          {return sym(sym.TOKEN2);}
+// {token_3}          {return sym(sym.TOKEN3);}
 
 
 {sep}            {return sym(sym.SEP);}
