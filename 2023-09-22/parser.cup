@@ -10,8 +10,18 @@ init with{:
 parser code {:
     public HashMap <String, HashMap <String, Double>> table;
 
+    ArrayList<Integer> arr = new ArrayList<>();
+
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+    public void printStatck(){
+        System.out.println("---Stack---");
+        for(int position=0; position<8; position++){
+            Object obj = (((Symbol)stack.elementAt(tos + -position)).value);
+            System.out.println("Element: " + obj + " At position: " + -position );
+        }
     }
 :};
 
@@ -70,18 +80,18 @@ terminal Integer INUM;
 // terminal Integer SINUM;
 
 // terminal TOK1, TOK2, SEP;
-terminal TOK1, TOK2, TOK3, SEP;
+terminal TOKEN1, TOKEN2, TOKEN3, SEP;
 terminal String INS_WD, CMP_WD, SUM_WD;
 
 
 non terminal prog ;
-non terminal header, head_tok3 ;
-non terminal commands, command, command_list, ins, cmp, sum, sum_list, exp;
+non terminal header, head_tok3, TOK1, TOK2, TOK3;
+non terminal commands, command, command_list, cmp;
 // non terminal ;
 // non terminal ;
 // non terminal String ;
 // non terminal HashMap ;
-// non terminal Integer ;
+non terminal Integer exp, sum, ins;
 // non terminal Double ;
 
 precedence left PLUS, DASH;
@@ -99,14 +109,19 @@ prog ::= header SEP commands
 
 // header
 
-header ::= head_tok3 TOK1 SC head_tok3 TOK2 SC head_tok3 |
-           head_tok3 TOK2 SC head_tok3 TOK1 SC head_tok3 |
-           head_tok3 TOK1 SC head_tok3 TOK2 SC head_tok3 TOK2 SC head_tok3 |
-           head_tok3 TOK2 SC head_tok3 TOK1 SC head_tok3 TOK2 SC head_tok3 |
-           head_tok3 TOK2 SC head_tok3 TOK2 SC head_tok3 TOK1 SC head_tok3
+TOK1 ::= TOKEN1 SC;
+TOK2 ::= TOKEN2 SC;
+TOK3 ::= TOKEN3 SC;
+
+
+header ::= head_tok3 TOK1 head_tok3 TOK2 head_tok3 |
+           head_tok3 TOK2 head_tok3 TOK1 head_tok3 |
+           head_tok3 TOK1 head_tok3 TOK2 head_tok3 TOK2 head_tok3 |
+           head_tok3 TOK2 head_tok3 TOK1 head_tok3 TOK2 head_tok3 |
+           head_tok3 TOK2 head_tok3 TOK2 head_tok3 TOK1 head_tok3
 ;
 
-head_tok3 ::= head_tok3 TOK3 SC |
+head_tok3 ::= head_tok3 TOK3 |
 ;
 
 // commands
@@ -117,24 +132,85 @@ commands ::= command command command command command_list
 command_list ::= command command command_list |
 ;
 
-exp ::= exp PLUS exp |
-        exp DASH exp |
-        exp STAR exp |
-        exp SL exp |
-        DASH exp |
-        OP exp CP |
-        INUM
+exp ::= exp:el PLUS exp:er
+{:
+RESULT = el + er;
+:}
+| exp:el DASH exp:er
+{:
+RESULT = el - er;
+:}
+| exp:el STAR exp:er
+{:
+RESULT = el * er;
+:}
+| exp:el SL exp:er
+{:
+RESULT = el / er;
+:}
+| DASH exp:e 
+{:
+RESULT = -e;
+:} 
+| OP exp:e CP
+{:
+RESULT = e;
+:}
+| INUM:inum
+{:
+RESULT = inum;
+:}
 ;
 
-command ::= INS_WD ins SC | CMP_WD cmp SC  | SUM_WD sum SC 
+command ::= INS_WD ins SC | CMP_WD cmp SC  | SUM_WD sum:sum
+{:
+    System.out.println("sum: " + sum);
+    arr.add(sum);
+:}
+SC 
 ;
 
-ins ::= OB exp CB
+ins ::= OB exp:e CB
+{:
+    System.out.println("ins:" + e);
+    arr.add(e);
+    RESULT = e;
+:}
 ;
            
-cmp ::= OB exp CB | OB exp CB CM OB exp CB  
+cmp ::= OB exp:e CB
+{:
+    Integer r1 = arr.get(arr.size() -1);
+    Integer r2 = arr.get(arr.size() -2);
+    if (r1.equals(r2)){
+        System.out.println("cmp: " + e);
+        arr.add(e);
+    }else{
+        System.out.println("cmp: " + 0);
+        arr.add(0);
+    }
+:}
+ | OB exp:e1 CB CM OB exp:e2 CB
+ {:
+    Integer r1 = arr.get(arr.size() -1);
+    Integer r2 = arr.get(arr.size() -2);
+    if (r1.equals(r2)){
+        System.out.println("cmp: " + e1);
+        arr.add(e1);
+    }else{
+        System.out.println("cmp: " + e2);
+        arr.add(e2);
+    }
+ :}  
 ;
 
-sum ::= sum CM OB exp CB | OB exp CB
+sum ::= sum:sum CM OB exp:e CB
+{:
+    sum += e;
+    RESULT = sum;
+:}
+| OB exp:e CB
+{:
+    RESULT = e;
+:}
 ; 
-

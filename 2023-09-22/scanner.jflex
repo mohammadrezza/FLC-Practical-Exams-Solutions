@@ -185,9 +185,9 @@ token_3   =  "C_"{hex}{hsep}{hex}{hsep}{hex}{hsep}{hex}({hsep}{hex}{hsep}{hex})*
 // {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 
 
-{token_1}          {return sym(sym.TOK1);}
-{token_2}          {return sym(sym.TOK2);}
-{token_3}          {return sym(sym.TOK3);}
+{token_1}          {return sym(sym.TOKEN1);}
+{token_2}          {return sym(sym.TOKEN2);}
+{token_3}          {return sym(sym.TOKEN3);}
 
 
 {sep}            {return sym(sym.SEP);}

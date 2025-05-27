@@ -16,13 +16,13 @@ public class sym {
   public static final int OB = 9;
   public static final int EOF = 0;
   public static final int SL = 11;
-  public static final int TOK3 = 15;
   public static final int SUM_WD = 19;
-  public static final int TOK2 = 14;
   public static final int CMP_WD = 18;
   public static final int SEP = 16;
-  public static final int TOK1 = 13;
   public static final int error = 1;
+  public static final int TOKEN3 = 15;
+  public static final int TOKEN2 = 14;
+  public static final int TOKEN1 = 13;
   public static final int DASH = 7;
   public static final int SC = 5;
   public static final int INS_WD = 17;
@@ -40,9 +40,9 @@ public class sym {
   "CB",
   "SL",
   "INUM",
-  "TOK1",
-  "TOK2",
-  "TOK3",
+  "TOKEN1",
+  "TOKEN2",
+  "TOKEN3",
   "SEP",
   "INS_WD",
   "CMP_WD",
@@ -61,13 +61,13 @@ public String[] TT;
 		TT[9]=new String("OB");
 		TT[0]=new String("EOF");
 		TT[11]=new String("SL");
-		TT[15]=new String("TOK3");
 		TT[19]=new String("SUM_WD");
-		TT[14]=new String("TOK2");
 		TT[18]=new String("CMP_WD");
 		TT[16]=new String("SEP");
-		TT[13]=new String("TOK1");
 		TT[1]=new String("error");
+		TT[15]=new String("TOKEN3");
+		TT[14]=new String("TOKEN2");
+		TT[13]=new String("TOKEN1");
 		TT[7]=new String("DASH");
 		TT[5]=new String("SC");
 		TT[17]=new String("INS_WD");
