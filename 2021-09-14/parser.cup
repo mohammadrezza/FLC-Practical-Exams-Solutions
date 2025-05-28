@@ -8,33 +8,51 @@ init with{:
 :};
 
 parser code {:
-    public HashMap <String, HashMap <String, Double>> table;
+    public HashMap <String, HashMap <String, Double>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
-:};
 
+    public Integer height = 0;
+
+    public Integer speed = 0;
+
+:};
 
 /////////////////////////////
 //// Symbols Delaration
 ////////////////////////////
 
-terminal SEP, TOK1, TOK2, TOK3, SC, CM, EQ, OB, CB, GT ;
-terminal String INIT_WD, HEIGHT_WD, SPEED_WD, SUM_WD, MUL_WD, COND_WD, UPDATE_WD, DONE_WD;
+terminal TOK1, TOK2, TOK3, SEP, INIT_WD, CM, SC, HEIGHT_WD, EQ, SPEED_WD ,COND_WD, OB, CB, UPDATE_WD, DONE_WD, SUM_WD,MUL_WD, GT;
+// terminal String test;
 // terminal Double test;
 terminal Integer INUM;
 
 non terminal prog, HEADER, SIMULATION ;
-non terminal TOKENOTHER , TOKEN1, TOKEN2, TOKEN3;
-non terminal INIT, COMMANDS, SIM2, HEIGHTASS, SPEEDASS, EXPS, EXP, OPER, COND, COMPARISON, ASSES, COMPARISON_COMMAND ;
+non terminal TOK12REP, TOK12 ;
+non terminal INIT, COMMANDS, COMMAND,COND, ASS_LIST, ASS;
+non terminal Integer HEIGHT_ASS,SPEED_ASS, EXP;
+non terminal Boolean COMPARISON;
 // non terminal String ;
 // non terminal HashMap ;
 // non terminal Integer ;
 // non terminal Double ;
 
 // precedence left ;
-// precedence left PLUS, DASH;
+precedence left SUM_WD;
+precedence left MUL_WD;
 
 /////////////////////////////
 //// Grammar
@@ -42,69 +60,76 @@ non terminal INIT, COMMANDS, SIM2, HEIGHTASS, SPEEDASS, EXPS, EXP, OPER, COND, C
 
 start with prog;
 
-
 prog ::= HEADER SEP SIMULATION
 ;
 
-HEADER ::= 
-            TOKENOTHER                                              |
-            TOKENOTHER TOKEN3 TOKENOTHER                           |
-            TOKENOTHER TOKEN3 TOKENOTHER TOKEN3 TOKENOTHER        
+HEADER ::= TOK12REP 
+        | TOK12REP TOK3 TOK12REP
+        | TOK12REP TOK3 TOK12REP TOK3 TOK12REP
+;
+
+TOK12REP ::= TOK12REP TOK12 |
+;
+
+TOK12 ::= TOK1 | TOK2
 ;
 
 
-TOKENOTHER ::= TOKENOTHER  TOKEN1  | TOKENOTHER TOKEN2  | TOKEN1 | TOKEN2 
+//SIMULATION
+
+
+SIMULATION ::= INIT COMMANDS
 ;
 
-TOKEN1 ::=  TOK1 SC  
+COMMANDS ::= COMMANDS COMMAND COMMAND | COMMAND COMMAND COMMAND
 ;
 
-TOKEN2 ::=  TOK2 SC  
+INIT ::=  INIT_WD HEIGHT_ASS:height CM SPEED_ASS:speed SC {:parser.height = height;  parser.speed = speed;:}
+        | INIT_WD SPEED_ASS:speed CM HEIGHT_ASS:height SC {:parser.height = height; parser.speed = speed;:}
+        | INIT_WD HEIGHT_ASS:height CM  SC {:parser.height = height; parser.speed = 0;:}
+        | INIT_WD  CM HEIGHT_ASS:height SC {:parser.height = height; parser.speed = 0;:}
+        | INIT_WD SPEED_ASS:speed CM SC {:parser.height = 0; parser.speed = speed;:}
+        | INIT_WD CM SPEED_ASS:speed SC {:parser.height = 0; parser.speed = speed;:}
 ;
 
-TOKEN3 ::= TOK3 SC
+HEIGHT_ASS ::= HEIGHT_WD EQ EXP:exp {:RESULT = exp;System.out.println("HEIGHT " + exp);:}
 ;
 
-SIMULATION ::=  INIT COMMANDS
+SPEED_ASS ::= SPEED_WD EQ EXP:exp {:RESULT = exp;System.out.println("SPEED " + exp);:}
 ;
 
-INIT ::= INIT_WD SIM2 SC    
+COND ::=  COND_WD OB COMPARISON CB UPDATE_WD ASS_LIST DONE_WD
+; 
+
+EXP ::= EXP:x SUM_WD EXP:y {:RESULT = x + y;:}
+      | EXP:x MUL_WD EXP:y {:RESULT = x * y;:}
+      | INUM:x {:RESULT = x;:}
+      | SPEED_WD{:RESULT = parser.speed;:}
+      | HEIGHT_WD {:RESULT = parser.height;:}
 ;
 
-SIM2 ::= HEIGHTASS CM SPEEDASS  |
-         SPEEDASS CM HEIGHTASS  |
-         HEIGHTASS |
-         SPEEDASS |
+COMMAND ::= HEIGHT_ASS SC | SPEED_ASS SC | COND SC
 ;
 
-HEIGHTASS ::= HEIGHT_WD EQ EXPS
+ASS_LIST ::= ASS_LIST HEIGHT_ASS:x SC{:if((Boolean)parser.stack(-5)){
+      parser.height = x;
+     };:} |
+     ASS_LIST SPEED_ASS:x SC{:if((Boolean)parser.stack(-5)){
+      parser.speed = x;
+     };:}
+     | HEIGHT_ASS:x SC {:if((Boolean)parser.stack(-4)){
+      parser.height = x;
+     };:}
+     | SPEED_ASS:x SC {:if((Boolean)parser.stack(-4)){
+      parser.speed = x;
+     };:}
 ;
 
-SPEEDASS ::= SPEED_WD EQ EXPS
+ASS ::= HEIGHT_ASS:height {: RESULT = height;:} | SPEED_ASS:speed {:
+    RESULT = speed;:}
 ;
 
-EXPS ::= EXPS OPER EXP | EXP
-;
-
-EXP ::= INUM | HEIGHT_WD | SPEED_WD
-;
-
-OPER ::= SUM_WD | MUL_WD
-;
-
-COMMANDS ::= HEIGHTASS SC COMMANDS | SPEEDASS SC COMMANDS | COND COMMANDS |
-;
-
-COND ::= COND_WD OB COMPARISON CB UPDATE_WD ASSES DONE_WD SC
-;
-
-ASSES ::= HEIGHTASS SC SPEEDASS SC  |
-         SPEEDASS SC HEIGHTASS SC  |
-         HEIGHTASS SC|
-         SPEEDASS SC
-;
-
-COMPARISON ::=EXPS COMPARISON_COMMAND EXPS |
-;
-COMPARISON_COMMAND ::= GT | EQ
+COMPARISON ::=  EXP:x GT EXP:y  {:if(x > y){RESULT = true;}else{RESULT = false;};:}
+              | EXP:x EQ EXP:y {:if(x==y){RESULT = true;}else{RESULT = false;};:}
+| {:RESULT = true;:}
 ;
