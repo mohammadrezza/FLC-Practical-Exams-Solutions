@@ -8,32 +8,40 @@ init with{:
 :};
 
 parser code {:
-    public HashMap <String, Boolean> table;
+    public HashMap <String, Boolean>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
+
 :};
-
-
 /////////////////////////////
 //// Symbols Delaration
 ////////////////////////////
 
-terminal  SEP,TOK1, SCOLON, TOK2, TOK3, VAR, EQ, OP, CP;
- terminal String AND, OR, NOT, TURE_WD, FALSE_WD, IF_WD, FI_WD, OR_WD, AND_WD, DO_WD, DONE_WD, PRINT_WD, QSTRING;
-// terminal Double test;
-// terminal Integer test;
+terminal SEP, TOK1 , TOK2, TOK3, EQ, AND, OR, NOT, TRUE_WD, FALSE_WD, IF_WD, FI_WD, OR_WD, AND_WD, DO_WD,PRINT_WD,DONE_WD,QSTRING,SC, CP, OP ;
+terminal String VAR;
 
-non terminal prog, header, header1, header2, header3, execution_section, command, ass, if, operators, list_comp, comp ;
 
-non terminal Boolean operands, bool_exp, nt0, nt1;
+non terminal prog, HEADER, EXECUTION ;
+non terminal HEADER1, HEADER2, TOK2REP, TOK13REP, TOK13,TOK12REP, TOK12 ;
+non terminal COMMANDS, COMMAND, ASS, IF, LISTCOMP ;
+non terminal Boolean BOOLEXP;
+non terminal Object[] COMP;
 
-non terminal String print;
-// non terminal HashMap ;
-// non terminal Integer ;
-// non terminal Double ;
-
+precedence left AND, OR;
+precedence left NOT;
 
 /////////////////////////////
 //// Grammar
@@ -41,100 +49,102 @@ non terminal String print;
 
 start with prog;
 
-prog ::= header SEP execution_section
+prog ::= HEADER SEP EXECUTION
 ;
 
-header ::= header1 header2 header2 | header1 header2 header2 header2 | header1 header2 header2 header2 header2 header2 header2 header2 header2 header2 | 
-TOK3 SCOLON header3 TOK3 SCOLON header3 TOK3 SCOLON header3
+HEADER ::= HEADER1 | HEADER2
 ;
 
-header1 ::= TOK2 SCOLON TOK2 SCOLON TOK2 SCOLON | header1 TOK2 SCOLON TOK2 SCOLON
+HEADER1 ::= TOK2REP TOK13REP
 ;
 
-header2 ::= TOK1 SCOLON | TOK3 SCOLON 
+TOK2REP ::= TOK2REP TOK2 TOK2 | TOK2 TOK2 TOK2
 ;
 
-header3 ::= header3 TOK1 SCOLON | header3 TOK2 SCOLON | 
+TOK13REP ::= TOK13 TOK13
+            | TOK13 TOK13 TOK13 
+            | TOK13 TOK13 TOK13 TOK13 TOK13 TOK13 TOK13 TOK13 TOK13 
+;
+TOK13 ::= TOK1 | TOK3
 ;
 
-execution_section ::= command command command command command | execution_section command command
+HEADER2 ::= TOK3 TOK12REP TOK3 TOK12REP TOK3 TOK12REP
 ;
 
-command ::= ass | if
+TOK12REP ::= TOK12REP TOK12 |
 ;
 
-ass ::= VAR:name EQ bool_exp:bool SCOLON {:
-                                            parser.table.put((String)name, (Boolean)bool);
-                                        :}
+TOK12 ::= TOK1 | TOK2
 ;
 
-bool_exp ::= operands:a {: RESULT = (Boolean)a; :}
-| VAR:name {: RESULT = (Boolean)parser.table.get(name); :}
-| operators VAR:a {:
-                        Boolean b = (Boolean)parser.table.get(a);
-                        RESULT = !b;
-                    :}
-| operators operands:a {:
-                        RESULT = !(Boolean)a;
-                    :}
-| bool_exp:eop operators:opt VAR:op1 {:
-                                            Boolean b = (Boolean)parser.table.get(op1);
-                                            if(opt == "&&"){
-                                                RESULT = (Boolean)eop && b;
-                                            }
-                                            if(opt == "||"){
-                                                RESULT = (Boolean)eop || b;
-                                            }
-                                            :}
-| bool_exp:eop operators:opt operands:op1 {:
-                                            if(opt == "&&"){
-                                                RESULT = (Boolean)eop && (Boolean)op1;
-                                            }
-                                            if(opt == "||"){
-                                                RESULT = (Boolean)eop || (Boolean)op1;
-                                            }
-                                            :}
-| bool_exp:eop operators:opt OP bool_exp:eop2 CP {:
-                                                if(opt == "&&"){
-                                                RESULT = (Boolean)eop && (Boolean)eop2;
-                                                }
-                                                if(opt == "||"){
-                                                    RESULT = (Boolean)eop || (Boolean)eop2;
-                                                } 
-                                            :}
+//EXECUTION
+
+EXECUTION ::= COMMANDS |
 ;
 
-operands ::= TURE_WD {: RESULT = true; :} | FALSE_WD {: RESULT = false; :}
+COMMANDS ::= COMMANDS COMMAND COMMAND | COMMAND COMMAND COMMAND COMMAND COMMAND
 ;
 
-operators ::= AND {: RESULT = "&&"; :} | OR {: RESULT = "||"; :} | NOT {: RESULT = "!"; :}
+COMMAND ::= ASS | IF
 ;
 
-if ::= IF_WD bool_exp:ex list_comp FI_WD {: RESULT = (Boolean)ex; :}
+ASS ::= VAR:var EQ BOOLEXP:exp SC {:parser.table.put(var,exp);:}
 ;
 
-list_comp ::= nt0 comp | list_comp nt1 comp 
+BOOLEXP ::=     BOOLEXP:x AND BOOLEXP:y {:RESULT = x & y;:}
+            |   BOOLEXP:x OR BOOLEXP:y {:RESULT = x | y;:}
+            |   NOT BOOLEXP:x {:RESULT = !x;:}
+            |   OP BOOLEXP:x CP {:RESULT = x;:}
+            |   TRUE_WD {:RESULT = true;:}
+            |   FALSE_WD {:RESULT = false;:}
+            |   VAR:x {:RESULT = parser.table.get(x);:}
 ;
 
-nt0 ::= {: RESULT = (Boolean)parser.stack(0); :}
+IF ::= IF_WD BOOLEXP:bool LISTCOMP FI_WD
 ;
 
-nt1 ::= {: RESULT = (Boolean)parser.stack(-1); :}
+LISTCOMP ::= LISTCOMP COMP:x{:
+    Boolean secondexp = (Boolean)x[1];
+    String comp = (String)x[0];
+    String word = (String)x[2];
+    if(comp == "or" ){
+        if((Boolean)parser.stack(-2) | secondexp){
+            System.out.println(word);
+        };
+    }else{
+         if((Boolean)parser.stack(-2) & secondexp){
+            System.out.println(word);
+        };
+    };
+    :}  | COMP:x {:
+    Boolean secondexp = (Boolean)x[1];
+    String comp = (String)x[0];
+    String word = (String)x[2];
+    if(comp == "or" ){
+        if((Boolean)parser.stack(-1) | secondexp){
+            System.out.println(word);
+        };
+    }else{
+         if((Boolean)parser.stack(-2) & secondexp){
+            System.out.println(word);
+        };
+    };
+    :}
 ;
 
-comp ::= OR_WD bool_exp:exp DO_WD print:pr DONE_WD {:
-                                                        Boolean a = (Boolean)parser.stack(-5);
-                                                        if(a || (Boolean)exp){
-                                                            System.out.println(pr);
-                                                        }
-                                                    :}
-| AND_WD bool_exp:exp DO_WD print:pr DONE_WD {:
-                                                Boolean a = (Boolean)parser.stack(-5);
-                                                if(a && (Boolean)exp){
-                                                    System.out.println(pr);
-                                                }
-                                            :}
+COMP ::=    OR_WD BOOLEXP:x DO_WD PRINT_WD QSTRING:y SC DONE_WD  {:
+Object [] arr = new Object[3];
+arr[0] = "or";
+arr[1] = x  ;
+arr[2] = y;
+RESULT = arr;
+:}
+        |   AND_WD BOOLEXP:x DO_WD PRINT_WD QSTRING:y SC DONE_WD  {:
+Object [] arr = new Object[3];
+arr[0] = "and";
+arr[1] = x  ;
+arr[2] = y;
+RESULT = arr;
+:}
 ;
 
-print ::= PRINT_WD QSTRING:qs SCOLON {: RESULT = (String)qs; :}
-;
