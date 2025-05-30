@@ -4,43 +4,43 @@ import java.io.*;
 
 
 init with{:
-    table = new HashMap <String, HashMap <String, Float>>();
+    table = new HashMap <String, HashMap <String, Double>>();
 :};
 
 parser code {:
-    public HashMap <String, HashMap <String, Float>> table;
+    public HashMap <String, HashMap <String, Double>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
-:};
 
+:};
 
 /////////////////////////////
 //// Symbols Delaration
 ////////////////////////////
 
-terminal SEP, TOK1, TOK2, SCOLON, DASH, OP, CP, COMMA ;
-terminal String START_WD, BAT_WD, FUE_WD, KWH_WD, LIT_WD, MAX_WD, PLUS_WD, STAR_WD, MOD_WD, USE_WD, DO_WD, DONE_WD, KM_WD, UKM_WD;
-// terminal Double test;
-// terminal Integer INUM;
-terminal Float FNUM;
+terminal SEP, TOK1, TOK2, START_WD, DASH, SC,BATTERY_WD, KWH_WD, FUEL_WD, LITERS_WD, PLUS, STAR, MAX_WD, CM, MOD_WD, USE_WD, DO_WD,DONE_WD, KM_WD, UNITKM_WD, OP, CP;
+terminal Double REAL_NUM;
 
-non terminal prog, header, token_1, race_section;
+non terminal prog ,HEADER,RUN;
+non terminal TOK1S, COMMANDS, COMAND,  MOD, USE ;
+non terminal Double EXP, FUEL_ASS, BATTERY_ASS,EXPS;
+non terminal Double[] START, CONS;
 
-non terminal Float exp, battery_ass, fuel_ass, exp2, max;
-
-non terminal Float[] sta, use, command, commands, mod, cons;
-
-// non terminal HashMap ;
-// non terminal Integer ;
-// non terminal Double ;
-
-precedence left PLUS_WD;
-precedence left STAR_WD;
-
-
-
+precedence left PLUS;
+precedence left STAR;
 
 /////////////////////////////
 //// Grammar
@@ -48,108 +48,100 @@ precedence left STAR_WD;
 
 start with prog;
 
-prog ::= header SEP race_section
+prog ::= HEADER SEP RUN
 ;
 
-header ::= token_1 TOK2 SCOLON token_1 TOK2 SCOLON token_1 | token_1 TOK2 SCOLON token_1 TOK2 SCOLON token_1 TOK2 SCOLON token_1 | token_1
+HEADER ::=  TOK1S
+        |   TOK1S TOK2 TOK1S TOK2 TOK1S
+        |   TOK1S TOK2 TOK1S TOK2 TOK1S TOK2 TOK1S
 ;
 
-token_1 ::= token_1 TOK1 SCOLON
-| ;
-
-////// Race Section 
-
-race_section ::= sta commands
+TOK1S ::= TOK1S TOK1 | 
 ;
 
-sta ::= START_WD battery_ass:batt DASH fuel_ass:fuel SCOLON 
-{:RESULT = new Float[2]; RESULT[0] = batt; RESULT[1] = fuel; System.out.println("battery=" + RESULT[0] + " " + "fuel=" + RESULT[1]);:}
-| START_WD fuel_ass:fuel DASH battery_ass:batt SCOLON 
-{:RESULT = new Float[2]; RESULT[0] = batt; RESULT[1] = fuel; System.out.println("battery=" + RESULT[0] + " " + "fuel=" + RESULT[1]);:}
-| START_WD battery_ass:batt DASH SCOLON
-{:RESULT = new Float[2]; RESULT[0] = batt; RESULT[1] = 100.0f; System.out.println("battery=" + RESULT[0] + " " + "fuel=" + RESULT[1]);:}
-| START_WD DASH fuel_ass:fuel SCOLON
-{:RESULT = new Float[2]; RESULT[0] = 100.0f; RESULT[1] = fuel; System.out.println("battery=" + RESULT[0] + " " + "fuel=" + RESULT[1]);:}
-| START_WD fuel_ass:fuel DASH SCOLON
-{:RESULT = new Float[2]; RESULT[0] = 100.0f; RESULT[1] = fuel; System.out.println("battery=" + RESULT[0] + " " + "fuel=" + RESULT[1]);:}
-| START_WD DASH battery_ass:batt SCOLON
-{:RESULT = new Float[2]; RESULT[0] = batt; RESULT[1] = 100.0f; System.out.println("battery=" + RESULT[0] + " " + "fuel=" + RESULT[1]);:}
-| START_WD SCOLON
-{:RESULT = new Float[2]; RESULT[0] = 100.0f; RESULT[1] = 100.0f; System.out.println("battery=" + RESULT[0] + " " + "fuel=" + RESULT[1]);:}
+
+//RUN
+
+
+RUN ::= START COMMANDS
 ;
 
-battery_ass ::= BAT_WD exp:ex KWH_WD {: RESULT = ex; :}
+COMMANDS ::= COMMANDS COMAND COMAND | COMAND COMAND COMAND COMAND
+; 
+
+START ::=   START_WD BATTERY_ASS:x DASH FUEL_ASS:y SC {:Double[] arr = new Double[2]; arr[0] = x; arr[1]= y; RESULT = arr; System.out.println("battery="+arr[0]+" fuel="+arr[1]);:}
+        |   START_WD FUEL_ASS:y DASH BATTERY_ASS:x SC {:Double[] arr = new Double[2]; arr[0] = x; arr[1]= y; RESULT = arr; System.out.println("battery="+arr[0]+" fuel="+arr[1]);:}
+        |   START_WD BATTERY_ASS:x DASH SC {:Double[] arr = new Double[2]; arr[0] = x; arr[1]= 100.0; RESULT = arr; System.out.println("battery="+arr[0]+" fuel="+arr[1]);:}
+        |   START_WD DASH BATTERY_ASS:x SC {:Double[] arr = new Double[2]; arr[0] = x; arr[1]= 100.0; RESULT = arr; System.out.println("battery="+arr[0]+" fuel="+arr[1]);:}
+        |   START_WD FUEL_ASS:y DASH SC {:Double[] arr = new Double[2]; arr[0] = 100.0; arr[1]= y; RESULT = arr; System.out.println("battery="+arr[0]+" fuel="+arr[1]);:}
+        |   START_WD DASH FUEL_ASS:y SC {:Double[] arr = new Double[2]; arr[0] = 100.0; arr[1]= y; RESULT = arr; System.out.println("battery="+arr[0]+" fuel="+arr[1]);:}
+        |   START_WD DASH SC {:Double[] arr = new Double[2]; arr[0] = 100.0; arr[1]= 100.0; RESULT = arr; System.out.println("battery="+arr[0]+" fuel="+arr[1]);:}
 ;
 
-fuel_ass ::= FUE_WD exp:ex LIT_WD {: RESULT = ex; :}
+BATTERY_ASS ::= BATTERY_WD EXP:x KWH_WD {:RESULT =x; :}
 ;
 
-exp ::= FNUM:fnum {: RESULT = fnum; :}
-| max:mx {: RESULT = mx; :}
-| exp:ex1 PLUS_WD exp:ex2 {: RESULT = ex1 + ex2; :}
-| exp:ex1 STAR_WD exp:ex2 {: RESULT = ex1 * ex2; :}
+FUEL_ASS ::= FUEL_WD EXP:x LITERS_WD {:RESULT =x; :}
 ;
 
-max ::= MAX_WD OP exp2:ex CP {: RESULT = ex; :}
+EXP ::= EXP:x PLUS EXP:y {:RESULT = x + y ;:}
+    |   EXP:x STAR EXP:y {:RESULT = x * y ;:}
+    |   MAX_WD OP EXPS:x CP  {:RESULT =x; :}
+    |   REAL_NUM:x {:RESULT =x; :}
 ;
 
-exp2 ::= exp:ex {:RESULT = ex; :}
-| exp2:pex COMMA exp:ex {: if(ex > pex){ RESULT = ex; }else { RESULT = pex; } :}
+
+EXPS ::= EXPS:x CM EXP:y{:
+if(x>y){
+    RESULT = x;
+}else{
+    RESULT = y;
+};
+:} 
+| EXP:x {:RESULT = x;:}   
 ;
 
-commands ::= command command command command | commands command command
+COMAND ::= MOD:x{:RESULT = x;:} SC | USE:x SC{:RESULT = x;:}
 ;
 
-command ::= mod:narry SCOLON {: RESULT = narry; :}
-| use:narry SCOLON {: RESULT = narry; :}
+MOD ::= MOD_WD BATTERY_WD EXP:x{:
+    Double[] arr = (Double[])parser.stack(-4);
+    arr[0] = arr[0] + x;
+    RESULT = arr;
+      System.out.println("battery="+arr[0]+" fuel="+arr[1]);
+    :}  | 
+    MOD_WD FUEL_WD EXP:x{:
+    Double[] arr = (Double[])parser.stack(-4);
+    arr[1] = arr[1]+ x;
+    RESULT = arr;
+      System.out.println("battery="+arr[0]+" fuel="+arr[1]);
+    :}
 ;
 
-mod ::= MOD_WD BAT_WD exp:ex {: 
-                                Float[] prearry = (Float[])parser.stack(-3);
-                                Float[] newarry = new Float[2];
-                                newarry[0] = ex + prearry[0];
-                                newarry[1] = prearry[1];
-                                System.out.println("battery=" + newarry[0] + " " + "fuel=" + newarry[1]);
-                                RESULT = newarry;
-                            :}
-| MOD_WD FUE_WD exp:ex {: 
-                            Float[] prearry = (Float[])parser.stack(-3);
-                            Float[] newarry = new Float[2];
-                            newarry[0] = prearry[0];
-                            newarry[1] = ex + prearry[1];
-                            System.out.println("battery=" + newarry[0] + " " + "fuel=" + newarry[1]);
-                            RESULT = newarry;
-                        :}
+USE ::= USE_WD BATTERY_WD DO_WD CONS:x DONE_WD {:RESULT = x;:} | USE_WD FUEL_WD DO_WD CONS:x DONE_WD {:RESULT = x;:} 
 ;
 
-use ::= USE_WD BAT_WD DO_WD cons:newf DONE_WD {: RESULT = newf; :}
-| USE_WD FUE_WD DO_WD cons:newf DONE_WD {: RESULT = newf; :}
-;
+CONS ::= CONS:arr EXP:x KM_WD EXP:y UNITKM_WD SC {:
+    if(parser.stack(-7).equals("FUEL")){
+        arr[1] = arr[1] - (x * y );
+        RESULT = arr;
+    }else if(parser.stack(-7).equals("BATTREY")){
+        arr[0] = arr[0] - (x * y );
+        RESULT = arr;
+    };
+    System.out.println("battery="+arr[0]+" fuel="+arr[1]);
+:} | EXP:x KM_WD EXP:y UNITKM_WD SC {:
 
-cons ::= exp:ex1 KM_WD exp:ex2 UKM_WD SCOLON {: Float[] prearry = (Float[])parser.stack(-8);
-                                                String b = (String)parser.stack(-6);
-                                                Float[] newarry = new Float[2];
-                                                if(b.equals("FUEL")){
-                                                    newarry[0] = prearry[0];
-                                                    newarry[1] = prearry[1] - (ex1 * ex2);
-                                                }else if(b.equals("BATTERY")){
-                                                    newarry[0] = prearry[0] - (ex1 * ex2);
-                                                    newarry[1] = prearry[1];
-                                                }
-                                                System.out.println("battery=" + newarry[0] + " " + "fuel=" + newarry[1]);
-                                                RESULT = newarry;
-                                            :}
-| cons:a exp:ex1 KM_WD exp:ex2 UKM_WD SCOLON {: 
-                                                String b = (String)parser.stack(-7);
-                                                Float[] newarry = new Float[2];
-                                                if(b.equals("FUEL")){
-                                                    newarry[0] = a[0];
-                                                    newarry[1] = a[1] - (ex1 * ex2);
-                                                }else if(b.equals("BATTERY")){
-                                                    newarry[0] = a[0] - (ex1 * ex2);
-                                                    newarry[1] = a[1];
-                                                }
-                                                System.out.println("battery=" + newarry[0] + " " + "fuel=" + newarry[1]);
-                                                RESULT = newarry;
-                                            :}
+    Double[] arr = (Double[]) parser.stack(-8);
+    if(parser.stack(-6).equals("FUEL")){
+        arr[1] = arr[1] - (x * y );
+        RESULT = arr;
+    }
+    if(parser.stack(-6).equals("BATTERY")){
+        
+        arr[0] = arr[0] - (x * y );
+        RESULT = arr;
+    };
+     System.out.println("battery="+arr[0]+" fuel="+arr[1]);
+    :}
 ;
