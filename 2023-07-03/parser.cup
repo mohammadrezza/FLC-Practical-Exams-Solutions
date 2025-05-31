@@ -8,33 +8,57 @@ init with{:
 :};
 
 parser code {:
-    public HashMap <String, HashMap <String, Integer>> table;
+    public HashMap <String, HashMap <String, Integer>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
+
 :};
 
+
+ //     //  DEBUG: Print the stack content
+    // for (int i = 0; i < 15; i++) {
+    //     try {
+    //         Object obj = parser.stack(-i);
+    //         System.out.println("parser.stack(" + (-i) + ") = " + obj);
+    //     } catch (Exception e) {
+    //         break;
+    //     }
+    // };
 
 /////////////////////////////
 //// Symbols Delaration
 ////////////////////////////
 
-terminal SEP, TOK1, TOK2, TOK3, SCOLON, COMMA, OP, CP, EQ, DOT;
- terminal String HOUSE_WD, QSTRING, START_WD, END_WD, IF_WD, THEN_WD, FI_WD, AND_WD, OR_WD, NOT_WD, PRINT_WD ;
+terminal SEP, TOK1, TOK2, TOK3, HOUSE_WD ,START_WD, END_WD, CM, IF_WD, FI_WD, THEN_WD, AND, OR, NOT, OP, CP, DOT, EQQ, PRINT_WD, SC ;
+terminal String QSTRING;
 // terminal Double test;
- terminal Integer INUM;
+terminal Integer INUM;
 
-non terminal prog, header, header1, house_section, house, pre_section, if ;
- // non terminal String ;
-non terminal HashMap room_list;
-non terminal Boolean operands, bool_exp, print_list;
+non terminal prog, HEADER, TOK3REP ;
+non terminal HOUSES, HOUSE ;
+non terminal PREFRENCES, IF,PRINT_LIST ;
+non terminal HashMap <String, Integer> ROOM_LIST ;
+non terminal Boolean BOOL_EXP;
+// non terminal String ;
+// non terminal HashMap ;
 // non terminal Integer ;
 // non terminal Double ;
 
-precedence left OR_WD, AND_WD;
-precedence left NOT_WD;
-
+precedence left AND, OR ;
+precedence left NOT;
 
 /////////////////////////////
 //// Grammar
@@ -42,83 +66,68 @@ precedence left NOT_WD;
 
 start with prog;
 
-prog ::= header SEP house_section SEP pre_section
+prog ::= HEADER SEP HOUSES SEP PREFRENCES
 ;
 
-header ::= header1 TOK1 SCOLON header1 TOK2 SCOLON header1 | header1 TOK2 SCOLON header1 TOK1 SCOLON header1
+HEADER ::= TOK3REP TOK1 TOK3REP TOK2 TOK3REP | TOK3REP TOK2 TOK3REP TOK1 TOK3REP
 ;
 
-header1 ::= header1 TOK3 SCOLON | 
+TOK3REP ::= TOK3REP TOK3 |
 ;
 
-
-////////////////
-// House Section
-////////////////
-
-house_section ::= house house | house_section house house
+HOUSES ::= HOUSES HOUSE HOUSE | HOUSE HOUSE 
 ;
 
-house ::= HOUSE_WD QSTRING:key START_WD room_list:value END_WD {:
-parser.table.put(key, value);
+HOUSE ::= HOUSE_WD QSTRING:x START_WD ROOM_LIST:tab END_WD {:parser.table.put(x,tab);:}
+;
+
+ROOM_LIST ::= ROOM_LIST:tab CM QSTRING:x INUM:y {:
+tab.put(x,y);
+RESULT = tab;
+:}
+| QSTRING:x INUM:y {:
+HashMap <String, Integer> tab = new HashMap <String, Integer>();
+tab.put(x,y);
+RESULT = tab;
 :}
 ;
 
-room_list ::= QSTRING:name INUM:size {:
-                                HashMap<String, Integer> tab = new HashMap<String, Integer>();
-                                tab.put(name, size);
-                                RESULT = tab;
-                            :}
-| room_list:tab COMMA QSTRING:name INUM:size {:
-                                tab.put(name, size);
-                                RESULT = tab;
-                            :}
+
+//PREFRENCES
+
+
+PREFRENCES ::= PREFRENCES IF | 
 ;
 
-
-////////////////
-// Preferences Section
-////////////////
-
-pre_section ::= pre_section if | 
+IF ::= IF_WD BOOL_EXP THEN_WD PRINT_LIST FI_WD
 ;
 
-if ::= IF_WD bool_exp:exp THEN_WD print_list FI_WD {:
+BOOL_EXP ::=    BOOL_EXP:x AND BOOL_EXP:y {:RESULT = x & y;:}
+            |   BOOL_EXP:x OR BOOL_EXP:y {:RESULT = x | y;:}
+            |   NOT BOOL_EXP:x {:RESULT = !x;:}
+            |   OP BOOL_EXP:x CP {:RESULT = x;:}
+            |   QSTRING:first DOT QSTRING:second EQQ INUM:number {:
+            HashMap <String, Integer> list = parser.table.get(first);
+            Integer num = list.get(second);
+            if(num.equals(number)){
+                RESULT = true;
+            };
+            if(!num.equals(number)){
+                RESULT = false;
+            };
+            :}
+;
+
+PRINT_LIST ::= PRINT_LIST PRINT_WD QSTRING:x SC {:
+Boolean myBool = (Boolean)parser.stack(-5);
+if(myBool == true){
+    System.out.println(x);
+};
 :}
-;
-
-bool_exp ::= operands:ope {: RESULT = ope; :}
-| NOT_WD bool_exp:bool {: RESULT = !bool; :}
-| bool_exp:bool1 AND_WD bool_exp:bool2 {: RESULT = bool1 && bool2; :}
-| bool_exp:bool1 OR_WD bool_exp:bool2 {: RESULT = bool1 || bool2; :}
-| OP bool_exp:bool CP {: RESULT = bool; :}
-;
-
-operands ::= QSTRING:house DOT QSTRING:room EQ EQ INUM:gsize {:
-                                                                HashMap<String, Integer> m_house = parser.table.get(house);
-                                                                Integer m_size = m_house.get(room);
-                                                                if(m_size.equals(gsize)){
-                                                                    RESULT = true;
-                                                                }else {
-                                                                    RESULT = false;
-                                                                }
-                                                            :}
-;
-
-print_list ::= PRINT_WD QSTRING:qs SCOLON {:
-                                            if((Boolean)parser.stack(-4) == true){
-                                                System.out.println(qs);
-                                                RESULT = true;
-                                            }else{
-                                                RESULT = false;
-                                            }
-                                        :}
-| print_list PRINT_WD QSTRING:qs SCOLON {:
-                                        if((Boolean)parser.stack(-3) == true){
-                                            System.out.println(qs);
-                                            RESULT = true;
-                                        }else{
-                                            RESULT = false;
-                                        }
-                                    :}
+| PRINT_WD QSTRING:x SC  {:
+Boolean myBool = (Boolean)parser.stack(-4);
+if(myBool == true){
+    System.out.println(x);
+};
+:}
 ;
