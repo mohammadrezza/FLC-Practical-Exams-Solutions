@@ -18,104 +18,91 @@ import java_cup.runtime.*;
 %}
 
 nl          = \r | \n | \r\n
-comment     = ("{{" ~ "}}") | "//" ~ {nl}
 
-sep         = ("***")
+comment     = "{{" ~ "}}" | "//".*
 
-inum      = [1-9][0-9]*
+sep         = "***"
 
-//sinum       = ("-")?[0-9]+
+inum      = [1-9][0-9]*      //integer
 
-fnum      = [0-9]+.[0-9]+
 
-//var       = [a-zA-Z_][a-zA-Z0-9_]*
+real_num = (([0-9]+\.[0-9]*)|(\.[0-9]+)) //real_number
 
 qstring   = \" ~ \"
 
 //// TOKENS ////
+                                                    //05/10/2023 to 03/03/2024
+ date =  (                                    // a date in the format DD/MM/YYYY
+          // January (31 days)
+    "0"[1-9]"/01/2024" | [1-2][0-9]"/01/2024" | "30/01/2024" | "31/01/2024" |
 
-token_1   = {hex_number} "*" ({word}{5} ({word}{word})*) "-" ((("****") ("**")*) | "Y" ("X" ("XX")*) "Y")?
+    // February (29 days)
+    "0"[1-9]"/02/2024" | [1-2][0-9]"/02/2024" |
 
-hex_number = (27[A-Fa-f]
-    | 2[89][0-9A-Fa-f]
-    | [3-9A-Fa-f] [0-9A-Fa-f] [0-9A-Fa-f]
-    | 1[01][0-9A-Fa-f][0-9A-Fa-f]
-    | 12[0-9Aa] [0-9A-Fa-f]
-    | 12[bB][0-3]
-)
+          // March (31 days)
+    "0"[1-3]"/03/2024" |
 
-word = [a-zA-Z]
+          // October (31 days)
+    "0"[5-9]"/10/2023" | [1-2][0-9]"/10/2023" | "30/10/2023" | "31/10/2023" |
 
-token_2   = ({ip} "." {ip} "." {ip} "." {ip}) "-" {date}
+          // November (30 days)
+    "0"[1-9]"/11/2023" | [1-2][0-9]"/11/2023" | "30/11/2023" |
 
-ip = ([0-9] | [1-9][0-9]| 1[0-9][0-9] | 2[0-4][0-9] | 25[0-5])
+          // December (31 days)
+    "0"[1-9]"/12/2023" | [1-2][0-9]"/12/2023" | "30/12/2023" | "31/12/2023"
+ )
 
-date    = 2023 "/" 10 "/" (0[5-9] | [12][0-9] | 3[01])
-         |2023 "/" 11 "/" (0[1-9] | [12][0-9] | 30)
-         |2023 "/" 12 "/" (0[1-9] | [12][0-9] | 3[01])
-         |2024 "/" 01 "/" (0[1-9] | [1-2][0-9] | 3[01])
-         |2024 "/" 02 "/" (0[1-9] | 1[0-9] | 2[0-9])
-         |2024 "/" 03 "/" (0[1-3])
+                                    //27A and 12b3
+hex =    (                      //hexadecimal number is between 3b and aE3
+    ("27"[a-fA-F])   |
+    ("2"[8-9a-fA-F][0-9a-fA-F]) |
+    ([3-9a-fA-F][0-9a-fA-F][0-9a-fA-F]) |
+    ("11"[0-9a-fA-F][0-9a-fA-F]) |
+    ("12"[0-9a-aA-a][0-9a-fA-F]) |
+    ("12b"[0-3])  
+)  
+alpha = ([a-zA-Z]{5}([a-zA-Z][a-zA-Z])*)
 
-token_3   = ({digit}{se}{digit}{se}{digit} | {digit}{se}{digit}{se}{digit}{se}{digit}{se}{digit})
+octet       = (
+                [0-9]       | //0-9
+                [1-9][0-9]  |  //10-99
+                "1"[0-9][0-9]  |  //100-199
+                "2"[0-4][0-9]  |  //200-249
+                "25"[0-5]    //250-255
+            )
+digi = [0-9][0-9][0-9][0-9] ([0-9][0-9])?
+digisep = "-" | "+"
 
-digit = ([0-9]{4} | [0-9]{6})
 
-se = ("-" | "+")
+ip_address  = {octet}"."{octet}"."{octet}"."{octet}
+
+token_1   = {hex}"*"{alpha}"-"(("****""**"*)|"y""*""**"*"y")? [ \t]* ";"
+
+token_2   = {ip_address}"-"{date} [ \t]* ";"
+
+token_3   = {digi}{digisep}{digi}{digisep}{digi} ({digisep}{digi}{digisep}{digi})? [ \t]* ";"
 
 %%
 
 // Strings part
- "euro"            {return sym(sym.EURO_WD, new String(yytext()));}
+"euro"            {return sym(sym.EURO_WD, new String(yytext()));}
 
 
-// "?"             {return sym(sym.QUM);}
-// "!"             {return sym(sym.EXM);}
-// "@"             {return sym(sym.ATM);}
-// "#"             {return sym(sym.HAM);}
-// "$"             {return sym(sym.DOM);}
- "%"             {return sym(sym.PAM);}
-// "^"             {return sym(sym.CIM);}
-// "&"             {return sym(sym.AND);}
-// "*"             {return sym(sym.STAR);}
- "-"             {return sym(sym.DASH);}
-// "="             {return sym(sym.EQ);}
-// "+"             {return sym(sym.PLUS);}
-// "("             {return sym(sym.OP);}
-// ")"             {return sym(sym.CP);}
-// "["             {return sym(sym.OB);}
-// "]"             {return sym(sym.CB);}
-// "{"             {return sym(sym.OC);}
-// "}"             {return sym(sym.CC);}
-// ">"             {return sym(sym.GT);}
-// "<"             {return sym(sym.LT);}
-// "/"             {return sym(sym.SL);}
-// \\              {return sym(sym.BSL);}
-// "."             {return sym(sym.DOT);}
-// ":"             {return sym(sym.CO);}
-","             {return sym(sym.CM);}
- ";"             {return sym(sym.SC);}
-// \'              {return sym(sym.QU);}
-// \"              {return sym(sym.DQU);}
-// \`              {return sym(sym.GRAVE);}
-// "~"             {return sym(sym.TIL);}
-// "|"             {return sym(sym.OR);}
-// "_"             {return sym(sym.US);}
-
+"%"             {return sym(sym.PAM);}           //Percent 
+"-"             {return sym(sym.DASH);}          //Hyphen/Dash 
+","             {return sym(sym.CM);}            //Comma 
+";"             {return sym(sym.SC);}            //Semicolon 
 
 
 
 {inum}             {return sym(sym.INUM, new Integer(yytext()));}
-// {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
- {fnum}             {return sym(sym.FNUM, new Float(yytext()));}
- {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
-// {var}              {return sym(sym.VAR, new String(yytext()));}
+{real_num}              {return sym(sym.REAL_NUM, new Double(yytext()));}
+{qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 
- {token_1}          {return sym(sym.TOK1);}
- {token_2}          {return sym(sym.TOK2);}
+{token_1}          {return sym(sym.TOK1);}
+{token_2}          {return sym(sym.TOK2);}
 {token_3}          {return sym(sym.TOK3);}
 
-//{var}              {return sym(sym.VAR, yytext());}
 
 {sep}            {return sym(sym.SEP);}
 
