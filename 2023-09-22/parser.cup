@@ -1,0 +1,121 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Double>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Double>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+:};
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+terminal SEP, TOK1, TOK2, TOK3, SC, OB, CB, PLUS,DASH,STAR,SL, OP, CP, INS_WD,CMP_WD, SUM_WD, CM;
+terminal Integer INUM;
+
+non terminal prog, HEADER, COMMANDS ;
+non terminal TOK3REP ;
+non terminal COMMAND, INS, CMP, SUM, COMMANDLIST;
+non terminal Integer MATH_EXP, MATH_EXPS,MATH_LIST ;
+
+// precedence left ;
+precedence left PLUS, DASH;
+precedence left STAR, SL;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= HEADER SEP COMMANDS
+;
+
+
+HEADER ::=  TOK3REP TOK1 TOK3REP TOK2 TOK3REP
+        |   TOK3REP TOK2 TOK3REP TOK1 TOK3REP
+        |   TOK3REP TOK1 TOK3REP TOK2 TOK3REP TOK2 TOK3REP
+        |   TOK3REP TOK2 TOK3REP TOK1 TOK3REP TOK2 TOK3REP
+        |   TOK3REP TOK2 TOK3REP TOK2 TOK3REP TOK1 TOK3REP
+;
+
+TOK3REP ::= TOK3REP TOK3 |
+;
+
+//COMMANDS
+
+COMMANDS ::=  COMMAND COMMAND COMMAND COMMAND COMMANDLIST
+;
+
+COMMANDLIST ::= COMMAND COMMAND  COMMANDLIST |
+;
+
+COMMAND ::= INS:x SC {:RESULT=x;:}  
+| CMP:x SC {:RESULT=x;:}   
+| SUM:x SC   {:RESULT=x;:}
+; 
+
+MATH_EXPS ::=   OB MATH_EXP:x CB  {:RESULT = x ;:}  
+;
+MATH_EXP ::=    MATH_EXP:x STAR MATH_EXP:y {:RESULT = x * y ;:}  
+            |   MATH_EXP:x SL MATH_EXP:y {:RESULT = x / y ;:}   
+            |   MATH_EXP:x PLUS MATH_EXP:y {:RESULT = x + y ;:}  
+            |   MATH_EXP:x DASH MATH_EXP:y {:RESULT = x - y ;:}    
+            |   OP MATH_EXP:x CP  {:RESULT = x ;:}   
+            |   INUM:x  {:RESULT = x ;:}        
+;
+
+INS ::= INS_WD MATH_EXPS:x {:System.out.println(x); RESULT = x;:} 
+;
+
+CMP ::= CMP_WD MATH_EXPS:x CM MATH_EXPS:y {:
+Integer first = (Integer)parser.stack(-5);
+Integer second = (Integer)parser.stack(-4);
+if(first.equals(second)){
+    System.out.println(x);
+    RESULT = x;
+}else{
+    System.out.println(y);
+    RESULT = y;
+};
+
+:} 
+| CMP_WD MATH_EXPS:x {:
+Integer first = (Integer)parser.stack(-3);
+Integer second = (Integer)parser.stack(-2);
+if(first.equals(second)){
+    System.out.println(x);
+    RESULT = x;
+}else{
+    System.out.println(0);
+    RESULT = 0;
+};
+:}
+;
+
+SUM ::= SUM_WD MATH_LIST:x {:System.out.println(x);RESULT = x;:}
+;
+
+MATH_LIST ::= MATH_LIST:ex CM MATH_EXPS:x {:RESULT = ex + x;:} | MATH_EXPS:x {:RESULT = x;:}
+;
