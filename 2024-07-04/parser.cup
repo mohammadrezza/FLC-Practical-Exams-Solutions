@@ -1,0 +1,138 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Double>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Double>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+:};
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+terminal SEP, TOK1, TOK2, CO, SC, CM, STAR, SL, DASH,PLUS, OP, CP , POINTS_WD, LOW_WD,MEDIUM_WD,HIGH_WD;
+terminal String QSTRING;
+terminal Double REAL_NUM;
+
+non terminal prog, HEADER, ATHLETES, EVALUATION ;
+non terminal HEADER1, HEADER2, TOK2REP, TOK2REP2, TOK1REP ;
+non terminal ATHLETE;
+non terminal EVAL,  POINTS ;
+non terminal Double EXPR, SCORE,VAL_LIST ;
+non terminal HashMap<String, Double> ATTR_LIST ;
+
+precedence left PLUS, DASH;
+precedence left SL, STAR ;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= HEADER SEP ATHLETES SEP EVALUATION
+;
+
+HEADER ::= HEADER1 | HEADER2
+;
+
+HEADER1 ::= TOK1 SC TOK2REP TOK1 SC TOK2REP TOK1 SC TOK2REP
+;
+
+TOK2REP ::= TOK2REP TOK2 SC |
+;
+
+HEADER2 ::= TOK2REP2 TOK1REP
+;
+
+TOK2REP2 ::= TOK2REP2 TOK2 SC TOK2 SC | TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC  
+;
+
+TOK1REP ::= TOK1 SC TOK1 SC TOK1 SC TOK1 SC | TOK1 SC TOK1 SC TOK1 SC TOK1 SC TOK1 SC TOK1 SC TOK1 SC TOK1 SC TOK1 SC TOK1 SC TOK1 SC  
+;
+
+// ATHLETES
+
+ATHLETES ::= ATHLETES ATHLETE ATHLETE | ATHLETE ATHLETE ATHLETE 
+;
+
+ATHLETE ::= QSTRING:var CO ATTR_LIST:value SC {:parser.table.put(var, value);:}
+;
+
+ATTR_LIST ::= ATTR_LIST:tab CM QSTRING:var EXPR:exp {:
+tab.put(var,exp);
+RESULT = tab;
+:}
+| QSTRING:var EXPR:exp {:
+HashMap<String, Double> tab = new HashMap<String, Double>();
+tab.put(var,exp);
+RESULT = tab;
+:}
+;
+
+
+
+EXPR ::=    EXPR:x STAR EXPR:y {:RESULT = x * y;:}
+        |   EXPR:x SL EXPR:y {:RESULT = x / y;:}
+        |   EXPR:x DASH EXPR:y {:RESULT = x - y;:}
+        |   EXPR:x PLUS EXPR:y {:RESULT = x + y;:}
+        |   OP EXPR:x CP {:RESULT = x;:}
+        |   REAL_NUM:x {:RESULT = x;:}
+;
+
+
+// EVALUATION
+
+EVALUATION ::= EVALUATION EVAL |
+;
+
+EVAL ::= QSTRING:name {:
+System.out.println(name);
+HashMap<String, Double> tab = parser.table.get(name);
+RESULT = tab;
+:}  REAL_NUM POINTS CO VAL_LIST:x SC  {:System.out.println("TOTAL: " + x);:}
+;
+POINTS ::= POINTS_WD |
+;
+
+VAL_LIST ::= VAL_LIST:sum CM REAL_NUM:real QSTRING:name SCORE:score {:
+HashMap<String, Double> tab = (HashMap<String, Double>)parser.stack(-8);
+Double value = tab.get(name);
+Double x = (Double)parser.stack(-7);
+Double res = real * value * x * score ;
+System.out.println(name + " " + res);
+RESULT = sum + res;
+:} | REAL_NUM:real QSTRING:name SCORE:score {:
+HashMap<String, Double> tab = (HashMap<String, Double>)parser.stack(-6);
+Double value = tab.get(name);
+Double x = (Double)parser.stack(-5);
+Double res = real * value * x * score ;
+System.out.println(name + " " + res);
+RESULT = res;
+:}
+;
+
+SCORE ::= LOW_WD {:RESULT = 0.0;:} | MEDIUM_WD {:RESULT = 1.0;:} | HIGH_WD {:RESULT = 2.0;:}
+;
+
