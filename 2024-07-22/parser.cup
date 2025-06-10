@@ -1,0 +1,147 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, String>();
+:};
+
+parser code {:
+    public HashMap <String, String>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+:};
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+terminal SEP, SC, TOK1, TOK2, TOK3, EQC, MAX_WD, CM, IF_WD, OB, CB, TRUE_WD, OP, CP, FALSE_WD, OR_WD, AND_WD, NOT_WD, T_WD, F_WD ,EQQ_WD;
+terminal String VAR,QSTRING;
+
+non terminal prog, HEADER, EXEC, TOKEN1, TOKEN2, TOKEN3, TOK13REP, TOK13 ;
+
+non terminal INSTRUCTIONS, INSTRUCTIONS_LIST, ASS, MAX, IF, ASS_LIST, TRUE, FALSE ;
+non terminal String  ID_LIST;
+non terminal Boolean  BOOL_EXP;
+
+// precedence left ;
+precedence left  OR_WD;
+precedence left AND_WD;
+precedence left NOT_WD;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= HEADER SEP EXEC
+;
+
+TOKEN1 ::= TOK1 SC
+;
+
+TOKEN2 ::= TOK2 SC
+;
+
+TOKEN3 ::= TOK3 SC
+;
+
+HEADER ::= TOK13REP | TOK13REP TOKEN2 TOK13REP| TOK13REP TOKEN2 TOK13REP TOKEN2 TOK13REP TOKEN2 TOK13REP TOKEN2 TOK13REP TOKEN2 TOK13REP TOKEN2 TOK13REP TOKEN2 TOK13REP
+;
+
+TOK13REP ::= TOK13REP TOK13 |
+;
+
+TOK13 ::= TOKEN1 | TOKEN3
+;
+
+
+//EXEC
+
+
+EXEC ::= INSTRUCTIONS INSTRUCTIONS INSTRUCTIONS INSTRUCTIONS INSTRUCTIONS_LIST
+;
+
+INSTRUCTIONS_LIST ::= INSTRUCTIONS_LIST INSTRUCTIONS |
+;
+
+INSTRUCTIONS ::= ASS | MAX | IF
+;
+
+ASS ::= VAR:var EQC QSTRING:value SC {: parser.table.put(var,value); System.out.println(var + " " + value); :}
+;
+
+MAX ::= MAX_WD ID_LIST:x SC {:System.out.println(x);:}
+;
+
+ID_LIST ::= ID_LIST:ex CM VAR:y {:
+if(ex.length() > parser.table.get(y).length()){
+    RESULT = ex;
+}else{
+    RESULT = parser.table.get(y);
+}
+:} | VAR:x {:RESULT = parser.table.get(x);:}
+;
+
+IF ::= IF_WD OB BOOL_EXP CB TRUE OP ASS_LIST CP SC 
+| IF_WD OB BOOL_EXP CB TRUE OP ASS_LIST CP FALSE OP ASS_LIST CP  SC
+;
+
+TRUE ::= TRUE_WD {:
+if((Boolean)parser.stack(-2) == true){
+    RESULT = "do";
+}else{
+    RESULT = "dont";
+}
+:}
+;
+
+FALSE ::= FALSE_WD{:
+if((Boolean)parser.stack(-6) == false){
+    RESULT = "do";
+}else{
+    RESULT = "dont";
+}:}
+;
+
+
+ASS_LIST ::=  ASS_LIST VAR:var EQC QSTRING:value SC {:
+    if(parser.stack(-6)=="do"){
+        parser.table.put(var,value); System.out.println(var + " " + value);
+    }
+:} | VAR:var EQC QSTRING:value SC {:
+    if(parser.stack(-5)=="do"){
+        parser.table.put(var,value); System.out.println(var + " " + value);
+    }
+    :}
+;
+
+BOOL_EXP ::= 
+            |   BOOL_EXP:x OR_WD BOOL_EXP:y {:RESULT = x | y; :}
+            |   BOOL_EXP:x AND_WD BOOL_EXP:y {:RESULT = x && y; :}
+            |   NOT_WD BOOL_EXP:x {:RESULT = !x;:}
+            |   OP BOOL_EXP:x CP {:RESULT = x;:}
+            |   T_WD    {:RESULT = true;:}
+            |   F_WD    {:RESULT = false;:}
+            |   VAR:var EQQ_WD QSTRING:string {:        
+            if(parser.table.get(var).equals(string)){
+                RESULT = true;
+            }else{RESULT = false;};:}
+; 
