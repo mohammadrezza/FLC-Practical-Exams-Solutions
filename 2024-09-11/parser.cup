@@ -1,0 +1,160 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Double>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Double>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+:};
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+terminal SEP,SC, TOK1, TOK2, TOK3, CO,CM , EURODAY_WD,MIN_SUM_WD,OP, CP, DOT,ELEC_WD;
+terminal String QSTRING;
+terminal Double REAL_NUM;
+terminal Integer INUM;
+
+non terminal prog, HEADER, CAMPING, USERS ;
+non terminal TOKEN1, TOKEN2, TOKEN3, TOK3REP ;
+non terminal SOL ;
+non terminal MIN_SUM, RESERV_LIST ,RESERV;
+non terminal HashMap<String,Double> CARACLIST;
+non terminal String ELECT ;
+non terminal Double ITEM,DURATION_LIST;
+non terminal Double [] ITEM_LIST;
+
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= HEADER SEP CAMPING SEP USERS
+;
+
+TOKEN1 ::= TOK1 SC
+;
+
+TOKEN2 ::= TOK2 SC
+;
+
+TOKEN3 ::= TOK3 SC
+;
+
+HEADER ::=  TOK3REP TOKEN1 TOK3REP TOKEN2 TOK3REP TOKEN2 TOK3REP
+        |   TOK3REP TOKEN2 TOK3REP TOKEN1 TOK3REP TOKEN2 TOK3REP
+        |   TOK3REP TOKEN2 TOK3REP TOKEN2 TOK3REP TOKEN1 TOK3REP
+;
+
+TOK3REP ::= TOK3REP TOKEN3 |
+;
+
+//camping 
+
+CAMPING ::= CAMPING SOL SOL | SOL SOL
+;
+
+
+SOL ::= QSTRING:var CO CARACLIST:value SC {:
+parser.table.put(var,value);
+:}
+; 
+
+CARACLIST ::= CARACLIST:tab CM QSTRING:x REAL_NUM:y EURODAY_WD {:
+tab.put(x,y);
+RESULT = tab;
+:} | QSTRING:x REAL_NUM:y EURODAY_WD {:
+HashMap<String, Double> tab = new HashMap<String, Double>();
+tab.put(x,y);
+RESULT = tab;
+:}
+;
+
+//USER
+
+USERS ::= MIN_SUM RESERV_LIST | RESERV_LIST
+;
+
+MIN_SUM ::= MIN_SUM_WD OP ITEM_LIST:arr CP SC {:
+System.out.println("MIN: "+ arr[0] +" SUM: "+ arr[1]);
+:}
+;
+
+ITEM_LIST ::= ITEM_LIST:arr CM ITEM:x
+{:
+if(arr[0]>x){
+    arr[0] = x;
+};
+arr[1] = arr[1] + x;
+RESULT = arr;
+:} | ITEM:x {:
+Double [] arr = new Double[2];
+arr[0] = x; //min
+arr[1] = x; //sum
+RESULT=arr;
+:}
+;
+
+ITEM ::= QSTRING:x DOT QSTRING:y {:
+HashMap<String, Double> tab = parser.table.get(x);
+Double price = tab.get(y);
+RESULT = price;
+:}
+;
+
+RESERV_LIST ::= RESERV_LIST RESERV |
+;
+
+RESERV ::= REAL_NUM ELECT QSTRING:x CO DURATION_LIST:sum SC {:
+System.out.println(x+" " + sum);
+:}
+;
+
+ELECT ::= ELEC_WD {:RESULT="E";:} | {:RESULT="NOTE";:}
+;
+
+DURATION_LIST ::= DURATION_LIST:s CM QSTRING:x DOT QSTRING:y INUM:z
+{:
+HashMap<String, Double> tab = parser.table.get(x);
+Double price = tab.get(y);
+Double num = z * (Double)parser.stack(-9) * price;
+if(parser.stack(-8).equals("E")){
+    num = num + 10.00;
+};
+System.out.println(x+"."+y+" "+num);
+RESULT = s + num;
+:}
+ | QSTRING:x DOT QSTRING:y INUM:z {:
+ HashMap<String, Double> tab = parser.table.get(x);
+Double price = tab.get(y);
+Double num = z * (Double)parser.stack(-7) * price;
+if(parser.stack(-6).equals("E")){
+    num = num + 10.00;
+};
+System.out.println(x+"."+y+" "+num);
+RESULT = num;
+:}
+;
