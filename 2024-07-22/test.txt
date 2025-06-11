@@ -1,0 +1,28 @@
+// header section
+A:1a++++--++--HELLO;            <<< tok1 >>>
+B:cdefcd&cdcdcdcdcdcd?ijefij ;  <<< tok2 >>>
+C:22-July-2024:10:08;           <<< tok3 >>>
+A:abc++++++SOS ;                <<< tok1 >>>
+####
+// exec section
+a -> '1';
+b -> '2' ;
+
+IF [ a == '1' OR T AND b =='3' ]
+TRUE_STATEMENT (
+  c -> 'one';      <<< executed >>>
+  d -> 'two';      <<< executed >>>
+)
+FALSE_STATEMENT (
+  c -> 'three' ;   <<< not executed >>>
+);
+
+IF [ NOT a=='2' AND NOT NOT a=='1' ]
+TRUE_STATEMENT (
+  e -> 'four';    <<< executed >>>
+);
+
+f -> 'done';
+
+MAX a, f, b;  <<< f is the string with a maximum length equal to 6 >>>
+
