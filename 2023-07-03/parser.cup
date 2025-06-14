@@ -4,11 +4,11 @@ import java.io.*;
 
 
 init with{:
-    table = new HashMap <String, HashMap <String, Double>>();
+    table = new HashMap <String, HashMap <String, Integer>>();
 :};
 
 parser code {:
-    public HashMap <String, HashMap <String, Double>> table;
+    public HashMap <String, HashMap <String, Integer>> table;
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
@@ -20,22 +20,23 @@ parser code {:
 //// Symbols Delaration
 ////////////////////////////
 
-// terminal TOK1, TOK2, SEP;
-terminal TOK1, TOK2, TOK3, SEP;
+terminal TOKEN1, TOKEN2, TOKEN3, SEP;
 terminal SC, CM, OP, CP, EQ, DOT;
 terminal String HOUSE_WD, START_WD, END_WD, PRINT_WD, IF_WD, FI_WD, NOT_WD, QSTRING, THEN_WD, AND_WD, OR_WD;
 // terminal Double test;
 terminal Integer INUM;
 
 non terminal prog ;
-non terminal HEADER, HOUSES, PREF ;
-non terminal HEAD1;
-non terminal HOUSE, ROOM_LIST, ROOM, TYPE, ROOM_NAME, SIZE;
-non terminal EXP, OPER, OPR, PRINT_LIST, PRINT, COMMAND, COMMANDS, ROOM_REF;
-// non terminal String ;
-// non terminal HashMap ;
-// non terminal Integer ;
+non terminal HEADER, TOK1, TOK2, TOK3, HOUSES, PREF, HEAD1;
+non terminal HOUSE;
+non terminal OPER, COMMAND, COMMANDS, ROOM_REF;
+non terminal ArrayList PRINT_LIST;
+non terminal String PRINT;
+non terminal HashMap ROOM_LIST, ROOM;
+non terminal Integer ;
 // non terminal Double ;
+non terminal Boolean OPR, EXP;
+
 
 // precedence left ;
 
@@ -48,12 +49,21 @@ start with prog;
 prog ::= HEADER SEP HOUSES SEP PREF
 ;
 
-// header
-
-HEADER ::= HEAD1 TOK1 SC HEAD1 | HEAD1 TOK2 SC HEAD1 | HEAD1 TOK1 SC HEAD1 TOK2 SC HEAD1 | HEAD1 TOK2 SC HEAD1 TOK1 SC HEAD1 
+TOK1 ::= TOKEN1 SC
 ;
 
-HEAD1 ::= HEAD1 TOK3 SC |
+TOK2 ::= TOKEN2 SC
+;
+
+TOK3 ::= TOKEN3 SC
+;
+
+// header
+
+HEADER ::= HEAD1 TOK1 HEAD1 | HEAD1 TOK2 HEAD1 | HEAD1 TOK1 HEAD1 TOK2 HEAD1 | HEAD1 TOK2 HEAD1 TOK1 HEAD1 
+;
+
+HEAD1 ::= HEAD1 TOK3 |
 ;
 
 // houses
@@ -61,22 +71,31 @@ HEAD1 ::= HEAD1 TOK3 SC |
 HOUSES ::= HOUSES HOUSE HOUSE |
 ;
 
-HOUSE ::= HOUSE_WD TYPE START_WD ROOM_LIST END_WD
+HOUSE ::= HOUSE_WD QSTRING:type START_WD ROOM_LIST:rl END_WD
+{:
+    table.put(type, rl);
+    // System.out.println(rl);
+:}
 ;
 
-TYPE ::= QSTRING
+
+ROOM_LIST ::= ROOM_LIST:rl CM ROOM:room
+{:
+    rl.putAll(room);
+    RESULT = rl;
+:} 
+| ROOM:room
+{:
+    RESULT = room;
+:}
 ;
 
-ROOM_LIST ::= ROOM_LIST CM ROOM | ROOM
-;
-
-ROOM ::= ROOM_NAME SIZE 
-;
-
-ROOM_NAME ::= QSTRING
-;
-
-SIZE ::= INUM
+ROOM ::= QSTRING:ref INUM:size
+{:
+    HashMap room = new HashMap <String, Integer>();
+    room.put(ref, size);
+    RESULT = room;
+:} 
 ;
 
 // pref
@@ -87,24 +106,75 @@ PREF ::= COMMANDS |
 COMMANDS ::= COMMANDS COMMAND | COMMAND
 ;
 
-COMMAND ::= IF_WD EXP THEN_WD PRINT_LIST FI_WD
+COMMAND ::= IF_WD EXP:exp THEN_WD PRINT_LIST:pl FI_WD
+{:
+    if(exp){
+        for(int i=0; i<pl.size(); i++)
+        {
+            System.out.println(pl.get(i));
+        }
+    }
+:}
 ;
 
 
-EXP ::= OPR | OPR OPER EXP | OP EXP CP | NOT_WD EXP
+EXP ::= OPR:opr
+{:
+    RESULT = opr;
+:}
+| OPR:opr AND_WD EXP:exp
+{:
+    // System.out.println(opr);
+    // System.out.println(exp);
+    // System.out.println("and");
+    // System.out.println(opr && exp);
+    RESULT = opr && exp;
+:}
+| OPR:opr OR_WD EXP:exp
+{:
+    // System.out.println(opr);
+    // System.out.println(exp);
+    // System.out.println("or");
+    // System.out.println(opr || exp);
+    RESULT = opr || exp;
+:}
+| OP EXP:exp CP
+{:
+    RESULT = exp;
+:}
+| NOT_WD EXP:exp
+{:
+    RESULT = !(exp);
+:}
 ;
 
-OPER ::= AND_WD | OR_WD | NOT_WD
+OPR ::= QSTRING:type DOT QSTRING:name EQ EQ INUM:comp_size
+{:
+    HashMap <String, Integer> room = table.get(type);
+    Integer size = room.get(name);
+    // System.out.println(size);
+    // System.out.println(comp_size);
+    // System.out.println(size==comp_size);
+    // System.out.println(size.equals(comp_size));
+    RESULT = size.equals(comp_size);
+:}
 ;
 
-OPR ::= ROOM_REF |  ROOM_REF EQ EQ SIZE
+PRINT_LIST ::= PRINT_LIST:pl PRINT:p
+{:
+    pl.add(p);
+    RESULT = pl;
+:}
+| PRINT:p
+{:
+    ArrayList<String> pl = new ArrayList<String>();
+    pl.add(p);
+    RESULT = pl;
+:}
 ;
 
-ROOM_REF ::= TYPE DOT ROOM_NAME
-;
-
-PRINT_LIST ::= PRINT_LIST PRINT |
-;
-
-PRINT ::= PRINT_WD QSTRING SC
+PRINT ::= PRINT_WD QSTRING:q SC
+{:
+    RESULT = q;
+:}
 ;

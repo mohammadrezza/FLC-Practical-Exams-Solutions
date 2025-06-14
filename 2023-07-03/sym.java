@@ -15,15 +15,15 @@ public class sym {
   public static final int INUM = 23;
   public static final int NOT_WD = 18;
   public static final int EOF = 0;
-  public static final int TOK3 = 4;
   public static final int START_WD = 13;
   public static final int OR_WD = 22;
-  public static final int TOK2 = 3;
   public static final int SEP = 5;
-  public static final int TOK1 = 2;
   public static final int error = 1;
   public static final int DOT = 11;
+  public static final int TOKEN3 = 4;
+  public static final int TOKEN2 = 3;
   public static final int EQ = 10;
+  public static final int TOKEN1 = 2;
   public static final int FI_WD = 17;
   public static final int END_WD = 14;
   public static final int QSTRING = 19;
@@ -33,9 +33,9 @@ public class sym {
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "TOK1",
-  "TOK2",
-  "TOK3",
+  "TOKEN1",
+  "TOKEN2",
+  "TOKEN3",
   "SEP",
   "SC",
   "CM",
@@ -68,15 +68,15 @@ public String[] TT;
 		TT[23]=new String("INUM");
 		TT[18]=new String("NOT_WD");
 		TT[0]=new String("EOF");
-		TT[4]=new String("TOK3");
 		TT[13]=new String("START_WD");
 		TT[22]=new String("OR_WD");
-		TT[3]=new String("TOK2");
 		TT[5]=new String("SEP");
-		TT[2]=new String("TOK1");
 		TT[1]=new String("error");
 		TT[11]=new String("DOT");
+		TT[4]=new String("TOKEN3");
+		TT[3]=new String("TOKEN2");
 		TT[10]=new String("EQ");
+		TT[2]=new String("TOKEN1");
 		TT[17]=new String("FI_WD");
 		TT[14]=new String("END_WD");
 		TT[19]=new String("QSTRING");

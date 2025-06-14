@@ -860,12 +860,12 @@ class Yylex implements java_cup.runtime.Scanner {
           // fall through
           case 42: break;
           case 19:
-            { return sym(sym.TOK1);
+            { return sym(sym.TOKEN1);
             }
           // fall through
           case 43: break;
           case 20:
-            { return sym(sym.TOK3);
+            { return sym(sym.TOKEN3);
             }
           // fall through
           case 44: break;
@@ -885,7 +885,7 @@ class Yylex implements java_cup.runtime.Scanner {
           // fall through
           case 47: break;
           case 24:
-            { return sym(sym.TOK2);
+            { return sym(sym.TOKEN2);
             }
           // fall through
           case 48: break;
