@@ -8,13 +8,35 @@ init with{:
 :};
 
 parser code {:
-    public HashMap <String, HashMap <String, Double>> table;
+    public HashMap <String, HashMap <String, Double>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
 
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
+
 :};
 
+//HashMap<String, Integer> tab = new HashMap<String, Integer>();
+ //     //  DEBUG: Print the stack content
+    // for (int i = 0; i < 15; i++) {
+    //     try {
+    //         Object obj = parser.stack(-i);
+    //         System.out.println("parser.stack(" + (-i) + ") = " + obj);
+    //     } catch (Exception e) {
+    //         break;
+    //     }
+    // };
 
 /////////////////////////////
 //// Symbols Delaration
@@ -33,6 +55,10 @@ non terminal prog ;
 
 // precedence left ;
 // precedence left PLUS, DASH;
+// precedence left STAR, SL;
+// precedence left  OR_WD;
+// precedence left AND_WD;
+// precedence left NOT_WD;
 
 /////////////////////////////
 //// Grammar
