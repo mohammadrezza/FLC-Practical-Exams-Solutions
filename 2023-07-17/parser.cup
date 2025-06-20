@@ -13,6 +13,14 @@ parser code {:
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
+    
+    public void printStatck(){
+        System.out.println("---Stack---");
+        for(int position=0; position<10; position++){
+            Object obj = (((Symbol)stack.elementAt(tos + -position)).value);
+            System.out.println("Element: " + obj + " At position: " + -position );
+        }
+    }
 :};
 
 // expression
@@ -69,17 +77,17 @@ terminal Integer INUM;
 // terminal Integer SINUM;
 
 // terminal TOK1, TOK2, SEP;
-terminal TOK1, TOK2, TOK3, SEP;
+terminal TOKEN1, TOKEN2, TOKEN3, SEP;
 terminal String EURO_WD;
 
 
-non terminal prog ;
+non terminal prog, TOK1, TOK2, TOK3;
 non terminal header, head1, head1_tok1, head1_tok2, head2, head2_tok;
-non terminal dresses, clothes, cloth, prod, prod_id, prod_name;
-non terminal shopping, purchasing, purchase, purch_prod_list, purch_prod, quantity, percent;
+non terminal dresses, clothes, cloth, prod_name;
+non terminal shopping, purchase;
 // non terminal ;
-non terminal String dress_name;
-non terminal HashMap prod_list;
+non terminal String;
+non terminal HashMap prod_list, prod, purch_prod, purch_prod_list;
 // non terminal Integer ;
 non terminal Double prod_cost;
 
@@ -96,27 +104,37 @@ start with prog;
 prog ::= header SEP dresses SEP shopping
 ;
 
+TOK1 ::= TOKEN1 SC
+;
+
+TOK2 ::= TOKEN2 SC
+;
+
+TOK3 ::= TOKEN3 SC
+;
+
+
 // header
 
 header ::= head1 | head2
 ;
 
-head1 ::= TOK1 SC TOK1 SC TOK1 SC head1_tok1 head1_tok2
+head1 ::= TOK1 TOK1 TOK1 head1_tok1 head1_tok2
 ;
 
-head1_tok1 ::= head1_tok1 TOK1 SC TOK1 SC | 
+head1_tok1 ::= head1_tok1 TOK1 TOK1 | 
 ;
 
-head1_tok2 ::= TOK2 SC TOK2 SC TOK2 SC |
-               TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC |
-               TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC  
+head1_tok2 ::= TOK2 TOK2 TOK2 |
+               TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 |
+               TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2  
 ;
 
-head2 ::= TOK2 SC head2_tok |
-          TOK2 SC head2_tok TOK2 SC head2_tok
+head2 ::= TOK2 head2_tok |
+          TOK2 head2_tok TOK2 head2_tok
 ;
 
-head2_tok ::= head2_tok TOK1 SC | head2_tok TOK3 SC |
+head2_tok ::= head2_tok TOK1 | head2_tok TOK3 |
 ;
 
 // dresses
@@ -126,20 +144,25 @@ dresses ::= cloth cloth cloth clothes
 clothes ::= cloth cloth clothes |
 ;
 
-cloth ::= dress_name:dress_name DASH prod_list:prod_list SC
+cloth ::= QSTRING:dress_name DASH prod_list:prod_list SC
 {:
     parser.table.put(dress_name, prod_list);
+    // System.out.println(prod_list);
 :}
 ;
 
-dress_name ::= QSTRING:res
-{: RESULT = res; :}
+prod_list ::= prod_list:prod_list CM prod:prod
+{:
+  prod_list.putAll(prod);
+  RESULT = prod_list;
+:}
+| prod:prod
+{:
+  RESULT = prod;
+:}
 ;
 
-prod_list ::= prod_list CM prod | prod
-;
-
-prod ::= prod_id prod_name:prod_name prod_cost:prod_cost EURO_WD
+prod ::= INUM:prod_id QSTRING:prod_name FNUM:prod_cost EURO_WD
 {:
     HashMap prod = new HashMap<String, Double>();
     prod.put(prod_name, prod_cost);
@@ -147,45 +170,49 @@ prod ::= prod_id prod_name:prod_name prod_cost:prod_cost EURO_WD
 :}
 ;
 
-prod_id ::= INUM
-;
-
-prod_name ::= QSTRING:res
-{: RESULT = res; :}
-;
-
-prod_cost ::= INUM | FNUM
-;
-
 // shopping
-shopping ::= purchasing
+shopping ::= purchase shopping | purchase
 ;
 
-purchasing ::= purchasing purchase | purchase
-;
-
-purchase ::= dress_name:dress_name percent PAM DASH purch_prod_list SC
+purchase ::= QSTRING:dress_name INUM:percent PAM DASH purch_prod_list:purchases SC
 {:
     System.out.println(dress_name);
+    HashMap prods = parser.table.get(dress_name);
+    // System.out.println(prods);
+    Double totalPrice = 0.0;
+    Integer totalProdsCount = 0;
+    for (Object prodName : purchases.keySet()) {
+        Integer quantity = (Integer) purchases.get(prodName);
+        totalProdsCount += quantity;
+        Double prodCost = (Double) prods.get(prodName);
+        // System.out.println(prodCost);
+        // System.out.println(quantity);
+        // System.out.println(percent);
+        // System.out.println(quantity * prodCost * percent/100);
+        Double discountPrice = quantity * prodCost * percent/100;
+        System.out.println(prodName + " " + discountPrice + " euro");
+        totalPrice += discountPrice;
+    }
+    System.out.println("TOTAL: " + totalPrice + " euro N_PROD: " + totalProdsCount);
+
 :}
 ;
 
-percent ::= INUM
-;
-
-purch_prod_list ::= purch_prod_list CM purch_prod
+purch_prod_list ::= purch_prod_list:purchase_list CM purch_prod:purcahse
 {:
-    
+    purchase_list.putAll(purcahse);
+    RESULT = purchase_list;
 :}
-| purch_prod
+| purch_prod:purchase
+{:
+    RESULT = purchase;
+:}
 ;
 
-purch_prod ::= prod_name:prod_name quantity
+purch_prod ::= QSTRING:prod_name INUM:quantity
 {: 
-    System.out.println(prod_name);
+    HashMap purchase = new HashMap<String, Integer>();
+    purchase.put(prod_name, quantity);
+    RESULT = purchase;
 :}
-;
-
-quantity ::= INUM:res
-{: RESULT = res; :}
 ;

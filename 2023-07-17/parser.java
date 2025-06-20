@@ -31,18 +31,16 @@ public class parser extends java_cup.runtime.lr_parser {
   /** Production table. */
   protected static final short _production_table[][] = 
     unpackFromStrings(new String[] {
-    "\000\044\000\002\002\004\000\002\002\007\000\002\003" +
-    "\003\000\002\003\003\000\002\004\012\000\002\005\007" +
-    "\000\002\005\002\000\002\006\010\000\002\006\024\000" +
-    "\002\006\026\000\002\007\005\000\002\007\010\000\002" +
-    "\010\005\000\002\010\005\000\002\010\002\000\002\011" +
-    "\006\000\002\012\005\000\002\012\002\000\002\013\006" +
-    "\000\002\026\003\000\002\027\005\000\002\027\003\000" +
-    "\002\014\006\000\002\015\003\000\002\016\003\000\002" +
-    "\030\003\000\002\030\003\000\002\017\003\000\002\020" +
-    "\004\000\002\020\003\000\002\021\010\000\002\025\003" +
-    "\000\002\022\005\000\002\022\003\000\002\023\004\000" +
-    "\002\024\003" });
+    "\000\037\000\002\002\004\000\002\002\007\000\002\003" +
+    "\004\000\002\004\004\000\002\005\004\000\002\006\003" +
+    "\000\002\006\003\000\002\007\007\000\002\010\005\000" +
+    "\002\010\002\000\002\011\005\000\002\011\013\000\002" +
+    "\011\014\000\002\012\004\000\002\012\006\000\002\013" +
+    "\004\000\002\013\004\000\002\013\002\000\002\014\006" +
+    "\000\002\015\005\000\002\015\002\000\002\016\006\000" +
+    "\002\023\005\000\002\023\003\000\002\024\006\000\002" +
+    "\020\004\000\002\020\003\000\002\021\010\000\002\026" +
+    "\005\000\002\026\003\000\002\025\004" });
 
   /** Access to production table. */
   public short[][] production_table() {return _production_table;}
@@ -50,55 +48,46 @@ public class parser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\133\000\006\013\006\014\004\001\002\000\004\007" +
-    "\125\001\002\000\004\016\ufffe\001\002\000\004\007\066" +
-    "\001\002\000\004\016\uffff\001\002\000\004\002\065\001" +
-    "\002\000\004\016\012\001\002\000\004\010\016\001\002" +
-    "\000\004\016\043\001\002\000\004\005\025\001\002\000" +
-    "\004\010\016\001\002\000\006\005\uffee\012\uffee\001\002" +
-    "\000\004\010\016\001\002\000\006\010\016\016\ufff0\001" +
-    "\002\000\004\016\ufff2\001\002\000\004\010\016\001\002" +
-    "\000\006\010\016\016\ufff0\001\002\000\004\016\ufff1\001" +
-    "\002\000\004\012\027\001\002\000\006\006\uffec\007\uffec" +
-    "\001\002\000\004\010\uffea\001\002\000\004\010\036\001" +
-    "\002\000\006\006\032\007\033\001\002\000\004\012\027" +
-    "\001\002\000\006\010\uffef\016\uffef\001\002\000\006\006" +
-    "\uffed\007\uffed\001\002\000\006\011\041\012\037\001\002" +
-    "\000\006\011\uffe9\012\uffe9\001\002\000\004\017\uffe8\001" +
-    "\002\000\004\017\042\001\002\000\004\017\uffe7\001\002" +
-    "\000\006\006\uffeb\007\uffeb\001\002\000\004\010\016\001" +
-    "\002\000\006\002\uffe4\010\uffe4\001\002\000\004\012\051" +
-    "\001\002\000\006\002\uffe6\010\016\001\002\000\004\002" +
-    "\000\001\002\000\006\002\uffe5\010\uffe5\001\002\000\004" +
-    "\004\uffe2\001\002\000\004\004\053\001\002\000\004\005" +
-    "\054\001\002\000\004\010\036\001\002\000\006\006\uffe0" +
-    "\007\uffe0\001\002\000\004\012\063\001\002\000\006\006" +
-    "\060\007\061\001\002\000\004\010\036\001\002\000\006" +
-    "\002\uffe3\010\uffe3\001\002\000\006\006\uffe1\007\uffe1\001" +
-    "\002\000\006\006\uffde\007\uffde\001\002\000\006\006\uffdf" +
-    "\007\uffdf\001\002\000\004\002\001\001\002\000\004\013" +
-    "\067\001\002\000\004\007\070\001\002\000\004\013\071" +
-    "\001\002\000\004\007\072\001\002\000\006\013\ufffb\014" +
-    "\ufffb\001\002\000\006\013\076\014\075\001\002\000\004" +
-    "\016\ufffd\001\002\000\004\007\102\001\002\000\004\007" +
-    "\077\001\002\000\004\013\100\001\002\000\004\007\101" +
-    "\001\002\000\006\013\ufffc\014\ufffc\001\002\000\004\014" +
-    "\103\001\002\000\004\007\104\001\002\000\004\014\105" +
-    "\001\002\000\004\007\106\001\002\000\006\014\107\016" +
-    "\ufffa\001\002\000\004\007\110\001\002\000\004\014\111" +
-    "\001\002\000\004\007\112\001\002\000\004\014\113\001" +
-    "\002\000\004\007\114\001\002\000\004\014\115\001\002" +
-    "\000\004\007\116\001\002\000\004\014\117\001\002\000" +
-    "\004\007\120\001\002\000\004\014\121\001\002\000\004" +
-    "\007\122\001\002\000\006\014\123\016\ufff9\001\002\000" +
-    "\004\007\124\001\002\000\004\016\ufff8\001\002\000\012" +
-    "\013\ufff3\014\ufff3\015\ufff3\016\ufff3\001\002\000\012\013" +
-    "\131\014\130\015\127\016\ufff7\001\002\000\004\007\135" +
-    "\001\002\000\004\007\133\001\002\000\004\007\132\001" +
-    "\002\000\012\013\ufff5\014\ufff5\015\ufff5\016\ufff5\001\002" +
-    "\000\010\013\ufff3\015\ufff3\016\ufff3\001\002\000\010\013" +
-    "\131\015\127\016\ufff6\001\002\000\012\013\ufff4\014\ufff4" +
-    "\015\ufff4\016\ufff4\001\002" });
+    "\000\106\000\006\013\012\014\010\001\002\000\012\013" +
+    "\ufff0\014\ufff0\015\ufff0\016\ufff0\001\002\000\004\016\ufffb" +
+    "\001\002\000\004\013\012\001\002\000\004\016\ufffc\001" +
+    "\002\000\004\007\061\001\002\000\004\002\060\001\002" +
+    "\000\004\007\057\001\002\000\004\016\014\001\002\000" +
+    "\004\010\017\001\002\000\004\016\040\001\002\000\004" +
+    "\010\017\001\002\000\004\005\020\001\002\000\004\012" +
+    "\022\001\002\000\006\006\uffea\007\uffea\001\002\000\004" +
+    "\010\027\001\002\000\006\006\024\007\025\001\002\000" +
+    "\004\012\022\001\002\000\006\010\uffec\016\uffec\001\002" +
+    "\000\006\006\uffeb\007\uffeb\001\002\000\004\011\030\001" +
+    "\002\000\004\017\031\001\002\000\006\006\uffe9\007\uffe9" +
+    "\001\002\000\004\010\017\001\002\000\006\010\017\016" +
+    "\uffed\001\002\000\004\016\uffef\001\002\000\004\010\017" +
+    "\001\002\000\006\010\017\016\uffed\001\002\000\004\016" +
+    "\uffee\001\002\000\004\010\043\001\002\000\006\002\uffe7" +
+    "\010\043\001\002\000\004\002\000\001\002\000\004\012" +
+    "\044\001\002\000\004\004\045\001\002\000\004\005\046" +
+    "\001\002\000\004\010\051\001\002\000\006\006\uffe4\007" +
+    "\uffe4\001\002\000\006\006\053\007\054\001\002\000\004" +
+    "\012\052\001\002\000\006\006\uffe3\007\uffe3\001\002\000" +
+    "\004\010\051\001\002\000\006\002\uffe6\010\uffe6\001\002" +
+    "\000\006\006\uffe5\007\uffe5\001\002\000\004\002\uffe8\001" +
+    "\002\000\012\013\uffff\014\uffff\015\uffff\016\uffff\001\002" +
+    "\000\004\002\001\001\002\000\012\013\ufffe\014\ufffe\015" +
+    "\ufffe\016\ufffe\001\002\000\004\013\012\001\002\000\006" +
+    "\013\ufff8\014\ufff8\001\002\000\006\013\012\014\010\001" +
+    "\002\000\004\016\ufffa\001\002\000\004\014\010\001\002" +
+    "\000\004\013\012\001\002\000\006\013\ufff9\014\ufff9\001" +
+    "\002\000\004\014\010\001\002\000\006\014\010\016\ufff7" +
+    "\001\002\000\004\014\010\001\002\000\004\014\010\001" +
+    "\002\000\004\014\010\001\002\000\004\014\010\001\002" +
+    "\000\004\014\010\001\002\000\006\014\010\016\ufff6\001" +
+    "\002\000\004\016\ufff5\001\002\000\012\013\012\014\010" +
+    "\015\106\016\ufff4\001\002\000\012\013\ufff1\014\ufff1\015" +
+    "\ufff1\016\ufff1\001\002\000\010\013\ufff0\015\ufff0\016\ufff0" +
+    "\001\002\000\012\013\ufff2\014\ufff2\015\ufff2\016\ufff2\001" +
+    "\002\000\004\007\107\001\002\000\012\013\ufffd\014\ufffd" +
+    "\015\ufffd\016\ufffd\001\002\000\010\013\012\015\106\016" +
+    "\ufff3\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -106,41 +95,36 @@ public class parser extends java_cup.runtime.lr_parser {
   /** <code>reduce_goto</code> table. */
   protected static final short[][] _reduce_table = 
     unpackFromStrings(new String[] {
-    "\000\133\000\012\002\007\003\010\004\006\007\004\001" +
-    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\010\011\012\013\014\026\013\001\001\000\002\001\001" +
-    "\000\002\001\001\000\006\013\016\026\013\001\001\000" +
-    "\002\001\001\000\006\013\017\026\013\001\001\000\010" +
-    "\012\020\013\021\026\013\001\001\000\002\001\001\000" +
-    "\006\013\022\026\013\001\001\000\010\012\023\013\021" +
-    "\026\013\001\001\000\002\001\001\000\010\014\025\015" +
-    "\027\027\030\001\001\000\002\001\001\000\002\001\001" +
-    "\000\004\016\034\001\001\000\002\001\001\000\006\014" +
-    "\033\015\027\001\001\000\002\001\001\000\002\001\001" +
-    "\000\004\030\037\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\012\017\046\020\045\021\043\026\044\001\001\000" +
-    "\002\001\001\000\004\025\051\001\001\000\006\021\047" +
-    "\026\044\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\010" +
-    "\016\055\022\056\023\054\001\001\000\002\001\001\000" +
-    "\004\024\063\001\001\000\002\001\001\000\006\016\055" +
-    "\023\061\001\001\000\002\001\001\000\002\001\001\000" +
+    "\000\106\000\016\002\010\003\005\004\003\006\012\007" +
+    "\006\012\004\001\001\000\004\013\101\001\001\000\002" +
+    "\001\001\000\004\003\061\001\001\000\002\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\006\014\014\016\015\001\001\000\002\001" +
+    "\001\000\004\016\031\001\001\000\002\001\001\000\006" +
+    "\023\022\024\020\001\001\000\002\001\001\000\002\001" +
+    "\001\000\002\001\001\000\004\024\025\001\001\000\002" +
     "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\004\005\072\001\001\000\004\006\073\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
+    "\001\000\002\001\001\000\004\016\032\001\001\000\006" +
+    "\015\033\016\034\001\001\000\002\001\001\000\004\016" +
+    "\035\001\001\000\006\015\036\016\034\001\001\000\002" +
+    "\001\001\000\006\020\041\021\040\001\001\000\006\020" +
+    "\055\021\040\001\001\000\002\001\001\000\002\001\001" +
+    "\000\002\001\001\000\002\001\001\000\006\025\046\026" +
+    "\047\001\001\000\002\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\004\025\054\001\001\000" +
     "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\002\001\001" +
-    "\000\002\001\001\000\002\001\001\000\002\001\001\000" +
-    "\002\001\001\000\002\001\001\000\002\001\001\000\002" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\004\010\125" +
-    "\001\001\000\002\001\001\000\002\001\001\000\002\001" +
-    "\001\000\002\001\001\000\002\001\001\000\004\010\133" +
-    "\001\001\000\002\001\001\000\002\001\001" });
+    "\001\001\000\002\001\001\000\002\001\001\000\004\003" +
+    "\062\001\001\000\004\010\063\001\001\000\010\003\066" +
+    "\004\065\011\064\001\001\000\002\001\001\000\004\004" +
+    "\070\001\001\000\004\003\067\001\001\000\002\001\001" +
+    "\000\004\004\071\001\001\000\004\004\072\001\001\000" +
+    "\004\004\073\001\001\000\004\004\074\001\001\000\004" +
+    "\004\075\001\001\000\004\004\076\001\001\000\004\004" +
+    "\077\001\001\000\004\004\100\001\001\000\002\001\001" +
+    "\000\010\003\104\004\103\005\102\001\001\000\002\001" +
+    "\001\000\004\013\107\001\001\000\002\001\001\000\002" +
+    "\001\001\000\002\001\001\000\006\003\104\005\102\001" +
+    "\001" });
 
   /** Access to <code>reduce_goto</code> table. */
   public short[][] reduce_table() {return _reduce_table;}
@@ -198,6 +182,14 @@ public class parser extends java_cup.runtime.lr_parser {
     public Object stack(int position){
         return (((Symbol)stack.elementAt(tos + position)).value);
     }
+    
+    public void printStatck(){
+        System.out.println("---Stack---");
+        for(int position=0; position<10; position++){
+            Object obj = (((Symbol)stack.elementAt(tos + -position)).value);
+            System.out.println("Element: " + obj + " At position: " + -position );
+        }
+    }
 
 
 /** Cup generated class to encapsulate user supplied action code.*/
@@ -248,151 +240,178 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 2: // header ::= head1 
-            { parser.Tree.reduce(1,"header",1);
+          case 2: // TOK1 ::= TOKEN1 SC 
+            { parser.Tree.reduce(2,"TOK1",1);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",1, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("TOK1",1, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 3: // header ::= head2 
-            { parser.Tree.reduce(1,"header",1);
+          case 3: // TOK2 ::= TOKEN2 SC 
+            { parser.Tree.reduce(2,"TOK2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",1, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("TOK2",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 4: // head1 ::= TOK1 SC TOK1 SC TOK1 SC head1_tok1 head1_tok2 
-            { parser.Tree.reduce(8,"head1",0);
+          case 4: // TOK3 ::= TOKEN3 SC 
+            { parser.Tree.reduce(2,"TOK3",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1",2, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-7)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("TOK3",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 5: // head1_tok1 ::= head1_tok1 TOK1 SC TOK1 SC 
-            { parser.Tree.reduce(5,"head1_tok1",0);
+          case 5: // header ::= head1 
+            { parser.Tree.reduce(1,"header",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok1",3, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",4, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 6: // head1_tok1 ::= 
+          case 6: // header ::= head2 
+            { parser.Tree.reduce(1,"header",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("header",4, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 7: // head1 ::= TOK1 TOK1 TOK1 head1_tok1 head1_tok2 
+            { parser.Tree.reduce(5,"head1",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 8: // head1_tok1 ::= head1_tok1 TOK1 TOK1 
+            { parser.Tree.reduce(3,"head1_tok1",0);
+              Object RESULT =null;
+
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok1",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+            }
+          return CUP$parser$result;
+
+          /*. . . . . . . . . . . . . . . . . . . .*/
+          case 9: // head1_tok1 ::= 
             { parser.Tree.reduce(0,"head1_tok1",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok1",3, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok1",6, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 7: // head1_tok2 ::= TOK2 SC TOK2 SC TOK2 SC 
-            { parser.Tree.reduce(6,"head1_tok2",0);
+          case 10: // head1_tok2 ::= TOK2 TOK2 TOK2 
+            { parser.Tree.reduce(3,"head1_tok2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok2",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok2",7, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 8: // head1_tok2 ::= TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC 
-            { parser.Tree.reduce(18,"head1_tok2",0);
+          case 11: // head1_tok2 ::= TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 
+            { parser.Tree.reduce(9,"head1_tok2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok2",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-17)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok2",7, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-8)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 9: // head1_tok2 ::= TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC TOK2 SC 
-            { parser.Tree.reduce(20,"head1_tok2",0);
+          case 12: // head1_tok2 ::= TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 TOK2 
+            { parser.Tree.reduce(10,"head1_tok2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok2",4, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-19)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head1_tok2",7, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-9)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 10: // head2 ::= TOK2 SC head2_tok 
-            { parser.Tree.reduce(3,"head2",0);
+          case 13: // head2 ::= TOK2 head2_tok 
+            { parser.Tree.reduce(2,"head2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2",8, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 11: // head2 ::= TOK2 SC head2_tok TOK2 SC head2_tok 
-            { parser.Tree.reduce(6,"head2",0);
+          case 14: // head2 ::= TOK2 head2_tok TOK2 head2_tok 
+            { parser.Tree.reduce(4,"head2",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2",5, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2",8, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 12: // head2_tok ::= head2_tok TOK1 SC 
-            { parser.Tree.reduce(3,"head2_tok",0);
+          case 15: // head2_tok ::= head2_tok TOK1 
+            { parser.Tree.reduce(2,"head2_tok",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2_tok",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2_tok",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 13: // head2_tok ::= head2_tok TOK3 SC 
-            { parser.Tree.reduce(3,"head2_tok",0);
+          case 16: // head2_tok ::= head2_tok TOK3 
+            { parser.Tree.reduce(2,"head2_tok",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2_tok",6, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2_tok",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 14: // head2_tok ::= 
+          case 17: // head2_tok ::= 
             { parser.Tree.reduce(0,"head2_tok",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2_tok",6, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("head2_tok",9, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 15: // dresses ::= cloth cloth cloth clothes 
+          case 18: // dresses ::= cloth cloth cloth clothes 
             { parser.Tree.reduce(4,"dresses",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("dresses",7, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("dresses",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 16: // clothes ::= cloth cloth clothes 
+          case 19: // clothes ::= cloth cloth clothes 
             { parser.Tree.reduce(3,"clothes",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("clothes",8, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("clothes",11, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 17: // clothes ::= 
+          case 20: // clothes ::= 
             { parser.Tree.reduce(0,"clothes",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("clothes",8, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("clothes",11, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 18: // cloth ::= dress_name DASH prod_list SC 
+          case 21: // cloth ::= QSTRING DASH prod_list SC 
             { parser.Tree.reduce(4,"cloth",0);
               Object RESULT =null;
 		int dress_nameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
@@ -403,48 +422,54 @@ class CUP$parser$actions {
 		HashMap prod_list = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
     parser.table.put(dress_name, prod_list);
+    // System.out.println(prod_list);
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("cloth",9, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("cloth",12, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 19: // dress_name ::= QSTRING 
-            { parser.Tree.reduce(1,"dress_name",0);
-              String RESULT =null;
-		int resleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
-		int resright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		String res = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = res; 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("dress_name",20, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 20: // prod_list ::= prod_list CM prod 
+          case 22: // prod_list ::= prod_list CM prod 
             { parser.Tree.reduce(3,"prod_list",0);
               HashMap RESULT =null;
+		int prod_listleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int prod_listright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		HashMap prod_list = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int prodleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int prodright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		HashMap prod = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+  prod_list.putAll(prod);
+  RESULT = prod_list;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_list",21, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_list",17, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 21: // prod_list ::= prod 
+          case 23: // prod_list ::= prod 
             { parser.Tree.reduce(1,"prod_list",0);
               HashMap RESULT =null;
+		int prodleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int prodright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		HashMap prod = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+  RESULT = prod;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_list",21, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_list",17, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 22: // prod ::= prod_id prod_name prod_cost EURO_WD 
+          case 24: // prod ::= INUM QSTRING FNUM EURO_WD 
             { parser.Tree.reduce(4,"prod",0);
-              Object RESULT =null;
+              HashMap RESULT =null;
+		int prod_idleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
+		int prod_idright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).right;
+		Integer prod_id = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-3)).value;
 		int prod_nameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
 		int prod_nameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
-		Object prod_name = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		String prod_name = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
 		int prod_costleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int prod_costright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Double prod_cost = (Double)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
@@ -453,140 +478,114 @@ class CUP$parser$actions {
     prod.put(prod_name, prod_cost);
     RESULT = prod;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod",10, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 23: // prod_id ::= INUM 
-            { parser.Tree.reduce(1,"prod_id",0);
+          case 25: // shopping ::= purchase shopping 
+            { parser.Tree.reduce(2,"shopping",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_id",11, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("shopping",14, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 24: // prod_name ::= QSTRING 
-            { parser.Tree.reduce(1,"prod_name",0);
-              Object RESULT =null;
-		int resleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
-		int resright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		String res = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = res; 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_name",12, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 25: // prod_cost ::= INUM 
-            { parser.Tree.reduce(1,"prod_cost",0);
-              Double RESULT =null;
-
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_cost",22, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 26: // prod_cost ::= FNUM 
-            { parser.Tree.reduce(1,"prod_cost",0);
-              Double RESULT =null;
-
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("prod_cost",22, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 27: // shopping ::= purchasing 
+          case 26: // shopping ::= purchase 
             { parser.Tree.reduce(1,"shopping",0);
               Object RESULT =null;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("shopping",13, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("shopping",14, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 28: // purchasing ::= purchasing purchase 
-            { parser.Tree.reduce(2,"purchasing",0);
-              Object RESULT =null;
-
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("purchasing",14, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 29: // purchasing ::= purchase 
-            { parser.Tree.reduce(1,"purchasing",0);
-              Object RESULT =null;
-
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("purchasing",14, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 30: // purchase ::= dress_name percent PAM DASH purch_prod_list SC 
+          case 27: // purchase ::= QSTRING INUM PAM DASH purch_prod_list SC 
             { parser.Tree.reduce(6,"purchase",0);
               Object RESULT =null;
 		int dress_nameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).left;
 		int dress_nameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)).right;
 		String dress_name = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-5)).value;
+		int percentleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).left;
+		int percentright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)).right;
+		Integer percent = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-4)).value;
+		int purchasesleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
+		int purchasesright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
+		HashMap purchases = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
     System.out.println(dress_name);
+    HashMap prods = parser.table.get(dress_name);
+    // System.out.println(prods);
+    Double totalPrice = 0.0;
+    Integer totalProdsCount = 0;
+    for (Object prodName : purchases.keySet()) {
+        Integer quantity = (Integer) purchases.get(prodName);
+        totalProdsCount += quantity;
+        Double prodCost = (Double) prods.get(prodName);
+        // System.out.println(prodCost);
+        // System.out.println(quantity);
+        // System.out.println(percent);
+        // System.out.println(quantity * prodCost * percent/100);
+        Double discountPrice = quantity * prodCost * percent/100;
+        System.out.println(prodName + " " + discountPrice + " euro");
+        totalPrice += discountPrice;
+    }
+    System.out.println("TOTAL: " + totalPrice + " euro N_PROD: " + totalProdsCount);
+
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("purchase",15, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-5)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 31: // percent ::= INUM 
-            { parser.Tree.reduce(1,"percent",0);
-              Object RESULT =null;
-
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("percent",19, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 32: // purch_prod_list ::= purch_prod_list CM purch_prod 
+          case 28: // purch_prod_list ::= purch_prod_list CM purch_prod 
             { parser.Tree.reduce(3,"purch_prod_list",0);
-              Object RESULT =null;
+              HashMap RESULT =null;
+		int purchase_listleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).left;
+		int purchase_listright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)).right;
+		HashMap purchase_list = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-2)).value;
+		int purcahseleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int purcahseright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		HashMap purcahse = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+    purchase_list.putAll(purcahse);
+    RESULT = purchase_list;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("purch_prod_list",16, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("purch_prod_list",20, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 33: // purch_prod_list ::= purch_prod 
+          case 29: // purch_prod_list ::= purch_prod 
             { parser.Tree.reduce(1,"purch_prod_list",0);
-              Object RESULT =null;
+              HashMap RESULT =null;
+		int purchaseleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int purchaseright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		HashMap purchase = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
+		
+    RESULT = purchase;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("purch_prod_list",16, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("purch_prod_list",20, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 34: // purch_prod ::= prod_name quantity 
+          case 30: // purch_prod ::= QSTRING INUM 
             { parser.Tree.reduce(2,"purch_prod",0);
-              Object RESULT =null;
+              HashMap RESULT =null;
 		int prod_nameleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).left;
 		int prod_nameright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
-		Object prod_name = (Object)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		String prod_name = (String)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
+		int quantityleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
+		int quantityright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
+		Integer quantity = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		 
-    System.out.println(prod_name);
+    HashMap purchase = new HashMap<String, Integer>();
+    purchase.put(prod_name, quantity);
+    RESULT = purchase;
 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("purch_prod",17, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
-            }
-          return CUP$parser$result;
-
-          /*. . . . . . . . . . . . . . . . . . . .*/
-          case 35: // quantity ::= INUM 
-            { parser.Tree.reduce(1,"quantity",0);
-              Object RESULT =null;
-		int resleft = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).left;
-		int resright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
-		Integer res = (Integer)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
-		 RESULT = res; 
-              CUP$parser$result = parser.getSymbolFactory().newSymbol("quantity",18, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
+              CUP$parser$result = parser.getSymbolFactory().newSymbol("purch_prod",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
           return CUP$parser$result;
 

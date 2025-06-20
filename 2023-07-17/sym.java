@@ -6,8 +6,10 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int TOK1 = 9;
+  public static final int TOKEN3 = 11;
+  public static final int TOKEN2 = 10;
   public static final int EURO_WD = 13;
+  public static final int TOKEN1 = 9;
   public static final int SC = 5;
   public static final int QSTRING = 6;
   public static final int CM = 4;
@@ -17,8 +19,6 @@ public class sym {
   public static final int SEP = 12;
   public static final int error = 1;
   public static final int FNUM = 7;
-  public static final int TOK3 = 11;
-  public static final int TOK2 = 10;
   public static final int INUM = 8;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -30,17 +30,19 @@ public class sym {
   "QSTRING",
   "FNUM",
   "INUM",
-  "TOK1",
-  "TOK2",
-  "TOK3",
+  "TOKEN1",
+  "TOKEN2",
+  "TOKEN3",
   "SEP",
   "EURO_WD"
   };
 public String[] TT;
 	public sym(){
 		TT = new String[100];
-		TT[9]=new String("TOK1");
+		TT[11]=new String("TOKEN3");
+		TT[10]=new String("TOKEN2");
 		TT[13]=new String("EURO_WD");
+		TT[9]=new String("TOKEN1");
 		TT[5]=new String("SC");
 		TT[6]=new String("QSTRING");
 		TT[4]=new String("CM");
@@ -50,8 +52,6 @@ public String[] TT;
 		TT[12]=new String("SEP");
 		TT[1]=new String("error");
 		TT[7]=new String("FNUM");
-		TT[11]=new String("TOK3");
-		TT[10]=new String("TOK2");
 		TT[8]=new String("INUM");
 	}
 public String getTT(int i){return TT[i];}

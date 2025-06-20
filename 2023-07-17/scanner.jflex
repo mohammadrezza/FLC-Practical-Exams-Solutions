@@ -171,14 +171,14 @@ token_3   = {num}("+"|"-"){num}("+"|"-"){num} |
 
 {inum}             {return sym(sym.INUM, new Integer(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
-{fnum}             {return sym(sym.FNUM, new Float(yytext()));}
+{fnum}             {return sym(sym.FNUM, new Double(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}
 {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 
 
-{token_1}          {return sym(sym.TOK1);}
-{token_2}          {return sym(sym.TOK2);}
-{token_3}          {return sym(sym.TOK3);}
+{token_1}          {return sym(sym.TOKEN1);}
+{token_2}          {return sym(sym.TOKEN2);}
+{token_3}          {return sym(sym.TOKEN3);}
 
 
 {sep}            {return sym(sym.SEP);}

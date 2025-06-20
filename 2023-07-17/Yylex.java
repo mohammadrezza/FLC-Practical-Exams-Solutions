@@ -851,7 +851,7 @@ class Yylex implements java_cup.runtime.Scanner {
           // fall through
           case 23: break;
           case 10:
-            { return sym(sym.FNUM, new Float(yytext()));
+            { return sym(sym.FNUM, new Double(yytext()));
             }
           // fall through
           case 24: break;
@@ -861,17 +861,17 @@ class Yylex implements java_cup.runtime.Scanner {
           // fall through
           case 25: break;
           case 12:
-            { return sym(sym.TOK1);
+            { return sym(sym.TOKEN1);
             }
           // fall through
           case 26: break;
           case 13:
-            { return sym(sym.TOK3);
+            { return sym(sym.TOKEN3);
             }
           // fall through
           case 27: break;
           case 14:
-            { return sym(sym.TOK2);
+            { return sym(sym.TOKEN2);
             }
           // fall through
           case 28: break;
