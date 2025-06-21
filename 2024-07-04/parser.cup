@@ -142,10 +142,8 @@ athlete ::= QSTRING:name CO attr_list:attr_list SC
 
 attr_list ::= attr:attr CM attr_list:attr_list
 {:
-   HashMap<String, Double> res = new HashMap<String, Double>();
-   res.putAll(attr_list);
-   res.putAll(attr);
-   RESULT = res;
+   attr_list.putAll(attr);
+   RESULT = attr_list;
 :}
 | attr:attr
 {:
@@ -216,10 +214,8 @@ points ::= POINTS_WD |
 
 val_list ::= val_list:val_list CM val:val
 {:
-   HashMap<String, Double> res = new HashMap<String, Double>();
-   res.putAll(val_list);
-   res.putAll(val);
-   RESULT = res;
+   val_list.putAll(val);
+   RESULT = val_list;
 :}
 | val:val
 {:

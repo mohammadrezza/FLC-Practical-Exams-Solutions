@@ -101,7 +101,10 @@ non terminal Double prod_cost;
 
 start with prog;
 
-prog ::= header SEP dresses SEP shopping
+prog ::= header
+{:
+parser.test();
+:} SEP dresses SEP shopping
 ;
 
 TOK1 ::= TOKEN1 SC

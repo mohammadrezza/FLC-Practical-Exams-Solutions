@@ -421,10 +421,8 @@ class CUP$parser$actions {
 		int attr_listright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		HashMap attr_list = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-   HashMap<String, Double> res = new HashMap<String, Double>();
-   res.putAll(attr_list);
-   res.putAll(attr);
-   RESULT = res;
+   attr_list.putAll(attr);
+   RESULT = attr_list;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("attr_list",16, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -665,10 +663,10 @@ RESULT = fnum;
 		int valright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		HashMap val = (HashMap)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-   HashMap<String, Double> res = new HashMap<String, Double>();
-   res.putAll(val_list);
-   res.putAll(val);
-   RESULT = res;
+//    HashMap<String, Double> res = new HashMap<String, Double>();
+//    res.putAll();
+   val_list.putAll(val);
+   RESULT = val_list;
 
               CUP$parser$result = parser.getSymbolFactory().newSymbol("val_list",18, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-2)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
