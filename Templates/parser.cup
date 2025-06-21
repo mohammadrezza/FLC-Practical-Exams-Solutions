@@ -21,6 +21,32 @@ parser code {:
             System.out.println("Element: " + obj + " At position: " + -position );
         }
     }
+
+    public void test(){
+        HashMap hm1 = new HashMap<String, Integer>();
+        hm1.put("x", 1);
+        HashMap hm2 = new HashMap<String, Integer>();
+        hm2.put("y", 2);
+        
+        hm1.putAll(hm2);
+        System.out.println("hm1: " + hm1);
+        
+        for (Object key : hm1.keySet()) {
+            Integer value = (Integer) hm1.get(key);
+            System.out.println("Key: " + key + " Value: " + value);
+        }
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(1);
+        arr.add(1);
+        Integer index0 = arr.get(0);
+        Integer index1 = arr.get(1);
+        System.out.println("arr: " + arr);
+        System.out.println("arr.size(): " + arr.size());
+        System.out.println("arr.get(0): " + arr.get(0));
+        System.out.println("compare equal: " + index0.equals(index1));
+    }
+
 :};
 
 // expression
@@ -73,6 +99,7 @@ terminal SC;
 // terminal String VAR;
 // terminal String QSTRING;
 // terminal Double FNUM;
+// terminal Double RNUM;
 // terminal Integer INUM;
 // terminal Integer SINUM;
 
