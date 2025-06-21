@@ -17,8 +17,8 @@ public class sym {
   public static final int PAM = 2;
   public static final int EOF = 0;
   public static final int SEP = 12;
+  public static final int RNUM = 7;
   public static final int error = 1;
-  public static final int FNUM = 7;
   public static final int INUM = 8;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -28,7 +28,7 @@ public class sym {
   "CM",
   "SC",
   "QSTRING",
-  "FNUM",
+  "RNUM",
   "INUM",
   "TOKEN1",
   "TOKEN2",
@@ -50,8 +50,8 @@ public String[] TT;
 		TT[2]=new String("PAM");
 		TT[0]=new String("EOF");
 		TT[12]=new String("SEP");
+		TT[7]=new String("RNUM");
 		TT[1]=new String("error");
-		TT[7]=new String("FNUM");
 		TT[8]=new String("INUM");
 	}
 public String getTT(int i){return TT[i];}

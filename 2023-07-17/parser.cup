@@ -72,7 +72,7 @@ terminal SC;
 
 // terminal String VAR;
 terminal String QSTRING;
-terminal Double FNUM;
+terminal Double RNUM;
 terminal Integer INUM;
 // terminal Integer SINUM;
 
@@ -162,7 +162,7 @@ prod_list ::= prod_list:prod_list CM prod:prod
 :}
 ;
 
-prod ::= INUM:prod_id QSTRING:prod_name FNUM:prod_cost EURO_WD
+prod ::= INUM:prod_id QSTRING:prod_name RNUM:prod_cost EURO_WD
 {:
     HashMap prod = new HashMap<String, Double>();
     prod.put(prod_name, prod_cost);

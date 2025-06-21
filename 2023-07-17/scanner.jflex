@@ -29,6 +29,8 @@ inum      = [1-9][0-9]*      //integer
 
 fnum      = [0-9]+.[0-9]+     //float
 
+rnum      = (([0-9]+\.[0-9]*)|(\.[0-9]+))     // real number
+
 //var       = [a-zA-Z_][a-zA-Z0-9_]*     //variable
 
 qstring   = \" ~ \"
@@ -171,7 +173,8 @@ token_3   = {num}("+"|"-"){num}("+"|"-"){num} |
 
 {inum}             {return sym(sym.INUM, new Integer(yytext()));}
 // {sinum}            {return sym(sym.SINUM, new Integer(yytext()));}
-{fnum}             {return sym(sym.FNUM, new Double(yytext()));}
+// {fnum}             {return sym(sym.FNUM, new Double(yytext()));}
+{rnum}             {return sym(sym.RNUM, new Double(yytext()));}
 // {var}              {return sym(sym.VAR, new String(yytext()));}
 {qstring}          {return sym(sym.QSTRING, new String(yytext()));}
 

@@ -461,7 +461,7 @@ class CUP$parser$actions {
           return CUP$parser$result;
 
           /*. . . . . . . . . . . . . . . . . . . .*/
-          case 24: // prod ::= INUM QSTRING FNUM EURO_WD 
+          case 24: // prod ::= INUM QSTRING RNUM EURO_WD 
             { parser.Tree.reduce(4,"prod",0);
               HashMap RESULT =null;
 		int prod_idleft = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-3)).left;
