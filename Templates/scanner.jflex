@@ -56,8 +56,8 @@ sep         = (\$\$\$)(\$\$)*
 // hexadecimal number
 // hex = [0-9a-fA-F]
 // ({hex})    //0-F
-// ({1-9a-fA-F})({hex})     //10-FF
-// ({1-9a-fA-F})({hex})({hex})   //100-FFF
+// ([1-9a-fA-F])({hex})     //10-FF
+// ([1-9a-fA-F])({hex})({hex})   //100-FFF
 // ip address
 // ip_range  = ([0-9] | [1-9][0-9] | 1[0-9][0-9] | 2[0-4][0-9] | 25[0-5])
 // ip_address = ({ip_range}\.{ip_range}\.{ip_range}\.{ip_range}) 

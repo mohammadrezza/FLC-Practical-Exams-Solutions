@@ -58,6 +58,9 @@ parser code {:
 // OP exp:e CP {: RESULT = e; :} |
 // INUM:inum {: RESULT = inum; :}
 // ;
+// exp ::= opr:opr_val | opr:opr_val oper:op exp:e_val;
+// opr ::= VAR:id EQ EQ QSTRING:value | T_WD | NOT_WD opr;
+// oper ::= OR_WD | AND_WD | NOT_WD;
 
 /////////////////////////////
 //// Symbols Delaration
@@ -110,6 +113,7 @@ terminal SC;
 
 non terminal prog;
 non terminal header, TOK1, TOK2;
+// non terminal header, TOK1, TOK2, TOK3;
 // non terminal ;
 // non terminal ;
 // non terminal ;
@@ -117,6 +121,7 @@ non terminal header, TOK1, TOK2;
 // non terminal HashMap ;
 // non terminal Integer ;
 // non terminal Double ;
+// non terminal Boolean ;
 
 // precedence left PLUS, DASH;
 // precedence left STAR, SL;
@@ -136,6 +141,9 @@ TOK1 ::= TOKEN1 SC
 
 TOK2 ::= TOKEN2 SC
 ;
+
+// TOK3 ::= TOKEN2 SC
+// ;
 
 // header
 
