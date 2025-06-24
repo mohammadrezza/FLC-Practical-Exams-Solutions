@@ -1,0 +1,223 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Double>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Double>> table;
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+    public void printStatck(){
+        System.out.println("---Stack---");
+        for(int position=0; position<10; position++){
+            Object obj = (((Symbol)stack.elementAt(tos + -position)).value);
+            System.out.println("Element: " + obj + " At position: " + -position );
+        }
+    }
+
+    public void test(){
+        HashMap hm1 = new HashMap<String, Integer>();
+        hm1.put("x", 1);
+        HashMap hm2 = new HashMap<String, Integer>();
+        hm2.put("y", 2);
+        
+        hm1.putAll(hm2);
+        System.out.println("hm1: " + hm1);
+        
+        for (Object key : hm1.keySet()) {
+            Integer value = (Integer) hm1.get(key);
+            System.out.println("Key: " + key + " Value: " + value);
+        }
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(1);
+        arr.add(1);
+        Integer index0 = arr.get(0);
+        Integer index1 = arr.get(1);
+        System.out.println("arr: " + arr);
+        System.out.println("arr.size(): " + arr.size());
+        System.out.println("arr.get(0): " + arr.get(0));
+        System.out.println("compare equal: " + index0.equals(index1));
+    }
+
+:};
+
+// expression
+// exp ::= exp:el PLUS exp:er {: RESULT = el + er; :} |
+// exp:el DASH exp:er {: RESULT = el - er; :} |
+// exp:el STAR exp:er {: RESULT = el * er; :} |
+// exp:el SL exp:er {: RESULT = el / er; :} |
+// DASH exp:e  {: RESULT = -e; :}  |
+// OP exp:e CP {: RESULT = e; :} |
+// INUM:inum {: RESULT = inum; :}
+// ;
+// exp ::= opr:opr_val | opr:opr_val oper:op exp:e_val;
+// opr ::= VAR:id EQ EQ QSTRING:value | T_WD | NOT_WD opr;
+// oper ::= OR_WD | AND_WD | NOT_WD;
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+// terminal QUM;
+// terminal EXM;
+// terminal ATM;
+// terminal HAM;
+// terminal DOM;
+// terminal PAM;
+// terminal CIM;
+// terminal AND;
+// terminal STAR;
+// terminal DASH;
+// terminal EQ;
+// terminal PLUS;
+terminal OP;
+terminal CP;
+// terminal OB;
+// terminal CB;
+// terminal OC;
+// terminal CC;
+// terminal GT;
+// terminal LT;
+// terminal SL;
+// terminal BSL;
+terminal DOT;
+terminal CO;
+terminal CM;
+terminal SC;
+// terminal QU;
+// terminal DQU;
+// terminal GRAVE;
+// terminal TIL;
+// terminal OR;
+// terminal US;
+
+// terminal String VAR;
+terminal String QSTRING;
+// terminal Double FNUM;
+terminal Double RNUM;
+terminal Integer INUM;
+// terminal Integer SINUM;
+
+// terminal TOKEN1, TOKEN2, SEP;
+terminal TOKEN1, TOKEN2, TOKEN3, SEP;
+terminal String EURODAY_WD, MIN_SUM_WD, E_WD;
+
+
+non terminal prog;
+// non terminal header, TOK1, TOK2;
+non terminal header, TOK1, TOK2, TOK3, head1;
+non terminal camping, sols_list, sols;
+non terminal users, opt_min, reservations, reservation, items, item, durations, duration, opt_e;
+// non terminal ;
+// non terminal String ;
+non terminal HashMap chars, chars_list;
+// non terminal Integer ;
+// non terminal Double ;
+// non terminal Boolean ;
+
+// precedence left PLUS, DASH;
+// precedence left STAR, SL;
+// precedence left CIM;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= header SEP camping SEP users
+;
+
+TOK1 ::= TOKEN1 SC
+;
+
+TOK2 ::= TOKEN2 SC
+;
+
+TOK3 ::= TOKEN3 SC
+;
+
+// header
+
+header ::= head1 TOK2 head1 TOK2 head1 TOK1 head1 |
+           head1 TOK2 head1 TOK1 head1 TOK2 head1 |
+           head1 TOK1 head1 TOK2 head1 TOK2 head1
+;
+
+head1 ::= TOK3 |
+;
+
+// camping
+
+camping ::= sols sols sols_list
+;
+
+sols_list ::= sols sols sols_list | 
+;
+
+sols ::= QSTRING:type CO chars_list:cl SC
+{:
+    parser.table.put(type,cl);
+    System.out.println(type);
+    System.out.println(cl);
+
+:}
+;
+
+chars_list ::= chars:chars CM chars_list:cl
+{:
+   cl.putAll(chars);
+   RESULT = cl;
+:}
+| chars:chars
+{:
+    RESULT = chars; 
+:}
+; 
+
+chars ::= QSTRING:dim RNUM:price EURODAY_WD
+{:
+    HashMap hm = new HashMap<String, Double>();
+    hm.put(dim, price);
+    RESULT = hm;
+:}
+;
+
+// users
+
+users ::= opt_min reservations
+;
+
+opt_min ::= MIN_SUM_WD OP items CP SC
+;
+
+items ::= item CM items | item 
+;
+
+item ::= QSTRING:type DOT QSTRING:dim
+;
+
+// reservations
+
+reservations ::= reservation reservations | reservation
+;
+
+reservation ::= RNUM:discount opt_e QSTRING:username CO durations SC
+;
+
+opt_e ::= E_WD |
+;
+
+durations ::= duration CM durations | duration
+;
+
+duration ::= item INUM:days
+;

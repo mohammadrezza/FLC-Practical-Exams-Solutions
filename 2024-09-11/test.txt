@@ -1,0 +1,19 @@
+(+ Header section +)
+A:!@!@###!#:10000 ; (+ tok1 +)
+B:&&%%&&abcd#AbCdEf; (+ tok2 +)
+C:11:56 am; (+ tok3 +)
+B:&&&&&&abcdefgh#ABCDEF#ABCDEF; (+ tok2 +)
+*****
+(+ Camping section +)
+'roulotte' : 'small' 40.00 euro/day,
+'big' 100.00 euro/day;
+'tend' : 'small' 20.00 euro/day,
+'medium' 30.00 euro/day,
+'big' 40.00 euro/day;
+*******
+(+ Users section +)
+(+ SUM: 40.00+20.00+30.00=90.00 MIN_SUM command is optional +)
+MIN_SUM('roulotte'.'small', 'tend'.'small', 'tend'.'medium');
+0.5 E 'Stefano': 'roulotte'.'small' 3, (+ (3*40.00)*0.5+10.00=120.00*0.5+10.00=70.00 +)
+                  'tend'.'medium' 2; (+ (2*30.00)*0.5+10=60.00*0.5+10.00=40.00 +)
+1.0 'Gabriele' : 'tend'.'big' 5; (+ (5*40.00)*1.0=200.00 +)
