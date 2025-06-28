@@ -1,0 +1,182 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Integer>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Integer>>table;
+
+    public void report_error(String message, Object info) {
+        System.err.print("ERROR: Syntax error");
+        if (info instanceof Symbol)
+            if (((Symbol)info).left != -1){
+                int line = (((Symbol)info).left)+1;
+                int column = (((Symbol)info).right)+1;
+                System.err.print(" (line "+line+", column "+column+"): ");
+            } else System.err.print(": ");
+        else System.err.print(": ");
+    }
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+:};
+
+//HashMap<String, Integer> tab = new HashMap<String, Integer>();
+ //     //  DEBUG: Print the stack content
+    // for (int i = 0; i < 15; i++) {
+    //     try {
+    //         Object obj = parser.stack(-i);
+    //         System.out.println("parser.stack(" + (-i) + ") = " + obj);
+    //     } catch (Exception e) {
+    //         break;
+    //     }
+    // };
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+terminal TOK1, TOK2, SEP, SC, OBJ_WD, NAME_WD, END_WD, CM ;
+terminal QUM, MQUM, AND_WD, OR_WD, NOT_WD, OP, CP, EQ_WD,NEQ_WD, DOT, ISF_WD, IST_WD, PRINT_WD ;
+terminal String QSTRING;
+terminal Integer INUM;
+
+non terminal prog,HEADER, OBJECTS, QUERIES, TOK2REP ;
+non terminal OBJECT;
+non terminal QUERIE, PRINT_FUNC ;
+non terminal ArrayList<String> PRINT_LIST;
+non terminal HashMap<String, Integer> ATTR_LIST;
+non terminal Boolean BOOL_EXP;
+ non terminal Integer OBJECT_REF ;
+// non terminal Double ;
+
+// precedence left ;
+// precedence left PLUS, DASH;
+// precedence left STAR, SL;
+ precedence left  OR_WD;
+ precedence left AND_WD;
+ precedence left NOT_WD;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= HEADER SEP OBJECTS SEP QUERIES
+;
+
+HEADER ::= TOK1 SC TOK2REP |  TOK1 SC TOK2REP TOK1 SC  | TOK2REP TOK1 SC TOK2REP | TOK2REP TOK1 SC TOK2REP TOK1 SC 
+;
+
+TOK2REP ::= TOK2REP TOK2 SC | TOK2 SC
+;
+
+
+OBJECTS ::= OBJECTS OBJECT OBJECT | OBJECT OBJECT
+;
+
+OBJECT ::= OBJ_WD ATTR_LIST:list NAME_WD QSTRING:y END_WD {:
+parser.table.put(y,list);
+:}
+;
+
+ATTR_LIST ::= ATTR_LIST:tab CM QSTRING:x INUM:y {:
+tab.put(x,y);
+RESULT = tab;
+:}
+| QSTRING:x INUM:y  {:
+HashMap<String, Integer> tab = new HashMap<String, Integer>();
+tab.put(x,y);
+RESULT = tab;
+:}
+;
+
+
+//QUERIES
+
+QUERIES ::= QUERIES QUERIE | 
+;
+
+QUERIE ::= QUM BOOL_EXP PRINT_FUNC MQUM
+;
+
+BOOL_EXP ::=    BOOL_EXP:x AND_WD BOOL_EXP:y  {:RESULT = x && y;:}
+            |   BOOL_EXP:x OR_WD BOOL_EXP:y  {:RESULT = x||y;:}
+            |   NOT_WD BOOL_EXP:x {:RESULT = !x;:}
+            |   OP BOOL_EXP:x CP {:RESULT = x;:}
+            |   OBJECT_REF:x EQ_WD INUM:y {:
+            if(x.equals(y)){
+                RESULT = true;
+            }else{
+                RESULT = false;
+            };:}
+            |   OBJECT_REF:x NEQ_WD INUM:y {:
+            if(x.equals(y)){
+                RESULT = false;
+            }else{
+                RESULT = true;
+            };:}
+;
+
+OBJECT_REF ::= QSTRING:x DOT QSTRING:y {:
+HashMap<String, Integer> tab = parser.table.get(x);
+Integer value = tab.get(y);
+RESULT = value ;
+:}
+;
+PRINT_FUNC ::= IST_WD PRINT_LIST:istList ISF_WD PRINT_LIST:isfList {:
+    if ((Boolean)parser.stack(-4)) {
+        for (String s : istList) {
+            System.out.println(s);
+        }
+    } else {
+        for (String s : isfList) {
+            System.out.println(s);
+        }
+    }
+:} 
+| ISF_WD PRINT_LIST:isfList IST_WD PRINT_LIST:istList {:
+    if (!(Boolean)parser.stack(-4)) {
+        for (String s : isfList) {
+            System.out.println(s);
+        }
+    } else {
+        for (String s : istList) {
+            System.out.println(s);
+        }
+    }
+:} 
+| ISF_WD PRINT_LIST:list {:
+    if (!(Boolean)parser.stack(-2)) {
+        for (String s : list) {
+            System.out.println(s);
+        }
+    }
+:} 
+| IST_WD PRINT_LIST:list {:
+    if ((Boolean)parser.stack(-2)) {
+        for (String s : list) {
+            System.out.println(s);
+        }
+    }
+:} 
+;
+
+
+PRINT_LIST ::= PRINT_LIST:list PRINT_WD QSTRING:str {:
+    list.add(str);
+    RESULT = list;
+:}
+| PRINT_WD QSTRING:str {:
+    ArrayList<String> list = new ArrayList<String>();
+    list.add(str);
+    RESULT = list;
+:}
+;
