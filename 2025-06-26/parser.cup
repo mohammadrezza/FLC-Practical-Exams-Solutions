@@ -1,0 +1,333 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+
+init with{:
+    table = new HashMap <String, HashMap <String, Integer>>();
+:};
+
+parser code {:
+    public HashMap <String, HashMap <String, Integer>> table;
+
+    public Object stack(int position){
+        return (((Symbol)stack.elementAt(tos + position)).value);
+    }
+
+    public void printStatck(){
+        System.out.println("---Stack---");
+        for(int position=0; position<10; position++){
+            Object obj = (((Symbol)stack.elementAt(tos + -position)).value);
+            System.out.println("Element: " + obj + " At position: " + -position );
+        }
+    }
+
+    public void test(){
+        HashMap hm1 = new HashMap<String, Integer>();
+        hm1.put("x", 1);
+        HashMap hm2 = new HashMap<String, Integer>();
+        hm2.put("y", 2);
+        
+        hm1.putAll(hm2);
+        System.out.println("hm1: " + hm1);
+        
+        for (Object key : hm1.keySet()) {
+            Integer value = (Integer) hm1.get(key);
+            System.out.println("Key: " + key + " Value: " + value);
+        }
+
+        ArrayList<Integer> arr = new ArrayList<>();
+        arr.add(1);
+        arr.add(1);
+        Integer index0 = arr.get(0);
+        Integer index1 = arr.get(1);
+        System.out.println("arr: " + arr);
+        System.out.println("arr.size(): " + arr.size());
+        System.out.println("arr.get(0): " + arr.get(0));
+        System.out.println("compare equal: " + index0.equals(index1));
+    }
+
+:};
+
+// expression
+// exp ::= exp:el PLUS exp:er {: RESULT = el + er; :} |
+// exp:el DASH exp:er {: RESULT = el - er; :} |
+// exp:el STAR exp:er {: RESULT = el * er; :} |
+// exp:el SL exp:er {: RESULT = el / er; :} |
+// DASH exp:e  {: RESULT = -e; :}  |
+// OP exp:e CP {: RESULT = e; :} |
+// INUM:inum {: RESULT = inum; :}
+// ;
+// exp ::= opr:opr_val | opr:opr_val oper:op exp:e_val;
+// opr ::= VAR:id EQ EQ QSTRING:value | T_WD | NOT_WD opr;
+// oper ::= OR_WD | AND_WD | NOT_WD;
+
+/////////////////////////////
+//// Symbols Delaration
+////////////////////////////
+
+terminal QUM;
+// terminal EXM;
+// terminal ATM;
+// terminal HAM;
+// terminal DOM;
+// terminal PAM;
+// terminal CIM;
+// terminal AND;
+// terminal STAR;
+terminal DASH;
+// terminal EQ;
+// terminal PLUS;
+terminal OP;
+terminal CP;
+// terminal OB;
+// terminal CB;
+// terminal OC;
+// terminal CC;
+// terminal GT;
+// terminal LT;
+// terminal SL;
+// terminal BSL;
+terminal DOT;
+// terminal CO;
+terminal CM;
+terminal SC;
+// terminal QU;
+// terminal DQU;
+// terminal GRAVE;
+// terminal TIL;
+// terminal OR;
+// terminal US;
+
+// terminal String VAR;
+terminal String QSTRING;
+// terminal Double FNUM;
+// terminal Double RNUM;
+terminal Integer INUM;
+// terminal Integer SINUM;
+
+terminal TOKEN1, TOKEN2, SEP;
+// terminal TOKEN1, TOKEN2, TOKEN3, SEP;
+terminal String OBJ_WD, END_WD, NAME_WD, IS_TRUE_WD, IS_FALSE_WD,
+OR_WD, AND_WD, NOT_WD, DEQ_WD, DNEQ_WD, PRINT_WD;
+
+
+non terminal prog;
+non terminal header, TOK1, TOK2, head1;
+// non terminal header, TOK1, TOK2, TOK3;
+non terminal objs, obj;
+non terminal queries, cmds, cmd, print_fn;
+// non terminal ;
+non terminal String oper;
+non terminal HashMap attr, attrs;
+non terminal Integer obj_ref;
+non terminal ArrayList print_list, print_f, print_t;
+// non terminal Double ;
+non terminal Boolean opr, exp;
+
+// precedence left PLUS, DASH;
+// precedence left STAR, SL;
+// precedence left CIM;
+
+/////////////////////////////
+//// Grammar
+////////////////////////////
+
+start with prog;
+
+prog ::= header SEP objs SEP queries
+;
+
+TOK1 ::= TOKEN1 SC
+;
+
+TOK2 ::= TOKEN2 SC
+;
+
+// TOK3 ::= TOKEN2 SC
+// ;
+
+// header
+
+header ::= TOK1 head1 |
+           head1 TOK1 |
+           head1 TOK1 head1 |
+           
+           head1 TOK1 TOK1 |
+           TOK1 head1 TOK1 |
+           TOK1 TOK1 head1 |
+           
+           head1 TOK1 head1 TOK1 |
+           head1 TOK1 TOK1 head1 |
+           TOK1 head1 TOK1 head1 |
+
+           head1 TOK1 head1 TOK1 head1
+;
+
+head1 ::= head1 TOK2 | TOK2 
+;
+
+
+// objs
+
+
+objs ::= objs obj obj | obj obj
+;
+
+obj ::= OBJ_WD attrs:attrs NAME_WD QSTRING:obj_name END_WD
+{:
+    parser.table.put(obj_name,attrs);
+:}
+;
+
+attrs ::= attrs:attrs CM attr:attr
+{:
+    attrs.putAll(attr);
+    RESULT = attrs;
+:}
+| attr:attr
+{:
+    RESULT = attr; 
+:}
+;
+
+attr ::= QSTRING:attr_name INUM:attr_value
+{:
+    HashMap hm = new HashMap<String, Integer>();
+    hm.put(attr_name,  attr_value);
+    RESULT = hm;
+:}
+;
+
+
+//queries
+
+queries ::= cmds cmd |
+;
+
+cmds ::= cmds cmd | cmd
+;
+
+cmd ::= QUM exp:exp print_fn  DASH QUM
+;
+
+exp ::= opr:opr_val
+{:
+   RESULT = opr_val;
+:}
+| opr:opr_val oper:op exp:e_val
+{:
+    if(op=="and"){
+        RESULT = opr_val && e_val; 
+    }
+    if (op=="or"){
+        RESULT = opr_val || e_val; 
+    }
+:}
+| NOT_WD OP exp:exp CP
+{:
+  RESULT = !exp;
+:}
+;
+
+opr ::=  obj_ref:val DEQ_WD INUM:attr_val
+{:
+    RESULT = val.equals(attr_val);
+:}
+| obj_ref:val DNEQ_WD INUM:attr_val
+{:
+    RESULT = !val.equals(attr_val);
+:}
+| NOT_WD opr:val
+{:
+    RESULT = !val;
+:};
+
+obj_ref ::= QSTRING:obj_name DOT QSTRING:attr_name
+{:
+    Integer val = (Integer) parser.table.get(obj_name).get(attr_name);
+    RESULT = val;
+:}
+;
+
+oper ::= OR_WD
+{:
+    RESULT = "or";
+:}
+| AND_WD
+{:
+    RESULT = "and";
+:}
+;
+
+print_fn ::= print_t:plt print_f:plf
+{:
+    Boolean exp = (Boolean) parser.stack(-2);
+    if(exp){
+        for(int i=0; i<plt.size(); i++){
+            System.out.println(plt.get(i));
+        }
+    }else{
+        for(int i=0; i<plf.size(); i++){
+            System.out.println(plf.get(i));
+        }
+    }
+:}
+| print_f:plf print_t:plt
+{:
+    Boolean exp = (Boolean) parser.stack(-2);
+    if(exp){
+        for(int i=0; i<plt.size(); i++){
+            System.out.println(plt.get(i));
+        }
+    }else{
+        for(int i=0; i<plf.size(); i++){
+            System.out.println(plf.get(i));
+        }
+    }
+:} 
+| print_f:plf 
+{:
+    Boolean exp = (Boolean) parser.stack(-1);
+    if(!exp)
+    {
+        for(int i=0; i<plf.size(); i++){
+            System.out.println(plf.get(i));
+        }
+    }
+:}
+| print_t:plt
+{:
+    Boolean exp = (Boolean) parser.stack(-1);
+    if(!exp){
+        for(int i=0; i<plt.size(); i++){
+            System.out.println(plt.get(i));
+        }
+    }
+:}
+;
+
+print_t ::= IS_TRUE_WD print_list:pl
+{:
+    RESULT = pl;
+:}
+;
+
+print_f ::= IS_FALSE_WD print_list:pl
+{:
+    RESULT = pl;
+:}
+;
+
+print_list ::= print_list:pl PRINT_WD QSTRING:str
+{:
+    pl.add(str);
+    RESULT = pl;
+:}
+| PRINT_WD QSTRING:str
+{:
+    ArrayList<String> pl = new ArrayList<>();
+    pl.add(str);
+    RESULT = pl;
+:}
+;

@@ -1,0 +1,41 @@
+scanner changes
+---
+1. Fix range issue in {num}:
+My regex was creating '099' or '09' which is not valid.
+Also the range  "-1"[0-9]({odd}) should not finish in 9 but 1, and
+can be merged with previous line.
+
+2. Fix the "i" and "j" consecutive condition:
+I removed the {chars} variable and fixed it in {word}.
+
+3. Fix {date} statring and end dates:
+My previous range did not include 20-25 of July and 15-19 February.
+
+
+grammar changes
+---
+1. Fix header section:
+The header section did not include some patterns such as 
+- TOK2 TOK1 TOK2
+- TOK2 TOK1 TOK2 TOK1 
+but the test input was covered.
+
+
+2. In "oper" section, the NOT_WD is removed:
+It dones not makes sence to apply not between two operands (a ! b),
+instead it works before parantheses which was already covered.
+
+
+semantic changes
+---
+1. Add remaining semantic:
+I only had time to build the global data structure,
+so now it works and prints the expcted output.
+
+
+---
+changes are checked with diffchecker, here are the links you may find it useful:
+scanner.jflex:
+https://www.diffchecker.com/NUJWKn5O/
+parser.cup:
+https://www.diffchecker.com/tPWr14I5/
