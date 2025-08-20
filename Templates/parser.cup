@@ -37,6 +37,26 @@ parser code {:
     //         break;
     //     }
     // };
+    // ArrayList<String> list = new ArrayList<String>();
+    // list.add(str);
+    // for (String s : list) {
+    //         System.out.println(s);
+    //     }
+
+//     BOOL_EXP ::=    BOOL_EXP OR_WD BOOL_EXP
+//             |   BOOL_EXP AND_WD BOOL_EXP
+//             |   NOT_WD BOOL_EXP
+//             |   OP BOOL_EXP CP
+//             |   OPERANDS
+// ;
+
+// MATH_EXP ::=    MATH_EXP:x STAR MATH_EXP:y {:RESULT = x * y ;:}  
+//             |   MATH_EXP:x SL MATH_EXP:y {:RESULT = x / y ;:}   
+//             |   MATH_EXP:x PLUS MATH_EXP:y {:RESULT = x + y ;:}  
+//             |   MATH_EXP:x DASH MATH_EXP:y {:RESULT = x - y ;:}    
+//             |   OP MATH_EXP:x CP  {:RESULT = x ;:}   
+//             |   INUM:x  {:RESULT = x ;:}        
+// ;
 
 /////////////////////////////
 //// Symbols Delaration
